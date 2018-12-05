@@ -1,0 +1,9 @@
+﻿Věnná města českých královen - API pro předávání meshů
+
+Týmový projekt Věnná města českých královen má za cíl uživatelům přívětivě vizualizovat historii architektury
+českých měst.
+
+1. Analyzujte funkční a nefunkční požadavky pro komunikaci mezi databází a editorem virtuální reality.
+2. Dle předchozích požadavků navrhněte prototyp API, které bude umožnovat komunikaci mezi databází a editorem virtuální reality.
+3. Implementujte prototyp REST API za použití technologie Node.js.
+4. Zajistit continious integration s použitím frameworku Express.js.
