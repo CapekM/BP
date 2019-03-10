@@ -14,6 +14,16 @@
 
 \usepackage[utf8]{inputenc} % LaTeX source encoded as UTF-8
 
+% My packages
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue}
+}
+
 \usepackage{graphicx} %graphics files inclusion
 % \usepackage{amsmath} %advanced maths
 % \usepackage{amssymb} %additional math symbols
@@ -33,7 +43,7 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
 \department{Katedra softewarového inženýrství}
-\title{Doplňte název práce}
+\title{Věnná města českých královen -\\ API pro předávání grafických modelů}
 \authorGN{Martin} %(křestní) jméno (jména) autora
 \authorFN{Čapek} %příjmení autora
 \authorWithDegrees{Martin Čapek} %jméno autora včetně současných akademických titulů
@@ -41,10 +51,10 @@
 \supervisor{Jiří Chludil}
 \acknowledgements{Doplňte, máte-li komu a za co děkovat. V~opačném případě úplně odstraňte tento příkaz.}
 \abstractCS{V~několika větách shrňte obsah a přínos této práce v~češtině. Po přečtení abstraktu by se čtenář měl mít čtenář dost informací pro rozhodnutí, zda chce Vaši práci číst.}
-\abstractEN{Věnná města českých královen - API pro předávání grafických modelů.}
+\abstractEN{abstractEN}
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
-\keywordsCS{Nahraďte seznamem klíčových slov v češtině oddělených čárkou.}
+\keywordsCS{IDE - Vývojové prostředí, npm - Node.js package manager}
 \keywordsEN{Nahraďte seznamem klíčových slov v angličtině oddělených čárkou.}
 % \website{http://site.example/thesis} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
@@ -58,6 +68,41 @@
 \end{introduction}
 
 \chapter{Cíl práce}
+
+\chapter{Vývojářské prostředí pro\\ OS Linux}
+
+\section{Použité technologie}
+Bylo rozhodnuto, že budu používat technologii Node.js.
+
+Programy pro Node.js jsou psané v jazyce JavaScript. Já jsem se rozhodl používat TypeScript, který je kompilovatelný do JavaScriptu. Pro TypeScript jsem se rozhodl hlavně proto, že má statické typování.
+
+Node.js dále využívá správce balíčků npm, jehož pomocí budeme instalovat potřebné moduly a spouštět skripty.
+
+TODO moduly - express, ...
+
+Jako IDE jsem si zvolil Visual Studio Code.
+
+TODO VS Code extensions
+\section{Instalace}
+\subsection{Node.js}
+\begin{lstlisting}[language=bash,caption={Instalace Node.js}]
+sudo apt install nodejs npm
+\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Instalace npm}]
+sudo apt install npm
+\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Zkontrolování verze Node.js}]
+nodejs -v
+\end{lstlisting}
+\begin{lstlisting}[language=bash,caption={Zkontrolování verze npm}]
+npm -v
+\end{lstlisting}
+
+\subsection{Visual Studio Code}
+Na stránce \href{https://code.visualstudio.com/Download}{Visual Studio Code} si stáhneme soubor .deb. Ten nainstalujeme následujícím příkazem.
+\begin{lstlisting}[language=bash,caption={Instalace Visual Studio Code}]
+sudo dpkg -i $YourDebFile
+\end{lstlisting}
 
 \chapter{Analýza a návrh}
 

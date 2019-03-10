@@ -1,8 +1,0 @@
-Konzultanti SP1
-	seznámit ty cucáky s HTC Vive a vùbec
-	vymyslet co budou dìlat v 2. iteraci
-
-
-Mail do 14 dní:
-	Zapsat vše z SP2, co jsme mìli. Hlavnì Patrik hodit analýzu na papír (Mám baráèek, potøebuju ho dát do krajiny. Jak? Vymyslet. Implementovat.).
-	Dotazníky do Hradce - LOD, poèasí. Dìlat nìjaký diagramy viz SP1. Nguenová vzor bakaláøky.

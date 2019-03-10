@@ -2,9 +2,14 @@
 \babel@toc {czech}{}
 \contentsline {subsection}{Odkaz na tuto pr{\' a}ci}{vi}{section*.1}
 \contentsline {chapter}{{\' U}vod}{1}{chapter*.5}
-\contentsline {chapter}{\chapternumberline {1}C\IeC {\'\i }l pr\IeC {\'a}ce}{3}{chapter.1}
-\contentsline {chapter}{\chapternumberline {2}Anal\IeC {\'y}za a n\IeC {\'a}vrh}{5}{chapter.2}
-\contentsline {chapter}{\chapternumberline {3}Realizace}{7}{chapter.3}
-\contentsline {chapter}{Z{\' a}v{\v e}r}{9}{chapter*.6}
-\contentsline {appendix}{\chapternumberline {A}Seznam pou\IeC {\v z}it\IeC {\'y}ch zkratek}{11}{appendix.A}
-\contentsline {appendix}{\chapternumberline {B}Obsah p\IeC {\v r}ilo\IeC {\v z}en\IeC {\'e}ho CD}{13}{appendix.B}
+\contentsline {chapter}{\chapternumberline {1}Cíl práce}{3}{chapter.1}
+\contentsline {chapter}{\chapternumberline {2}Vývojářské prostředí pro\\ OS Linux}{5}{chapter.2}
+\contentsline {section}{\numberline {2.1}Použité technologie}{5}{section.2.1}
+\contentsline {section}{\numberline {2.2}Instalace}{5}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Node.js}{5}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Visual Studio Code}{6}{subsection.2.2.2}
+\contentsline {chapter}{\chapternumberline {3}Analýza a návrh}{7}{chapter.3}
+\contentsline {chapter}{\chapternumberline {4}Realizace}{9}{chapter.4}
+\contentsline {chapter}{Z{\' a}v{\v e}r}{11}{chapter*.6}
+\contentsline {appendix}{\chapternumberline {A}Seznam použitých zkratek}{13}{appendix.A}
+\contentsline {appendix}{\chapternumberline {B}Obsah přiloženého CD}{15}{appendix.B}
