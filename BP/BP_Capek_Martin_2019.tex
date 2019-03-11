@@ -49,12 +49,18 @@
 \authorWithDegrees{Martin Čapek} %jméno autora včetně současných akademických titulů
 \author{Martin Čapek} %jméno autora bez akademických titulů
 \supervisor{Jiří Chludil}
-\acknowledgements{Doplňte, máte-li komu a za co děkovat. V~opačném případě úplně odstraňte tento příkaz.}
-\abstractCS{V~několika větách shrňte obsah a přínos této práce v~češtině. Po přečtení abstraktu by se čtenář měl mít čtenář dost informací pro rozhodnutí, zda chce Vaši práci číst.}
+\acknowledgements{Děkuji především své rodině za podporu, svému vedoucímu za časté konzultace a za směrování mě k práci.}
+\abstractCS{Práce je věnována analýze funkčním a nefunkčním požadavkům editoru Virtuálního historického průvodce, který má zjednodušit práci odborníkům (zvláště historikům).
+
+
+
+Hlavním přínosem této práce není vytvořit plně funkční RESTful API,
+ač je implementován funkční prototyp, ale sestavit obsáhlý manuál, základní
+kámen činnosti pro následující generace řešitelů projektu.}
 \abstractEN{abstractEN}
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
-\keywordsCS{IDE - Vývojové prostředí, npm - Node.js package manager}
+\keywordsCS{RestAPI, PostgreSQL, Node.js, virtuální realita, historické modely budov}
 \keywordsEN{Nahraďte seznamem klíčových slov v angličtině oddělených čárkou.}
 % \website{http://site.example/thesis} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
@@ -72,37 +78,48 @@
 \chapter{Vývojářské prostředí pro\\ OS Linux}
 
 \section{Použité technologie}
-Bylo rozhodnuto, že budu používat technologii Node.js.
+\subsection{Node.js}
+Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
 
-Programy pro Node.js jsou psané v jazyce JavaScript. Já jsem se rozhodl používat TypeScript, který je kompilovatelný do JavaScriptu. Pro TypeScript jsem se rozhodl hlavně proto, že má statické typování.
+Node.js využívá událostmi řízenou architekturu a neblokující I/O operace. Tento návrh optimalizuje výkon a škálovatelnost programů s častými požadavky na I/O operace.
 
-Node.js dále využívá správce balíčků npm, jehož pomocí budeme instalovat potřebné moduly a spouštět skripty.
+Jádro celého Node.js tvoří smyčka událostí, která běží na jednom vlákně. Ta podporuje desetitisíce souběžných připojení bez nutnosti neustálého přepínání kontextu díky neblokujícímu I/O. Nedochází zde k žádnému zamykání, tudíž nemusíme mít obavy z deadlocku systému.
+\subsubsection{npm}
+Node.js dále využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
 
-TODO moduly - express, ...
+TODO npm moduly, popsat až v implementaci?
 
-Jako IDE jsem si zvolil Visual Studio Code.
+\subsection{Implementační jazyk}
+Pro vývoj byl vybrán jazyk TypeScript, který je kompilovatelný do JavaScriptu. Tento jazyk je vyvýjen firmou Microsoft a jeho hlavní myšlenkou je být nadstavbou JavaScriptu, která přidává statické typování a další funkcionalitu.
 
-TODO VS Code extensions
+\subsubsection{TSLint}
+TSLint je nástroj pro statickou analýzu kódu TypeScriptu.
+
+\subsection{PostgreSQL}
+Pro datovou vrstvu byla vybrána databáze PostgreSQL.
+
+PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki todo foots lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
+
+https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools
+
 \section{Instalace}
 \subsection{Node.js}
 \begin{lstlisting}[language=bash,caption={Instalace Node.js}]
-sudo apt install nodejs npm
+sudo apt install nodejs --Yes
 \end{lstlisting}
 \begin{lstlisting}[language=bash,caption={Instalace npm}]
-sudo apt install npm
+sudo apt install npm --Yes
 \end{lstlisting}
+V implementaci je použita verze nodejs 8.10.0 a npm 3.5.2. Vaši verzi si můžete zkontrolovat pomocí následujích příkazů.
 \begin{lstlisting}[language=bash,caption={Zkontrolování verze Node.js}]
 nodejs -v
 \end{lstlisting}
 \begin{lstlisting}[language=bash,caption={Zkontrolování verze npm}]
 npm -v
 \end{lstlisting}
+\subsection{PostgreSQL}
+TBD
 
-\subsection{Visual Studio Code}
-Na stránce \href{https://code.visualstudio.com/Download}{Visual Studio Code} si stáhneme soubor .deb. Ten nainstalujeme následujícím příkazem.
-\begin{lstlisting}[language=bash,caption={Instalace Visual Studio Code}]
-sudo dpkg -i $YourDebFile
-\end{lstlisting}
 
 \chapter{Analýza a návrh}
 
@@ -120,8 +137,10 @@ sudo dpkg -i $YourDebFile
 \chapter{Seznam použitých zkratek}
 % \printglossaries
 \begin{description}
-	\item[GUI] Graphical user interface
-	\item[XML] Extensible markup language
+	\item[I/O] Input/Output
+	\item[npm] Node.js package manager
+	\item[IDE] Integrated Development Environment
+	\item[JSON] JavaScript Object Notation
 \end{description}
 
 
