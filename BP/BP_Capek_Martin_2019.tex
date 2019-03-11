@@ -43,7 +43,7 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
 \department{Katedra softewarového inženýrství}
-\title{Věnná města českých královen -\\ API pro předávání grafických modelů}
+\title{Věnná města českých královen - API pro předávání grafických modelů}
 \authorGN{Martin} %(křestní) jméno (jména) autora
 \authorFN{Čapek} %příjmení autora
 \authorWithDegrees{Martin Čapek} %jméno autora včetně současných akademických titulů
@@ -85,7 +85,7 @@ Node.js využívá událostmi řízenou architekturu a neblokující I/O operace
 
 Jádro celého Node.js tvoří smyčka událostí, která běží na jednom vlákně. Ta podporuje desetitisíce souběžných připojení bez nutnosti neustálého přepínání kontextu díky neblokujícímu I/O. Nedochází zde k žádnému zamykání, tudíž nemusíme mít obavy z deadlocku systému.
 \subsubsection{npm}
-Node.js dále využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
+Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
 
 TODO npm moduly, popsat až v implementaci?
 
@@ -98,23 +98,17 @@ TSLint je nástroj pro statickou analýzu kódu TypeScriptu.
 \subsection{PostgreSQL}
 Pro datovou vrstvu byla vybrána databáze PostgreSQL.
 
-PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki todo foots lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
-
-https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools
+PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
 
 \section{Instalace}
 \subsection{Node.js}
-\begin{lstlisting}[language=bash,caption={Instalace Node.js}]
+\begin{lstlisting}[language=bash,caption={Instalace Node.js a npm}]
 sudo apt install nodejs --Yes
-\end{lstlisting}
-\begin{lstlisting}[language=bash,caption={Instalace npm}]
 sudo apt install npm --Yes
 \end{lstlisting}
 V implementaci je použita verze nodejs 8.10.0 a npm 3.5.2. Vaši verzi si můžete zkontrolovat pomocí následujích příkazů.
-\begin{lstlisting}[language=bash,caption={Zkontrolování verze Node.js}]
+\begin{lstlisting}[language=bash,caption={Zkontrolování verze Node.js a npm}]
 nodejs -v
-\end{lstlisting}
-\begin{lstlisting}[language=bash,caption={Zkontrolování verze npm}]
 npm -v
 \end{lstlisting}
 \subsection{PostgreSQL}
