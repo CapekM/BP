@@ -43,7 +43,7 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 
 \department{Katedra softewarového inženýrství}
-\title{Věnná města českých královen - API pro předávání grafických modelů}
+\title{Věnná města českých královen - API~pro~předávání grafických modelů}
 \authorGN{Martin} %(křestní) jméno (jména) autora
 \authorFN{Čapek} %příjmení autora
 \authorWithDegrees{Martin Čapek} %jméno autora včetně současných akademických titulů
@@ -54,13 +54,13 @@
 
 
 
-Hlavním přínosem této práce není vytvořit plně funkční RESTful API,
+Hlavním přínosem této práce není vytvořit plně funkční REST API,
 ač je implementován funkční prototyp, ale sestavit obsáhlý manuál, základní
 kámen činnosti pro následující generace řešitelů projektu.}
 \abstractEN{abstractEN}
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
-\keywordsCS{RestAPI, PostgreSQL, Node.js, virtuální realita, historické modely budov}
+\keywordsCS{Node.js, RestAPI, PostgreSQL, virtuální realita, historické modely budov}
 \keywordsEN{Nahraďte seznamem klíčových slov v angličtině oddělených čárkou.}
 % \website{http://site.example/thesis} %volitelná URL práce, objeví se v tiráži - úplně odstraňte, nemáte-li URL práce
 
@@ -75,49 +75,108 @@ kámen činnosti pro následující generace řešitelů projektu.}
 
 \chapter{Cíl práce}
 
-\chapter{Vývojářské prostředí pro\\ OS Linux}
-
-\section{Použité technologie}
-\subsection{Node.js}
-Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
-
-Node.js využívá událostmi řízenou architekturu a neblokující I/O operace. Tento návrh optimalizuje výkon a škálovatelnost programů s častými požadavky na I/O operace.
-
-Jádro celého Node.js tvoří smyčka událostí, která běží na jednom vlákně. Ta podporuje desetitisíce souběžných připojení bez nutnosti neustálého přepínání kontextu díky neblokujícímu I/O. Nedochází zde k žádnému zamykání, tudíž nemusíme mít obavy z deadlocku systému.
-\subsubsection{npm}
-Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
-
-TODO npm moduly, popsat až v implementaci?
-
-\subsection{Implementační jazyk}
-Pro vývoj byl vybrán jazyk TypeScript, který je kompilovatelný do JavaScriptu. Tento jazyk je vyvýjen firmou Microsoft a jeho hlavní myšlenkou je být nadstavbou JavaScriptu, která přidává statické typování a další funkcionalitu.
-
-\subsubsection{TSLint}
-TSLint je nástroj pro statickou analýzu kódu TypeScriptu.
-
-\subsection{PostgreSQL}
-Pro datovou vrstvu byla vybrána databáze PostgreSQL.
-
-PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
-
-\section{Instalace}
-\subsection{Node.js}
-\begin{lstlisting}[language=bash,caption={Instalace Node.js a npm}]
-sudo apt install nodejs --Yes
-sudo apt install npm --Yes
-\end{lstlisting}
-V implementaci je použita verze nodejs 8.10.0 a npm 3.5.2. Vaši verzi si můžete zkontrolovat pomocí následujích příkazů.
-\begin{lstlisting}[language=bash,caption={Zkontrolování verze Node.js a npm}]
-nodejs -v
-npm -v
-\end{lstlisting}
-\subsection{PostgreSQL}
-TBD
+% ? jaky editoru virtuální reality?
+    Cílem teoretické části práce je analyzovat funkční a nefunkční požadavky editoru virtuální reality. Při analýze se zaměřit na datové úložiště a způsob propagace modelů. Dále provést analýzu nástrojů pro návrh a dokumentaci API a z těchto nástrojů vybrat nejvhodnější a s jeho použitím navrhnout prototyp API, které umožní komunikaci mezi datovým úložištěm a editorem virtuální reality.
+% ? Fakt uživatelská příručka? Musí být samostatná?
+    Dalším cílem práce je popsat vývojové prostředí, které využiji v implementaci. V popisu budou použité technologie, příprava vývojářského prostředí a doporučený způsob verzování zdrojových kódů.
+    
+    Cílem praktické části práce je implementace a otestování prototypu REST API za použití technologie Node.js a využítím technologie continuous integration.
 
 
-\chapter{Analýza a návrh}
+\chapter{Analýza}
+    \section{Požadavky editoru virtuální reality}
+        \subsection{Funkční}
+            Následující sekce popisuje funkční požadavky editoru virtuální reality. Tedy požadavky, které se vztahují k funkcionalitě na cílovou aplikaci. Tyto požadavky jsem vytvořil společně s pomocí Patrik Křepinský.
+            \begin{itemize}
+                \item F1
+            \end{itemize}
 
-\chapter{Realizace}
+        \subsection{Nefunkční}
+            Tato sekce se zabývá nefunkčními požadavky na REST API. Tedy požadavky, které se zaměřují na nároky cílové aplikace na software a to například z hlediska bezpečnosti, spolehlivosti, či výkonu.
+            \begin{itemize}
+                \item Rychlost odezvy
+
+                    Uživatel nesmí na obdržení nebo aktualizování grafického modelu čekat. Je třeba, aby server reagoval rychle.
+                \item Datová nenáročnost při komunikaci
+
+                    Je třeba minimalizovat množství dat posílané přes API, abychom docílili rychlosti a zbytečně nepřetěžovali spojení s koncovým uživatelem.
+                \item Bezpečnost
+                    
+                    Určité koncové body vyžadují oprávnění, jelikož jejich zavoláním se předávají nebo přepisují citlivá data. To se vyřeší tím, že při přihlášení dostane uživatel token, kterým se bude autorizovat u volání citlivých koncových bodů.
+                \item Rozšiřitelnost
+
+                    API musí umožňovat případné rozšíření o další funkcionality. Také musí být řádně zdokumentováno, aby umožnilo hladší průběh rozšiřování.
+                \item Použité technologie
+
+                    Bylo zadáno, že se bude vyvýjet v technologii Node.js za využití modulu Express.
+            \end{itemize}
+    \section{Nástroje pro návrh REST API}
+        \subsection{Swagger}
+            Swagger je sada nástrojů postavená na OpenAPI Specifikaci.
+            \newline Nástroje:
+            \begin{itemize}
+                \item Swagger editor - webový editor umožňující psát OpenAPI Specifikace
+                \item Swagger UI - vizualizuje API dokumentaci, kterou generuje z OpenAPI Specifikace
+                \item Swagger Codegen - vygeneruje kód na základě OpenAPI Specifikace
+            \end{itemize}
+            OpenAPI Specifikace, dřívěji Swagger Specifikace, je sada pravidel, které sémanticky popisují API. Pravidla mohou být zapsaná nebo vygenerována do souboru formátu YAML, nebo JSON. YAML je více čitelný pro lidi, kteří nejsou zvyklí na závorky. Programátorům může více vyhovovat JSON. OpenAPI~Specifikace se skládá z metadat, koncových bodů a schématu.
+        \subsection{Apicurio Studio}
+            Apicurio Studio je open-source editor pro OpenAPI specifikaci. Musíte se přihlásit a vaše návrhy REST API se ukládají do vašeho repozitáře na GitHubu, GitLabu nebp Bitbucketu, což se hodí v případě, když na návrhu pracujete spolčně v týmu. V editoru můžete přepínat mezi interaktivní vizualizací návrhu a jeho JSON/YAML definicí.
+        \subsection{RAML}
+            RAML je akronym RESTful API Modeling Language.
+        \subsection{Restlet}
+            nelibi se mi, je asi RAML based
+        \subsection{Apiary}
+            API Blueprint
+
+\chapter{Návrh}
+    Z předešlé analýzy nástrojů pro návrh REST API jsem si vybral Swagger, protože\dots
+    
+    TBD Use case diagram
+
+\chapter{Vývojářské prostředí pro OS~Linux}
+    
+    \section{Použité technologie}
+        \subsection{Node.js}
+            Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
+            
+            Node.js využívá událostmi řízenou architekturu a neblokující I/O operace. Tento návrh optimalizuje výkon a škálovatelnost programů s častými požadavky na I/O operace.
+            
+            Jádro celého Node.js tvoří smyčka událostí, která běží na jednom vlákně. Ta podporuje desetitisíce souběžných připojení bez nutnosti neustálého přepínání kontextu díky neblokujícímu I/O. Nedochází zde k žádnému zamykání, tudíž nemusíme mít obavy z deadlocku systému.
+        \subsection{npm}
+            Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
+        \subsection{Express}
+        \subsection{JWT}
+        \subsection{Implementační jazyk}
+            Pro vývoj byl vybrán jazyk TypeScript, který je kompilovatelný do JavaScriptu. Tento jazyk je vyvýjen firmou Microsoft a jeho hlavní myšlenkou je být nadstavbou JavaScriptu, která přidává statické typování a další funkcionalitu.
+            
+        \subsubsection{TSLint}
+            TSLint je nástroj pro statickou analýzu kódu TypeScriptu.
+            
+        \subsection{PostgreSQL}
+            Pro datovou vrstvu byla vybrána databáze PostgreSQL.
+            
+            PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
+            
+    \section{Příprava vývojářského prostředí}
+        \subsection{Node.js}
+            \begin{lstlisting}[language=bash,caption={Instalace Node.js a npm}]
+            sudo apt install nodejs --Yes
+            sudo apt install npm --Yes
+            \end{lstlisting}
+            V implementaci je použita verze nodejs 8.10.0 a npm 3.5.2. Vaši verzi si můžete zkontrolovat pomocí následujích příkazů.
+            \begin{lstlisting}[language=bash,caption={Zkontrolování verze Node.js a npm}]
+            nodejs -v
+            npm -v
+            \end{lstlisting}
+        \subsection{PostgreSQL}
+            TBD
+    \section{Verzování}
+        Tady popíšu doporučený způsob verzování zdrojových kódů.
+
+\chapter{Implementace}
+
+\chapter{Testování}
 
 \begin{conclusion}
 	%sem napište závěr Vaší práce
@@ -131,10 +190,12 @@ TBD
 \chapter{Seznam použitých zkratek}
 % \printglossaries
 \begin{description}
+	\item[API] Application Programming Interface
 	\item[I/O] Input/Output
 	\item[npm] Node.js package manager
 	\item[IDE] Integrated Development Environment
 	\item[JSON] JavaScript Object Notation
+	\item[CI] Continuous Integration
 \end{description}
 
 
