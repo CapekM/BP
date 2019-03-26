@@ -70,14 +70,19 @@ kámen činnosti pro následující generace řešitelů projektu.}
 % \newacronym{FIT}{FIT}{Fakulta informa{\v c}n{\' i}ch technologi{\' i}}
 
 \begin{introduction}
-	%sem napište úvod Vaší práce
+	 Věnná města českých královen je rozsáhlý projekt, jehož cílem je vytvoření specializovaného historického průvodce věnnými městy a jejich městskou krajinou.
+	 Momentálně se v tomto projektu vyvíjí editor virtuální reality, který má sloužit jako nástroj historikům a jiným odborníkům, ve kterém budou moci spolupracovat na vytváření modelů, zasazování modelů do krajiny a tím vytvářet historická věnná města. Účelem editoru bude sloužit i návštěvníkům si tato města prohlížet.
+
+	 V mojí práci se věnuji analýze požadavků editoru virtuální reality, návrhem API pro editor, implementací jeho prototypu a otestováním prototypu.
+	 
+	 Uživatelé v editoru budou potřebovat API pro práci s velkým množstvím informací a garfických modelů, uložených v databázi. API bude také potřeba k řešení přístupových práv, protože některé informace jsou citlivé a s něterými modely mohou manipulovat jen určití lidé. 
+	 Výsledek této bakalářské práce bude vzorem pro vývoj API v rámci projektu Věnná města českých královen.
 \end{introduction}
 
 \chapter{Cíl práce}
 
 % ? jaky editoru virtuální reality?
     Cílem teoretické části práce je analyzovat funkční a nefunkční požadavky editoru virtuální reality. Při analýze se zaměřit na datové úložiště a způsob propagace modelů. Dále provést analýzu nástrojů pro návrh a dokumentaci API a z těchto nástrojů vybrat nejvhodnější a s jeho použitím navrhnout prototyp API, které umožní komunikaci mezi datovým úložištěm a editorem virtuální reality.
-% ? Fakt uživatelská příručka? Musí být samostatná?
     Dalším cílem práce je popsat vývojové prostředí, které využiji v implementaci. V popisu budou použité technologie, příprava vývojářského prostředí a doporučený způsob verzování zdrojových kódů.
     
     Cílem praktické části práce je implementace a otestování prototypu REST API za použití technologie Node.js a využítím technologie continuous integration.
@@ -86,7 +91,7 @@ kámen činnosti pro následující generace řešitelů projektu.}
 \chapter{Analýza}
     \section{Požadavky editoru virtuální reality}
         \subsection{Funkční}
-            Následující sekce popisuje funkční požadavky editoru virtuální reality. Tedy požadavky, které se vztahují k funkcionalitě na cílovou aplikaci. Tyto požadavky jsem vytvořil společně s pomocí Patrik Křepinský.
+            Následující sekce popisuje funkční požadavky editoru virtuální reality. Tedy požadavky, které se vztahují k funkcionalitě na cílovou aplikaci. Tyto požadavky jsem vytvořil s pomocí Patrika Křepinského.
             \begin{itemize}
                 \item F1
             \end{itemize}
@@ -123,15 +128,42 @@ kámen činnosti pro následující generace řešitelů projektu.}
         \subsection{Apicurio Studio}
             Apicurio Studio je open-source editor pro OpenAPI specifikaci. Musíte se přihlásit a vaše návrhy REST API se ukládají do vašeho repozitáře na GitHubu, GitLabu nebp Bitbucketu, což se hodí v případě, když na návrhu pracujete spolčně v týmu. V editoru můžete přepínat mezi interaktivní vizualizací návrhu a jeho JSON/YAML definicí.
         \subsection{RAML}
-            RAML je akronym RESTful API Modeling Language.
+            RAML je akronym RESTful API Modeling Language a je to typ souboru podobný YAML. Existují různé nástroje používající RAML, vypíši některé z těch nástrojů:
+            \href{http://apiworkbench.com}{API Workbench} je IDE pro RAML, které je v beta verzi a funguje jako balíček pro Atom, což je teztový editor.
+            \href{https://github.com/raml2html/raml2html}{Raml2html} dokáže z RAML vytvořit  HTML dokumentaci.
+            \href{https://github.com/mulesoft/osprey}{Osprey} dokáže z RAML vygenerovat API pro Node.js.
         \subsection{Restlet}
-            nelibi se mi, je asi RAML based
+            Restlet Studio je webová aplikace, která umožňuje uživateli interaktivně upravovat REST API. Doáže definované API exportovat do OpenAPI specifikace nebo RAML. Dokáže vytvořit  Server Skeleton pro Node.js.
         \subsection{Apiary}
-            API Blueprint
+            Api editor podporuje API Blueprint i OpenAPI Specifikaci.
+            
+            API Blueprint je podobně jako OpenAPI Specifikace sada pravidel popisující API. API Blueprint specifikace je zapsaná v Markdown dokumentu, který je rozdělen do sekcí. Tyto sekce nejsou povinné.
+            
+            Výpis základních 5 sekcí, u každé je číslo, které vyjadřuje kolikrát se sekce může v dokumentu objevit.
+            \begin{itemize} % je angličtina v pohode?
+                \item 0-1 Metadata
+                \item 0-1 API Name \& overview
+                \item 0+ Resource
+                \item 0+ Resource Group
+                \item 0+ Data Structures
+            \end{itemize}
+            
+            Apiary disponuje interaktivní dokumentací, webový editor má možnost přepnutí do tmavého režimu. Dále zajišťuje propojení s GitHub nebo GitLab repozitářem.
+
+    \section{Výběr nástroje pro návrh a dokumentaci API}
+        Z předešlé analýzy nástrojů pro návrh REST API mě nejvíce nadchnuly Swagger a Apiary. Oba nástroje umožnují požadovanou dokumentaci a návrh API a k tomu i generování kódu. Největší rozdíl mezi nimi je, že Swagger je težce provázán s OpenAPI Specifikací, kdežto Apiary, přestože podporuje OpenAPI Specifikaci, je založeno na API Blueprintu. Takže jsem výběr mezi těmito nástroji založil na specifikaci API, kteoru používají.
+        
+        
+        Oba nástroje jsem vyzkoušel a na Swaggeru se mi líbilo, že měl označené zabezpečené koncové body, editor obsahuje navigátora. Swagger umí exportovat do html. Apiary nemá žádný export, existuje ale Apiary CLI, které umožnuje zobrazit dokumentaci v internetovém prohlížeči.
+        
+        
+        \subsection{OpenAPI Specifikace vs API Blueprint}
+            Při porovnání repozitářů \href{https://github.com/apiaryio/api-blueprint/graphs/contributors}{API Blueprint} a \href{https://github.com/OAI/OpenAPI-Specification/graphs/contributors}{OAS} můžeme vidět, že OpenAPI Specifikace je více živější, co se týče commitů i řešených problémů, navíc má zhruba dvakrát více hvězdiček a forků.
+            
+            OAS je založený na YAML (nebo JSON) formátu a API Blueprint na syntaxu podobnému Markdownu a MSON\footnote{https://github.com/apiaryio/mson}
 
 \chapter{Návrh}
-    Z předešlé analýzy nástrojů pro návrh REST API jsem si vybral Swagger, protože\dots
-    
+
     TBD Use case diagram
 
 \chapter{Vývojářské prostředí pro OS~Linux}
@@ -179,7 +211,7 @@ kámen činnosti pro následující generace řešitelů projektu.}
 \chapter{Testování}
 
 \begin{conclusion}
-	%sem napište závěr Vaší práce
+    % Zaobirat se cilem prakticke casti, dale lze napsat: aplikace by mohla....
 \end{conclusion}
 
 \bibliographystyle{csn690}
@@ -195,6 +227,7 @@ kámen činnosti pro následující generace řešitelů projektu.}
 	\item[npm] Node.js package manager
 	\item[IDE] Integrated Development Environment
 	\item[JSON] JavaScript Object Notation
+	\item[OAS] OpenAPI Specification
 	\item[CI] Continuous Integration
 \end{description}
 
