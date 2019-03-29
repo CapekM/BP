@@ -25,6 +25,7 @@
 }
 
 \usepackage{graphicx} %graphics files inclusion
+\graphicspath{ {./images/} }
 % \usepackage{amsmath} %advanced maths
 % \usepackage{amssymb} %additional math symbols
 
@@ -160,7 +161,7 @@ kámen činnosti pro následující generace řešitelů projektu.}
         \subsection{OpenAPI Specifikace vs API Blueprint}
             Při porovnání repozitářů \href{https://github.com/apiaryio/api-blueprint/graphs/contributors}{API Blueprint} a \href{https://github.com/OAI/OpenAPI-Specification/graphs/contributors}{OAS} můžeme vidět, že OpenAPI Specifikace je více živější, co se týče commitů i řešených problémů, navíc má zhruba dvakrát více hvězdiček a forků.
             
-            OAS je založený na YAML (nebo JSON) formátu a API Blueprint na syntaxu podobnému Markdownu a MSON\footnote{https://github.com/apiaryio/mson}
+            OAS je založený na YAML (nebo JSON) formátu a API Blueprint na syntaxi podobné Markdownu a MSON\footnote{https://github.com/apiaryio/mson}
 
 \chapter{Návrh}
 
@@ -178,7 +179,26 @@ kámen činnosti pro následující generace řešitelů projektu.}
         \subsection{npm}
             Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
         \subsection{Express}
+            Express je framework pro Node.js, který nám umožnuje jednoduše napsat webovou aplikaci, či API. Těší se velké popularitě, momentálně na 4. místě npm rank\footnote{https://gist.github.com/anvaka/8e8fa57c7ee1350e3491}.
         \subsection{JWT}
+            JWT (JSON Web Token) je standart, který zajišťuje bezpečný přesun informací zapsaných v JSON. V naší aplikaci využijeme tuto technologii pro ověřování totožnosti uživatelů.
+            \begin{figure}[ht!]
+                \includegraphics[scale=0.4]{legacy-app-auth-5}
+                \caption{JWT}
+            \end{figure}
+            
+            JWT se skládá ze 3 částí:
+            \begin{itemize}
+                \item Header
+                    
+                    obsahuje typ tokenu a šifrovací algoritmus.
+                \item Payload
+                    
+                    obsahuje naše informace a může obsahovat ještě dodatečné informace jako expirace tokenu, vydavatel atd. % vydavatel = issuer
+                \item Signature
+                    
+                    obsahuje zakódované předešlé části a secret -- náš tajný klíč.
+            \end{itemize}
         \subsection{Implementační jazyk}
             Pro vývoj byl vybrán jazyk TypeScript, který je kompilovatelný do JavaScriptu. Tento jazyk je vyvýjen firmou Microsoft a jeho hlavní myšlenkou je být nadstavbou JavaScriptu, která přidává statické typování a další funkcionalitu.
             
@@ -188,7 +208,8 @@ kámen činnosti pro následující generace řešitelů projektu.}
         \subsection{PostgreSQL}
             Pro datovou vrstvu byla vybrána databáze PostgreSQL.
             
-            PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
+            PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na %PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
+        \subsection{MVC}
             
     \section{Příprava vývojářského prostředí}
         \subsection{Node.js}
