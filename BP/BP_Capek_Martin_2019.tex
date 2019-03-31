@@ -152,16 +152,23 @@ kámen činnosti pro následující generace řešitelů projektu.}
             Apiary disponuje interaktivní dokumentací, webový editor má možnost přepnutí do tmavého režimu. Dále zajišťuje propojení s GitHub nebo GitLab repozitářem.
 
     \section{Výběr nástroje pro návrh a dokumentaci API}
-        Z předešlé analýzy nástrojů pro návrh REST API mě nejvíce nadchnuly Swagger a Apiary. Oba nástroje umožnují požadovanou dokumentaci a návrh API a k tomu i generování kódu. Největší rozdíl mezi nimi je, že Swagger je težce provázán s OpenAPI Specifikací, kdežto Apiary, přestože podporuje OpenAPI Specifikaci, je založeno na API Blueprintu. Takže jsem výběr mezi těmito nástroji založil na specifikaci API, kteoru používají.
+        V této sekci navážu na předešlou analýzu nástrojů pro návrh REST API a vyberu zde nejvhodnější nástroj. Nejvíce mě nadchnul Swagger a Apiary, popíši zde porovnání těchto nástrojů.
         
+
+        Oba nástroje jsem vyzkoušel, Swagger jsem zkoušel ve SwaggerHubu, což je webová aplikace, která přináší všechny základní vlastonsi Swaggeru. Oba nástroje umožnují požadovanou dokumentaci a návrh API a k tomu i generování kódu.
         
-        Oba nástroje jsem vyzkoušel a na Swaggeru se mi líbilo, že měl označené zabezpečené koncové body, editor obsahuje navigátora. Swagger umí exportovat do html. Apiary nemá žádný export, existuje ale Apiary CLI, které umožnuje zobrazit dokumentaci v internetovém prohlížeči.
+        Co jse mi na Swaggeru líbilo a v Apiary chybělo je, že vizualizovaná dokumentace měla označené zabezpečené koncové body, dokumentace se dá exportovat do html, editor obsahuje navigátora, který umožnuje přeskakovat do různých sekcí dokumentu a náhled dokumentace také odkazuje na části dokumentu, takže se k nim jde jednoduše "prokliknout". Zpřehlednění orientace v dokumnetu, jež SwaggerHub nabízí, je velice vhodné, protože dokumentace API čítá bežně stovky až tisíce řádků.
         
-        
+        Apiary nemá žádný export, existuje ale Apiary CLI, které umožnuje zobrazit dokumentaci v internetovém prohlížeči.
+                
         \subsection{OpenAPI Specifikace vs API Blueprint}
+            Markatní rozdíl mezi nimi je, že Swagger je težce provázán s OpenAPI Specifikací, kdežto Apiary, přestože podporuje OpenAPI Specifikaci, je založeno na API Blueprintu.
+
             Při porovnání repozitářů \href{https://github.com/apiaryio/api-blueprint/graphs/contributors}{API Blueprint} a \href{https://github.com/OAI/OpenAPI-Specification/graphs/contributors}{OAS} můžeme vidět, že OpenAPI Specifikace je více živější, co se týče commitů i řešených problémů, navíc má zhruba dvakrát více hvězdiček a forků.
             
-            OAS je založený na YAML (nebo JSON) formátu a API Blueprint na syntaxi podobné Markdownu a MSON\footnote{https://github.com/apiaryio/mson}
+            OAS je založený na YAML (nebo JSON) formátu a API Blueprint má vlastní formát APIB, který má syntaxi podobnou Markdownu a využívá MSON\footnote{https://github.com/apiaryio/mson}. Rozdíl v těchto formátech je spíše otázka osobního vkusu, jelikož se líší především syntaxí.
+        \subsection{Závěr}
+            Oba nástroje jsou srovnatelné, ale Swagger nabízí více možností pracování s dokumnetací a hlavně proto jsem se rozhodl ho nominovat jako vítěze tohoto pomyslného souboje.
 
 \chapter{Návrh}
 
