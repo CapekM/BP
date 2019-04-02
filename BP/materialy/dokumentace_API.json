@@ -1,0 +1,440 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Api pro předávání grafických modelů",
+    "description" : "This is an example of using OAuth2 Application Flow in a specification to describe security to your API.",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/CapekM/ApiProPredavaniGrafickychModelu/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "security" : [ {
+    "application" : [ "read", "write" ]
+  } ],
+  "paths" : {
+    "/login" : {
+      "post" : {
+        "summary" : "Login user",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/models" : {
+      "get" : {
+        "summary" : "Výpis modelů",
+        "description" : "This is an example opeartion to show how security is applied to the call.",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/model" : {
+      "put" : {
+        "summary" : "Vytvoření modelu",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body_1"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/model/{modelId}" : {
+      "post" : {
+        "summary" : "Update model",
+        "parameters" : [ {
+          "name" : "modelId",
+          "in" : "path",
+          "description" : "model's ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "example" : 8911
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/project" : {
+      "put" : {
+        "summary" : "Vytvoření projektu",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/project/{projectId}" : {
+      "post" : {
+        "summary" : "Update project",
+        "parameters" : [ {
+          "name" : "projectId",
+          "in" : "path",
+          "description" : "project's ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "example" : 8911
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/project/{groupId}" : {
+      "post" : {
+        "summary" : "Přidej model do dkupiny",
+        "parameters" : [ {
+          "name" : "groupId",
+          "in" : "path",
+          "description" : "group's ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "example" : 8911
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/rights/model/{modelId}" : {
+      "get" : {
+        "summary" : "Pošli žádost autorovi modelu o práva",
+        "parameters" : [ {
+          "name" : "modelId",
+          "in" : "path",
+          "description" : "model's ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "example" : 8911
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/miniatures" : {
+      "get" : {
+        "summary" : "Vrátí všechny miniatury, na které má uživatel práva",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/model/{modelId}/time/{time}/weather/{weather}" : {
+      "get" : {
+        "summary" : "Pošli žádost autorovi modelu o práva",
+        "parameters" : [ {
+          "name" : "modelId",
+          "in" : "path",
+          "description" : "model's ID",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "example" : 8911
+        }, {
+          "name" : "time",
+          "in" : "path",
+          "description" : "todo",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "example" : 8911
+        }, {
+          "name" : "weather",
+          "in" : "path",
+          "description" : "todo",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "example" : 8911
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "400" : {
+            "description" : "Bad request. User ID must be an integer and larger than 0."
+          },
+          "401" : {
+            "description" : "Access token is missing or invalid"
+          }
+        }
+      }
+    },
+    "/ping" : {
+      "get" : {
+        "summary" : "Server heartbeat operation",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "security" : [ ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "body_1" : {
+        "required" : [ "password", "username" ],
+        "type" : "object",
+        "properties" : {
+          "username" : {
+            "type" : "string",
+            "nullable" : false,
+            "example" : "Batman"
+          },
+          "password" : {
+            "type" : "string",
+            "nullable" : false,
+            "example" : "Batman's passwd"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "type" : "object",
+        "properties" : {
+          "token" : {
+            "type" : "string",
+            "example" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM"
+          }
+        }
+      },
+      "body" : {
+        "required" : [ "password", "username" ],
+        "type" : "object",
+        "properties" : {
+          "username" : {
+            "type" : "string",
+            "nullable" : false,
+            "example" : "Batman"
+          },
+          "password" : {
+            "type" : "string",
+            "nullable" : false,
+            "example" : "Batman's passwd"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "Unauthorized" : {
+        "description" : "Access token is missing or invalid"
+      },
+      "NotFound" : {
+        "description" : "NotFound"
+      },
+      "Forbidden" : {
+        "description" : "Forbidden"
+      },
+      "Created" : {
+        "description" : "Resource created"
+      },
+      "Deleted" : {
+        "description" : "Resource deleted"
+      },
+      "Conflict" : {
+        "description" : "Conflict"
+      }
+    },
+    "parameters" : {
+      "modelIdParam" : {
+        "name" : "modelId",
+        "in" : "path",
+        "description" : "model's ID",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "example" : 8911
+      },
+      "projectIdParam" : {
+        "name" : "projectId",
+        "in" : "path",
+        "description" : "project's ID",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "example" : 8911
+      },
+      "groupIdParam" : {
+        "name" : "groupId",
+        "in" : "path",
+        "description" : "group's ID",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "example" : 8911
+      },
+      "timeParam" : {
+        "name" : "time",
+        "in" : "path",
+        "description" : "todo",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "example" : 8911
+      },
+      "weatherParam" : {
+        "name" : "weather",
+        "in" : "path",
+        "description" : "todo",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "example" : 8911
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
