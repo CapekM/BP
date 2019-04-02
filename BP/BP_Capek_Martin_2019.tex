@@ -96,7 +96,6 @@ kámen činnosti pro následující generace řešitelů projektu.}
             \begin{itemize}
                 \item F1
             \end{itemize}
-
         \subsection{Nefunkční}
             Tato sekce se zabývá nefunkčními požadavky na REST API. Tedy požadavky, které se zaměřují na nároky cílové aplikace na software a to například z hlediska bezpečnosti, spolehlivosti, či výkonu.
             \begin{itemize}
@@ -116,6 +115,50 @@ kámen činnosti pro následující generace řešitelů projektu.}
 
                     Bylo zadáno, že se bude vyvýjet v technologii Node.js za využití modulu Express.
             \end{itemize}
+    \section{Použité technologie}
+        \subsection{Node.js}
+            Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
+            
+            Node.js využívá událostmi řízenou architekturu a neblokující I/O operace. Tento návrh optimalizuje výkon a škálovatelnost programů s častými požadavky na I/O operace.
+            
+            Jádro celého Node.js tvoří smyčka událostí, která běží na jednom vlákně. Ta podporuje desetitisíce souběžných připojení bez nutnosti neustálého přepínání kontextu díky neblokujícímu I/O. Nedochází zde k žádnému zamykání, tudíž nemusíme mít obavy z deadlocku systému.
+        \subsection{npm}
+            Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
+        \subsection{Express}
+            Express je framework pro Node.js, který nám umožnuje jednoduše napsat webovou aplikaci, či API. Těší se velké popularitě, momentálně na 4. místě npm rank\footnote{https://gist.github.com/anvaka/8e8fa57c7ee1350e3491}.
+        \subsection{JWT}
+            JWT (JSON Web Token) je standart, který zajišťuje bezpečný přesun informací zapsaných v JSON.
+            \begin{figure}[ht!]
+                \includegraphics[scale=0.4]{legacy-app-auth-5}
+                \caption{JWT}
+            \end{figure}
+            
+            JWT se skládá ze 3 částí:
+            \begin{itemize}
+                \item Header
+                    
+                    obsahuje typ tokenu a šifrovací algoritmus.
+                \item Payload
+                    
+                    obsahuje naše informace a může obsahovat ještě dodatečné informace jako expirace tokenu, vydavatel atd. % vydavatel = issuer
+                \item Signature
+                    
+                    obsahuje zakódované předešlé části a secret -- náš tajný klíč.
+            \end{itemize}
+             V naší aplikaci využijeme tuto technologii pro ověřování totožnosti uživatelů. Naše aplikace vytvoří JWT po přihlášení a uživatel se jím bude nadále identifikovat
+            \begin{figure}[ht!]
+                \includegraphics[scale=0.45]{Process_of_authentication}
+                \caption{Proces autorizace}
+            \end{figure}
+        \subsection{Implementační jazyk}
+            Pro vývoj byl vybrán jazyk TypeScript, který je kompilovatelný do JavaScriptu. Tento jazyk je vyvýjen firmou Microsoft a jeho hlavní myšlenkou je být nadstavbou JavaScriptu, která přidává statické typování a další funkcionalitu.
+        \subsubsection{TSLint}
+            TSLint je nástroj pro statickou analýzu kódu TypeScriptu.
+        \subsection{PostgreSQL}
+            Pro datovou vrstvu byla vybrána databáze PostgreSQL.
+            
+            PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na %PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
+        \subsection{MVC}
     \section{Nástroje pro návrh REST API}
         \subsection{Swagger}
             Swagger je sada nástrojů postavená na OpenAPI Specifikaci.
@@ -172,52 +215,49 @@ kámen činnosti pro následující generace řešitelů projektu.}
 
 \chapter{Návrh}
 
-    TBD Use case diagram
+    \begin{table}\centering
+    	\caption{Pokrytí funkčních požadavků}
+    	\begin{tabular}{| p{6cm} | p{5cm} |}\hline
+    		Funkční požadavek		& API endpoint	\tabularnewline \hline \hline
+            Přihlášení & GET /login
+    		\tabularnewline \hline
+    		Odhlášení & nemusí se řešit v API
+        	\tabularnewline \hline
+            Smaž model &	Delete /model
+        	\tabularnewline \hline
+            Vytvoř nový model &	Put /model
+        	\tabularnewline \hline
+            Editovat práva k modelu &	Post /model/\{modelId\}
+        	\tabularnewline \hline
+            Editovat práva k projektu &	Post /project/\{projectlId\}
+        	\tabularnewline \hline
+            Seskupení	&Post /group/\{groupId\}
+        	\tabularnewline \hline
+            Žádosti o práva &	Get /rights/model/\{modelId\}
+        	\tabularnewline \hline
+            Zobrazení miniatur po přihlášení &	Get /miniatures
+        	\tabularnewline \hline
+            Třídění miniatur &	nemusí se řešit v API
+        	\tabularnewline \hline
+            Zobrazení modelů projektu v určitém čase a počasí &
+            \parbox[t]{5cm}{Get /model/\{modelId\}/time/\\\{time\}/weather/\{weather\}}
+        	\tabularnewline \hline
+            Ulož všechny změny v projektu &	Post /project/\{projectlId\}
+        	\tabularnewline \hline
+            Vytvoř kopii modelu	& Put /model
+        	\tabularnewline \hline
+            Přidání modelu do projektu &	Post /project/\{projectlId\}
+        	\tabularnewline \hline
+            Vytvoř nový projekt &	Put /project
+        	\tabularnewline \hline
+            Vytvoř kopii projektu &	Put /project
+        	\tabularnewline \hline
+            Nahrání modelu z lokálního zařízení &	Put /project
+        	\tabularnewline \hline
+        \end{tabular}
+    \end{table}
 
 \chapter{Vývojářské prostředí pro OS~Linux}
-    
-    \section{Použité technologie}
-        \subsection{Node.js}
-            Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
-            
-            Node.js využívá událostmi řízenou architekturu a neblokující I/O operace. Tento návrh optimalizuje výkon a škálovatelnost programů s častými požadavky na I/O operace.
-            
-            Jádro celého Node.js tvoří smyčka událostí, která běží na jednom vlákně. Ta podporuje desetitisíce souběžných připojení bez nutnosti neustálého přepínání kontextu díky neblokujícímu I/O. Nedochází zde k žádnému zamykání, tudíž nemusíme mít obavy z deadlocku systému.
-        \subsection{npm}
-            Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
-        \subsection{Express}
-            Express je framework pro Node.js, který nám umožnuje jednoduše napsat webovou aplikaci, či API. Těší se velké popularitě, momentálně na 4. místě npm rank\footnote{https://gist.github.com/anvaka/8e8fa57c7ee1350e3491}.
-        \subsection{JWT}
-            JWT (JSON Web Token) je standart, který zajišťuje bezpečný přesun informací zapsaných v JSON. V naší aplikaci využijeme tuto technologii pro ověřování totožnosti uživatelů.
-            \begin{figure}[ht!]
-                \includegraphics[scale=0.4]{legacy-app-auth-5}
-                \caption{JWT}
-            \end{figure}
-            
-            JWT se skládá ze 3 částí:
-            \begin{itemize}
-                \item Header
-                    
-                    obsahuje typ tokenu a šifrovací algoritmus.
-                \item Payload
-                    
-                    obsahuje naše informace a může obsahovat ještě dodatečné informace jako expirace tokenu, vydavatel atd. % vydavatel = issuer
-                \item Signature
-                    
-                    obsahuje zakódované předešlé části a secret -- náš tajný klíč.
-            \end{itemize}
-        \subsection{Implementační jazyk}
-            Pro vývoj byl vybrán jazyk TypeScript, který je kompilovatelný do JavaScriptu. Tento jazyk je vyvýjen firmou Microsoft a jeho hlavní myšlenkou je být nadstavbou JavaScriptu, která přidává statické typování a další funkcionalitu.
-            
-        \subsubsection{TSLint}
-            TSLint je nástroj pro statickou analýzu kódu TypeScriptu.
-            
-        \subsection{PostgreSQL}
-            Pro datovou vrstvu byla vybrána databáze PostgreSQL.
-            
-            PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na %PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
-        \subsection{MVC}
-            
     \section{Příprava vývojářského prostředí}
         \subsection{Node.js}
             \begin{lstlisting}[language=bash,caption={Instalace Node.js a npm}]
