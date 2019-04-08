@@ -92,11 +92,82 @@ kámen činnosti pro následující generace řešitelů projektu.}
 \chapter{Analýza}
     \section{Požadavky editoru virtuální reality}
         \subsection{Funkční}
+        \label{sec:analFP}
+% todo upravit
             Následující sekce popisuje funkční požadavky editoru virtuální reality. Tedy požadavky, které se vztahují k funkcionalitě na cílovou aplikaci. Tyto požadavky jsem vytvořil s pomocí Patrika Křepinského.
             \begin{itemize}
-                \item F1
+                \item Přihlášení
+                
+                V aplikaci musí být možnost přihlášení. Pokud se nepřihlásíte, můžete pokračovat jako host, který nemá žádná práva na grafické modely, tedy si je můžete pouze prohlížet.
+                \item Odhlášení
+                
+                Stejně jako přihlášení je nutná možnost odhlášení. Dále je potřeba mít možnost zůstat trvale přihlášen na tomto počítači, jinak funguje automatické odhlášení po ukončení aplikace.
+               \item Práva k modelu
+               
+                Model má svého autora a dále skupinu uživatelů, kteří mají některá z následujících práv:
+                \begin{itemize}
+                    \item pouze čtení a zobrazení
+                    \item čtení a zobrazení s možností psaní komentářů?
+                    \item měnění poznámek a metadat (popis)
+                    \item editace modelu
+                    \item kopírování modelu pro svoje potřeby (povolení vytvořit na základě modelu jiný model)
+                    \item plná práva
+                \end{itemize}
+                Tuto skupinu uživatelů může autor libovolně editovat. Pokud uživatel není ve skupině znamená to, že nemá žádná práva k tomuto modelu.
+               \item Práva k projektu
+               
+                Projekt je skupina modelů zasazená do lokace. Takovým projektem může být historický model města. Projekt má skupinu uživatelů, kteří mají některá z následujících práv:
+                \begin{itemize}
+                    \item Změna lokace modelu
+                    \item Nahrávání
+                    \item Mazání
+                    \item Udělovat práva
+                    \item Seskupení
+                \end{itemize}
+                Uživatel bude moct zařadit model do skupiny. Tato funkce poslouží k lepší organizaci pracovního prostředí.
+                \item Žádosti o práva
+                
+                Dále mohou uživatelé žádat o určitá práva k modelu nebo skupině modelů a k projektu. Tuto žádost mohou autoři potvrdit.
+                \item Zobrazení miniatur po přihlášení
+                
+                Je třeba, aby po přihlášení měl uživatel přístup ke svým modelům. To umožní naše aplikace v podobě miniatur grafických modelů, které se po přihlášení načtou.
+                \item Třídění miniatur
+                
+                Tyto miniatury si bude moct uživatel třídit podle stavu modelů, přístupových práv, skupin uživatelů, atd.
+                \item Zobrazení modelů projektu v určitém čase a počasí
+                
+                Uživatel si bude moct zobrazit celý projekt v nějakém čase a procházet si ho. Bude si moct nastavovat počasí a denní dobu. Bude si ho moci procházet i napříč historií.
+                \item Ulož všechny změny v projektu
+                
+                Uživatel potvrdí a uloží provedené změny na server. Po tomto uložení uvidí změny všichni kdo mají k modelu přístup.
+                U modelu máme dva základní typy změn:
+                \begin{itemize}
+                    \item transformace (rotace, translace, scale)
+                    \item informace o modelu (poznámka, autorství)
+                \end{itemize}
+                \item Vytvoř kopii modelu
+                
+                Uživatel bude moct vytvořit model na základě nějakého jiného modelu (pokud k tomu bude mít právo), aby nemusel začínat od začátku.
+                \item Přidání modelu do projektu
+                
+                Pokud bude moct uživatel editovat nějaký projekt, může přidávat i nové modely.
+               \item Vytvoř kopii projektu
+               
+                Uživatel vytvoří kopii projektu, pokud k tomu má právo, aby mohl provádět nějaké experimentální úpravy.
+               \item Smaž model
+               
+                Uživatel smaže model pro který už nemá žádné využití. Po kliknutí na smazání modelu se aplikace ještě zeptá, jestli si je opravdu jist, protože grafický model může představovat desítky hodin práce a může se stát, že uživatel klikne na tlačítko smazat omylem.
+                \item Vytvoř nový model
+                
+                Uživateli se zobrazí prázdná pracovní plocha, kde bude moct vymodelovat nový model.
+                \item Vytvoř nový projekt
+                
+                Uživatel vytvoří prázdnou pracovní plochu, kam bude moct zasazovat modely.
+                Nahrání modelu z lokálního zařízení
+                Uživatel nahraje model z disku a může ho uložit na server.
             \end{itemize}
         \subsection{Nefunkční}
+% todo upravit
             Tato sekce se zabývá nefunkčními požadavky na REST API. Tedy požadavky, které se zaměřují na nároky cílové aplikace na software a to například z hlediska bezpečnosti, spolehlivosti, či výkonu.
             \begin{itemize}
                 \item Rychlost odezvy
@@ -126,7 +197,7 @@ kámen činnosti pro následující generace řešitelů projektu.}
             Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků. - zdroj http://www.modulecounts.com.
         \subsection{Express}
             Express je framework pro Node.js, který nám umožnuje jednoduše napsat webovou aplikaci, či API. Těší se velké popularitě, momentálně na 4. místě npm rank\footnote{https://gist.github.com/anvaka/8e8fa57c7ee1350e3491}.
-        \subsection{JWT}
+        \subsection{JWT} \label{jwt}
             JWT (JSON Web Token) je standart, který zajišťuje bezpečný přesun informací zapsaných v JSON.
             \begin{figure}[ht!]
                 \includegraphics[scale=0.4]{legacy-app-auth-5}
@@ -157,8 +228,17 @@ kámen činnosti pro následující generace řešitelů projektu.}
         \subsection{PostgreSQL}
             Pro datovou vrstvu byla vybrána databáze PostgreSQL.
             
-            PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na %PostgreSQL wiki\footnote{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
-        \subsection{MVC}
+            PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki\footnote{\url{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools}} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
+        \subsection{TypeORM}
+            \url{https://typeorm.io}
+        
+        
+            Jak již název napovídá jedná se o objektově relační mapování, což nám umožní jednodušeji pracovat s databází. TypeORM podporuje PostgreSQL a má npm balíček, který budeme moci využít při implementaci v Node.js.
+            
+        \subsection{Dotenv}
+            \url{https://github.com/motdotla/dotenv}
+            
+            Tato knihovna umožňuje pracovat s proměnými prostředí
     \section{Nástroje pro návrh REST API}
         \subsection{Swagger}
             Swagger je sada nástrojů postavená na OpenAPI Specifikaci.
@@ -209,50 +289,49 @@ kámen činnosti pro následující generace řešitelů projektu.}
 
             Při porovnání repozitářů \href{https://github.com/apiaryio/api-blueprint/graphs/contributors}{API Blueprint} a \href{https://github.com/OAI/OpenAPI-Specification/graphs/contributors}{OAS} můžeme vidět, že OpenAPI Specifikace je více živější, co se týče commitů i řešených problémů, navíc má zhruba dvakrát více hvězdiček a forků.
             
-            OAS je založený na YAML (nebo JSON) formátu a API Blueprint má vlastní formát APIB, který má syntaxi podobnou Markdownu a využívá MSON\footnote{https://github.com/apiaryio/mson}. Rozdíl v těchto formátech je spíše otázka osobního vkusu, jelikož se líší především syntaxí.
+            OAS je založený na YAML (nebo JSON) formátu a API Blueprint má vlastní formát APIB, který má syntaxi podobnou Markdownu a využívá MSON\footnote{\url{https://github.com/apiaryio/mson}}. Rozdíl v těchto formátech je spíše otázka osobního vkusu, jelikož se líší především syntaxí.
         \subsection{Závěr}
             Oba nástroje jsou srovnatelné, ale Swagger nabízí více možností pracování s dokumnetací a hlavně proto jsem se rozhodl ho nominovat jako vítěze tohoto pomyslného souboje.
 
 \chapter{Návrh}
-
+    V této kapitole provedu návrh REST API na základě \hyperref[sec:analFP]{analýzy funkčních požadavků}. Funkční požadavky Odhlášení a Třídění miniatur nebudeme řwšit v tomto návrhu, protože se o ně postará TODO Editor. Odhlášení se provede v aplikaci odstraněním \hyperref[sec:jwt]{JWT}. Třídění miniatur následuje po Zobrazení miniatur po přihlášení, miniatury tedy budou uloženy v aplikaci a o jejich třídení se postará aplikace. Ostatní funkčí požadavky jsem uvedl v \hyperref[sec:tabulkaPokryti]{tabulce pokrytí funkčních požadavků}, kde ke každému požadavku je uveden koncový bod API.
+    
+    Na základě \hyperref[sec:tabulkaPokryti]{této tabulky} jsem vytvořil návrh ve Swaggeru viz příloha.
+    
     \begin{table}\centering
-    	\caption{Pokrytí funkčních požadavků}
+    	\caption{Pokrytí funkčních požadavků} \label{tabulkaPokryti}
     	\begin{tabular}{| p{6cm} | p{5cm} |}\hline
     		Funkční požadavek		& API endpoint	\tabularnewline \hline \hline
             Přihlášení & GET /login
-    		\tabularnewline \hline
-    		Odhlášení & nemusí se řešit v API
         	\tabularnewline \hline
-            Smaž model &	Delete /model
+            Smaž model &	DELETE /model
         	\tabularnewline \hline
-            Vytvoř nový model &	Put /model
+            Vytvoř nový model &	PUT /model
         	\tabularnewline \hline
-            Editovat práva k modelu &	Post /model/\{modelId\}
+            Editovat práva k modelu &	POST /model/\{modelId\}
         	\tabularnewline \hline
-            Editovat práva k projektu &	Post /project/\{projectlId\}
+            Editovat práva k projektu &	POST /project/\{projectlId\}
         	\tabularnewline \hline
-            Seskupení	&Post /group/\{groupId\}
+            Seskupení & POST /group/\{groupId\}
         	\tabularnewline \hline
-            Žádosti o práva &	Get /rights/model/\{modelId\}
+            Žádosti o práva & GET /rights/model/\{modelId\}
         	\tabularnewline \hline
-            Zobrazení miniatur po přihlášení &	Get /miniatures
-        	\tabularnewline \hline
-            Třídění miniatur &	nemusí se řešit v API
+            Zobrazení miniatur po přihlášení & GET /miniatures
         	\tabularnewline \hline
             Zobrazení modelů projektu v určitém čase a počasí &
-            \parbox[t]{5cm}{Get /model/\{modelId\}/time/\\\{time\}/weather/\{weather\}}
+            \parbox[t]{5cm}{GET /model/\{modelId\}/time/\\\{time\}/weather/\{weather\}}
         	\tabularnewline \hline
-            Ulož všechny změny v projektu &	Post /project/\{projectlId\}
+            Ulož všechny změny v projektu &	POST /project/\{projectlId\}
         	\tabularnewline \hline
-            Vytvoř kopii modelu	& Put /model
+            Vytvoř kopii modelu	& PUT /model
         	\tabularnewline \hline
-            Přidání modelu do projektu &	Post /project/\{projectlId\}
+            Přidání modelu do projektu & POST /project/\{projectlId\}
         	\tabularnewline \hline
-            Vytvoř nový projekt &	Put /project
+            Vytvoř nový projekt & PUT /project
         	\tabularnewline \hline
-            Vytvoř kopii projektu &	Put /project
+            Vytvoř kopii projektu &	PUT /project
         	\tabularnewline \hline
-            Nahrání modelu z lokálního zařízení &	Put /project
+            Nahrání modelu z lokálního zařízení & PUT /project
         	\tabularnewline \hline
         \end{tabular}
     \end{table}
@@ -271,12 +350,15 @@ kámen činnosti pro následující generace řešitelů projektu.}
             \end{lstlisting}
 
             Příkaz npm init -y nám vygeneruje jednoduchý package.json.
-            Dále budeme instalovat balíčky. Po příkazu npm i název balíčku (viz command npm help i) se nám balíček stáhne i s knihovnami, na kterých závisí, do složky node_modules a taky se nám zapíše do package.json ve fomátu "název": "verze". U příkazu npm i můžeme přidat --save-dev, tímto označíme balíček, že není potřeba pro běh samotné aplikace, takto označíme balíčky potřebné pro vývoj a testování např. tslint, jest.
+            Dále budeme instalovat balíčky. Po příkazu \textit{npm i název balíčku} (viz command npm help i) se nám balíček stáhne i s knihovnami, na kterých závisí, do složky node\_modules a taky se nám zapíše do package.json ve fomátu "název": "verze". U příkazu \textit{npm i} můžeme přidat \textit{--save-dev}, tímto označíme balíček, že není potřeba pro běh samotné aplikace, takto označíme balíčky potřebné pro vývoj a testování např. tslint, jest.
 
 
             npm i express nám nainstaluje Express.
+            
             npm i --save-dev typescript nainstaluje typescript.
+            
             npm i --save-dev tslint nainstaluje tslint
+            
             Vytvoříme si tsconfig.json viz \url{https://www.typescriptlang.org/docs/handbook/tsconfig-json.html}.
 
             npm i --save-dev @types/node @types/express
