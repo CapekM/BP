@@ -1,26 +1,16 @@
 {
+    "version": "2.4.2",
     "compilerOptions": {
+        "lib": ["es5", "es6"],
+        "target": "es6",
         "outDir": "build",
         "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
         "moduleResolution": "node",
-        "forceConsistentCasingInFileNames": true,
-        "sourceMap": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noUnusedLocals": true,
-            "baseUrl": ".",
-        "paths": {
-            "*": [
-                "node_modules/*"
-            ]
-        }
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true
     },
-    "include": [
-        "src/**/*"
+    "exclude": [
+        "node_modules"
     ]
 }
