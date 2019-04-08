@@ -269,6 +269,18 @@ kámen činnosti pro následující generace řešitelů projektu.}
             nodejs -v
             npm -v
             \end{lstlisting}
+
+            Příkaz npm init -y nám vygeneruje jednoduchý package.json.
+            Dále budeme instalovat balíčky. Po příkazu npm i název balíčku (viz command npm help i) se nám balíček stáhne i s knihovnami, na kterých závisí, do složky node_modules a taky se nám zapíše do package.json ve fomátu "název": "verze". U příkazu npm i můžeme přidat --save-dev, tímto označíme balíček, že není potřeba pro běh samotné aplikace, takto označíme balíčky potřebné pro vývoj a testování např. tslint, jest.
+
+
+            npm i express nám nainstaluje Express.
+            npm i --save-dev typescript nainstaluje typescript.
+            npm i --save-dev tslint nainstaluje tslint
+            Vytvoříme si tsconfig.json viz \url{https://www.typescriptlang.org/docs/handbook/tsconfig-json.html}.
+
+            npm i --save-dev @types/node @types/express
+
         \subsection{PostgreSQL}
             TBD
     \section{Verzování}
