@@ -95,7 +95,7 @@ kámen činnosti pro následující generace řešitelů projektu.}
         \label{sec:analFP}
 % todo upravit
             Následující sekce popisuje funkční požadavky editoru virtuální reality. Tedy požadavky, které se vztahují k funkcionalitě na cílovou aplikaci. Tyto požadavky jsem vytvořil s pomocí Patrika Křepinského.
-            \begin{itemize}
+            \begin{enumerate}
                 \item Přihlášení
                 
                 V aplikaci musí být možnost přihlášení. Pokud se nepřihlásíte, můžete pokračovat jako host, který nemá žádná práva na grafické modely, tedy si je můžete pouze prohlížet.
@@ -165,11 +165,11 @@ kámen činnosti pro následující generace řešitelů projektu.}
                 Uživatel vytvoří prázdnou pracovní plochu, kam bude moct zasazovat modely.
                 Nahrání modelu z lokálního zařízení
                 Uživatel nahraje model z disku a může ho uložit na server.
-            \end{itemize}
+            \end{enumerate}
         \subsection{Nefunkční}
 % todo upravit
             Tato sekce se zabývá nefunkčními požadavky na REST API. Tedy požadavky, které se zaměřují na nároky cílové aplikace na software a to například z hlediska bezpečnosti, spolehlivosti, či výkonu.
-            \begin{itemize}
+            \begin{enumerate}
                 \item Rychlost odezvy
 
                     Uživatel nesmí na obdržení nebo aktualizování grafického modelu čekat. Je třeba, aby server reagoval rychle.
@@ -185,7 +185,7 @@ kámen činnosti pro následující generace řešitelů projektu.}
                 \item Použité technologie
 
                     Bylo zadáno, že se bude vyvýjet v technologii Node.js za využití modulu Express.
-            \end{itemize}
+            \end{enumerate}
     \section{Použité technologie}
         \subsection{Node.js}
             Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
@@ -240,68 +240,126 @@ kámen činnosti pro následující generace řešitelů projektu.}
             
             Tato knihovna umožňuje pracovat s proměnými prostředí
     \section{Nástroje pro návrh REST API}
+        V této sekci provedeme výběr nejvhodnějšího nástroje, který budeme používat v další kapitole Návrh.
+        Návrh API nám bude rovněž sloužit jako dokumentace, jelikož v návrhu je popsáno co API dělá a jak. Tato dokumentace slouží rozšiřitelnosti API viz nefunkční požadavek.
+        
+        Vybral jsem pět nejrozšířenějších kandidátu, které nabízí své služby zdarma. Tyto kandidáty 
+        ohodnotím výběrovou metodou, na jejímž základě vyberu nejvhodnějšího. Výběrová metoda se bude skládat z ohodnocení nástroje z hlediska následujících metrik:
+        \begin{itemize}
+            \item Dokumentace nástroje
+            
+        	Je nutnou podmínkou, aby byl nástroj řádně zdokumentován, protože k nástroji budu přistupovat jako laik. Tudíž veškerá funkcionalita, která nebude pokryta v dokumentaci jakoby neexistovala.
+            \item Funkčnost
+            
+            \item GitHub repozitář
+            
+            Na repozitář se budeme dívat z ohledu oblíbenosti (na GitHubu mohou uživatelé dávat hvězdičky repozitářům), posledních commitů a řešených problémů
+            \item Fórum
+            
+            Můžeme narazit na různé problémy, které lze vyřešit na fóru, nebo najít konverzaci na fóru s podobnou tématikou. Budeme tedy hodnotit jak je fórum obsáhlé a jak je živé (poslední příspěvek, rychlost odpovědí).
+        \end{itemize}
+        Popíši každý z vybraných nástrojů a ohodnotím je z pohledu vybraných metrik a na konec dám samostatně metriku GitHub repozitáře.
         \subsection{Swagger}
-            Swagger je sada nástrojů postavená na OpenAPI Specifikaci.
-            \newline Nástroje:
+            Swagger je sada nástrojů postavená na OpenAPI Specifikaci. OpenAPI Specifikace, dřívěji Swagger Specifikace, je sada pravidel, které sémanticky popisují API. Nástroje:
             \begin{itemize}
-                \item Swagger editor - webový editor umožňující psát OpenAPI Specifikace
-                \item Swagger UI - vizualizuje API dokumentaci, kterou generuje z OpenAPI Specifikace
-                \item Swagger Codegen - vygeneruje kód na základě OpenAPI Specifikace
+                \item Swagger editor - editor umožňující psát OpenAPI Specifikaci
+                \item Swagger UI - vizualizuje API dokumentaci
+                \item Swagger Codegen - vygeneruje kód clientské nebo serverové části
             \end{itemize}
-            OpenAPI Specifikace, dřívěji Swagger Specifikace, je sada pravidel, které sémanticky popisují API. Pravidla mohou být zapsaná nebo vygenerována do souboru formátu YAML, nebo JSON. YAML je více čitelný pro lidi, kteří nejsou zvyklí na závorky. Programátorům může více vyhovovat JSON. OpenAPI~Specifikace se skládá z metadat, koncových bodů a schématu.
-        \subsection{Apicurio Studio}
-            Apicurio Studio je open-source editor pro OpenAPI specifikaci. Musíte se přihlásit a vaše návrhy REST API se ukládají do vašeho repozitáře na GitHubu, GitLabu nebp Bitbucketu, což se hodí v případě, když na návrhu pracujete spolčně v týmu. V editoru můžete přepínat mezi interaktivní vizualizací návrhu a jeho JSON/YAML definicí.
-        \subsection{RAML}
-            RAML je akronym RESTful API Modeling Language a je to typ souboru podobný YAML. Existují různé nástroje používající RAML, vypíši některé z těch nástrojů:
-            \href{http://apiworkbench.com}{API Workbench} je IDE pro RAML, které je v beta verzi a funguje jako balíček pro Atom, což je teztový editor.
-            \href{https://github.com/raml2html/raml2html}{Raml2html} dokáže z RAML vytvořit  HTML dokumentaci.
-            \href{https://github.com/mulesoft/osprey}{Osprey} dokáže z RAML vygenerovat API pro Node.js.
-        \subsection{Restlet}
-            Restlet Studio je webová aplikace, která umožňuje uživateli interaktivně upravovat REST API. Doáže definované API exportovat do OpenAPI specifikace nebo RAML. Dokáže vytvořit  Server Skeleton pro Node.js.
-        \subsection{Apiary}
-            Api editor podporuje API Blueprint i OpenAPI Specifikaci.
-            
-            API Blueprint je podobně jako OpenAPI Specifikace sada pravidel popisující API. API Blueprint specifikace je zapsaná v Markdown dokumentu, který je rozdělen do sekcí. Tyto sekce nejsou povinné.
-            
-            Výpis základních 5 sekcí, u každé je číslo, které vyjadřuje kolikrát se sekce může v dokumentu objevit.
-            \begin{itemize} % je angličtina v pohode?
-                \item 0-1 Metadata
-                \item 0-1 API Name \& overview
-                \item 0+ Resource
-                \item 0+ Resource Group
-                \item 0+ Data Structures
-            \end{itemize}
-            
-            Apiary disponuje interaktivní dokumentací, webový editor má možnost přepnutí do tmavého režimu. Dále zajišťuje propojení s GitHub nebo GitLab repozitářem.
-
-    \section{Výběr nástroje pro návrh a dokumentaci API}
-        V této sekci navážu na předešlou analýzu nástrojů pro návrh REST API a vyberu zde nejvhodnější nástroj. Nejvíce mě nadchnul Swagger a Apiary, popíši zde porovnání těchto nástrojů.
-        
-
-        Oba nástroje jsem vyzkoušel, Swagger jsem zkoušel ve SwaggerHubu, což je webová aplikace, která přináší všechny základní vlastonsi Swaggeru. Oba nástroje umožnují požadovanou dokumentaci a návrh API a k tomu i generování kódu.
-        
-        Co jse mi na Swaggeru líbilo a v Apiary chybělo je, že vizualizovaná dokumentace měla označené zabezpečené koncové body, dokumentace se dá exportovat do html, editor obsahuje navigátora, který umožnuje přeskakovat do různých sekcí dokumentu a náhled dokumentace také odkazuje na části dokumentu, takže se k nim jde jednoduše "prokliknout". Zpřehlednění orientace v dokumnetu, jež SwaggerHub nabízí, je velice vhodné, protože dokumentace API čítá bežně stovky až tisíce řádků.
-        
-        Apiary nemá žádný export, existuje ale Apiary CLI, které umožnuje zobrazit dokumentaci v internetovém prohlížeči.
+            Metriky:
+            \begin{itemize}
+                \item Dokumentace
                 
-        \subsection{OpenAPI Specifikace vs API Blueprint}
-            Markatní rozdíl mezi nimi je, že Swagger je težce provázán s OpenAPI Specifikací, kdežto Apiary, přestože podporuje OpenAPI Specifikaci, je založeno na API Blueprintu.
-
-            Při porovnání repozitářů \href{https://github.com/apiaryio/api-blueprint/graphs/contributors}{API Blueprint} a \href{https://github.com/OAI/OpenAPI-Specification/graphs/contributors}{OAS} můžeme vidět, že OpenAPI Specifikace je více živější, co se týče commitů i řešených problémů, navíc má zhruba dvakrát více hvězdiček a forků.
+                Dokumentace je rozsáhlá. Abyste mohli psát dokumentaci pro API ve Swaggeru, musíte ovládat OpenAPI Specifikaci. Ta je zde detailně popsána a při jejím čtení jsem si připadal jako když se učím nový programovací jazyk (jsou zde popsány datové typy, dědění a polymorfismus). Dále je zde obsáhlá dokumentace SwaggerHubu, což je webová aplikace, která přináší všechny základní vlastonsi Swaggeru. Dokumentace má tutoriály a díky SwaggerHubu si je můžete rovnou vyzkoušet.
+                \item Funkčnost
+                
+                
+                \item Fórum
+                
+                \url{https://community.smartbear.com/t5/Swagger-Open-Source-Tools/bd-p/SwaggerOSTools}
+                a GitHub issues
+            \end{itemize}
+        \subsection{Apicurio Studio}
+            Apicurio Studio je open-source editor pro OpenAPI specifikaci. Musíte se přihlásit a vaše návrhy REST API se ukládají do vašeho repozitáře na GitHubu, GitLabu nebo Bitbucketu, což se hodí v případě, když na návrhu pracujete spolčně v týmu. V editoru můžete přepínat mezi interaktivní vizualizací návrhu a jeho JSON/YAML definicí.
+            \begin{itemize}
+                \item Dokumentace
+                
+                Dokumentace není nijak obsáhlá a není z ní zjevné, co tento nástroj dokáže a co naopak neumí. Odkaz na vyzkoušení online verze editoru nefungoval (chyba DNS\_PROBE\_FINISHED\_NXDOMAIN).
+                \item Funkčnost
+                
+                
+                \item Fórum
+                
+                GitHub Issues
+            \end{itemize}    
+        \subsection{API Workbench}
+            \href{http://apiworkbench.com}{API Workbench}, narozdíl od výše zmíněných nástrojů, pracuje s RAML. RAML je akronym RESTful API Modeling Language a je to typ souboru podobný YAML, který specifikuje návrh API. API Workbench je v beta verzi a funguje jako balíček pro Atom, což je textový editor.
             
-            OAS je založený na YAML (nebo JSON) formátu a API Blueprint má vlastní formát APIB, který má syntaxi podobnou Markdownu a využívá MSON\footnote{\url{https://github.com/apiaryio/mson}}. Rozdíl v těchto formátech je spíše otázka osobního vkusu, jelikož se líší především syntaxí.
-        \subsection{Závěr}
-            Oba nástroje jsou srovnatelné, ale Swagger nabízí více možností pracování s dokumnetací a hlavně proto jsem se rozhodl ho nominovat jako vítěze tohoto pomyslného souboje.
+            \begin{itemize}
+                \item Dokumentace
+                
+                Dokumentace je stručná, přehledná, výstižná. Obasahuje tutoriál jak si napsat návrh pro jednoduché API, ale není zde vidět jak vypadá vizualizovaný návrh. Pro vizualizaci si musíte nainstalovat další nástroj \href{https://github.com/mulesoft/api-designer}{API Designer}.
+                \item Funkčnost
+                
+                \item Fórum
+                
+                \url{https://forum.raml.org} a GitHUb Issues
+            \end{itemize}
+        % \subsection{Restlet}
+        %     \begin{itemize}
+        %         \item Dokumentace
+        %         \item Funkčnost
+        %         \item Fórum
+        %     \end{itemize} 
+        \subsection{Apiary}
+            Api editor je založeno na API Blueprint, což je podobně jako OpenAPI Specifikace sada pravidel popisující API. API Blueprint specifikace má vlastní formát APIB, který má syntaxi podobnou Markdownu a využívá MSON\footnote{\url{https://github.com/apiaryio/mson}}.
+            Apiary disponuje interaktivní dokumentací, webový editor má možnost přepnutí do tmavého režimu. Dále zajišťuje propojení s GitHub repozitářem.
+            \begin{itemize}
+                \item Dokumentace
+                
+                Dokumnetace pro apiary editor je jedna stránka bez tutoriálu. Obsahuje jak vypadá editor, popis základní funkcionality a seznam klávesových zkratek. Má tedy nejmenší dokumentaci ze všech nástrojů.
+                \item Funkčnost
+                
+                \item Fórum
+                
+                Nic jako fórum jsem nenašel, pouze FAQ.
+            \end{itemize}
+        \subsection{GitHub repozitář}
+            Metriku GitHub repozitář jsem zapsal do \hyperref[sec:tabulkaPokryti]{tabulky Metrika GitHub repozitáře}.
+            Nástroj Apiary nemá GitHub repozitář, tudíž ho nemůžu hodnotit. U Swaggeru jsem hodnotil jak repozitář pro editor tak pro UI a to tím způsobem, že hvězdičky jsem zprůměroval, poslední commit je nejposlednejší commit obou repozitářů a Issues jsem sečetl. Data jsou ze dne 14.4.2019.
+            \begin{table}\centering
+            	\caption{Metrika GitHub repozitáře} \label{tabulkaMatrikyGitHub}
+            	\begin{tabular}{| p{3cm} | p{2cm} | p{5cm} | p{2cm} |}  \hline
+            		 & Swagger & Apicurio Studio & API Workbench
+            		\tabularnewline \hline \hline
+                    Hvězdičky & 9 799 & 310 & 219
+                	\tabularnewline \hline
+                    Poslední commit & 14.4.2019 & 12.4.2019 & 3.4.2018
+                	\tabularnewline \hline
+                    \parbox[t]{3cm}{Issues \\otevřené/uzavřené} & 417/4723 & 153/456 & 133/350
+                	\tabularnewline \hline
+                    Další poznámky & & one man show
+                    Smíšené ruzné jazyky - JavaScript 32.7\% Java 30.9\% TypeScript 22.9\% &
+                	\tabularnewline \hline
+                \end{tabular}
+            \end{table}
+        \subsection{Výsledek výběru nástroje pro návrh API}
+            Vítězem tohoto pomyslného souboje se stal \textbf{Swagger}. Vyhrál v kategoriích Dokumentace a GitHub repozitář.
 
 \chapter{Návrh}
     V této kapitole provedu návrh REST API na základě \hyperref[sec:analFP]{analýzy funkčních požadavků}. Funkční požadavky Odhlášení a Třídění miniatur nebudeme řwšit v tomto návrhu, protože se o ně postará TODO Editor. Odhlášení se provede v aplikaci odstraněním \hyperref[sec:jwt]{JWT}. Třídění miniatur následuje po Zobrazení miniatur po přihlášení, miniatury tedy budou uloženy v aplikaci a o jejich třídení se postará aplikace. Ostatní funkčí požadavky jsem uvedl v \hyperref[sec:tabulkaPokryti]{tabulce pokrytí funkčních požadavků}, kde ke každému požadavku je uveden koncový bod API.
     
     Na základě \hyperref[sec:tabulkaPokryti]{této tabulky} jsem vytvořil návrh ve Swaggeru viz příloha.
+    \begin{figure}[ht!]
+        \includegraphics[scale=0.43]{API_call}
+        \caption{Proces volání API}
+    \end{figure}
     
     \begin{table}\centering
     	\caption{Pokrytí funkčních požadavků} \label{tabulkaPokryti}
     	\begin{tabular}{| p{6cm} | p{5cm} |}\hline
-    		Funkční požadavek		& API endpoint	\tabularnewline \hline \hline
+    		Funkční požadavek & API endpoint
+    		\tabularnewline \hline \hline
             Přihlášení & GET /login
         	\tabularnewline \hline
             Smaž model &	DELETE /model
