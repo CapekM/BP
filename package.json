@@ -6,6 +6,7 @@
   "readmeFilename": "README.md",
   "scripts": {
     "start": "ts-node src/app.ts",
+    "build": "rsync -a --exclude='*.ts' src/* build && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
