@@ -282,7 +282,7 @@ Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který p
             \end{itemize}
             \cite{apiary}
         \subsection{GitHub repozitář}
-            Metriku GitHub repozitář jsem zapsal do \hyperref[sec:tabulkaPokryti]{tabulky Metrika GitHub repozitáře}.
+            Metriku GitHub repozitář jsem zapsal do \hyperref[tab:tabulkaPokryti]{tabulky Metrika GitHub repozitáře}.
             Nástroj Apiary nemá GitHub repozitář, tudíž ho nemůžu hodnotit. U Swaggeru jsem hodnotil jak repozitář pro editor tak pro UI a to tím způsobem, že hvězdičky jsem zprůměroval, poslední commit je nejposlednejší commit obou repozitářů a Issues jsem sečetl. Data jsou ze dne 14.4.2019.
             \begin{table}[h!]
             	\caption{Metrika GitHub repozitáře \cite{githubSwaggerUI, githubSwaggerEditor, githubApicur, githubApiworkbench}} \label{tabulkaMatrikyGitHub}
@@ -303,13 +303,13 @@ Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který p
         \subsection{Výsledek výběru nástroje pro návrh API}
             Vítězem tohoto pomyslného souboje se stal \textbf{Swagger}. Vyhrál v kategoriích Dokumentace a GitHub repozitář. Fórum vyhovoje naším požadavkům a fukcionalitu splnily všechny nástroje.
 \chapter{Návrh}
-    V této kapitole provedu návrh REST API na základě \hyperref[sec:analFP]{analýzy funkčních požadavků}. Průběh volání API je zobrazen na \hyperref[sec:volaniAPI]{obrázku 3.1}.
+    V této kapitole provedu návrh REST API na základě \hyperref[sec:analFP]{analýzy funkčních požadavků}. Průběh volání API je zobrazen na \hyperref[fig:volaniAPI]{obrázku 3.1}.
     \begin{figure}[h!] \label{volaniAPI}
         \includegraphics[width=\linewidth]{API_call}
         \caption{Proces volání API}
     \end{figure}
     
-    Z obrázku je patrné, že API musí znát databázi, aby na ní mohlo vytvářet požadavky, a editor musí znát naše API, aby ho mohl správně volat. Databáze projektu Věnná města čaských královen je zachycena na obrázku \hyperref[sec:volaniAPI]{obrázku 3.2}.
+    Z obrázku je patrné, že API musí znát databázi, aby na ní mohlo vytvářet požadavky, a editor musí znát naše API, aby ho mohl správně volat. Databáze projektu Věnná města čaských královen je zachycena na obrázku \hyperref[fig:volaniAPI]{3.1}.
 
     \begin{figure}[h!] \label{soucasnaDB}
         \includegraphics[width=\linewidth]{contemporary_database}
@@ -322,7 +322,7 @@ Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který p
         Editor virtuální reality požaduje správu práv a uživatelských účtů. U entity modelu chybí informace o právech uživatelů a chybí entita uživatelů. Dále Editor požaduje miniatury modelů, které se ve schématu nenacházejí. Bude tedy potřeba provést změnu v databázovém schématu pro plnou podporu Editoru.
 
     \section{Pokrytí funkčních požadavků}
-        Pokrytí funkčních požadavků jsem zachytil v \hyperref[sec:tabulkaPokryti]{tabulce 3.1}, kde ke každému požadavku je uveden koncový bod API. Funkční požadavky Odhlášení a Třídění miniatur nebudeme řešit v tomto návrhu, protože se o ně postará Editor.
+        Pokrytí funkčních požadavků jsem zachytil v \hyperref[tab:tabulkaPokryti]{tabulce 3.1}, kde ke každému požadavku je uveden koncový bod API. Funkční požadavky Odhlášení a Třídění miniatur nebudeme řešit v tomto návrhu, protože se o ně postará Editor.
         Odhlášení se provede v aplikaci odstraněním \hyperref[sec:jwt]{JWT}.
         Třídění miniatur následuje po Zobrazení miniatur po přihlášení, miniatury tedy budou uloženy v aplikaci a o jejich třídení se postará aplikace.
     
@@ -366,7 +366,7 @@ Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který p
         \end{table}
     \newpage
     \section{Návrh ve Swaggeru}
-        Na základě \hyperref[sec:tabulkaPokryti]{této tabulky} jsem vytvořil návrh ve Swaggeru. Uvedu zde příklad zapsání jednoho koncového bodu, zbytek najdete v elektronické příloze TBD. Na \hyperref[sec:SwaggerYAML]{obrázku 3.2} je zapsaný koncový bod v OpenAPI Specifikaci a na \hyperref[sec:SwaggerGenerated]{obrázku 3.3} je vidět jeho vizualizace.
+        Na základě \hyperref[tab:tabulkaPokryti]{této tabulky} jsem vytvořil návrh ve Swaggeru. Uvedu zde příklad zapsání jednoho koncového bodu, zbytek najdete v elektronické příloze TBD. Na \hyperref[fig:SwaggerYAML]{obrázku 3.2} je zapsaný koncový bod v OpenAPI Specifikaci a na \hyperref[fig:SwaggerGenerated]{obrázku 3.3} je vidět jeho vizualizace.
         \begin{figure}[h!] \label{SwaggerYAML}
             \includegraphics[width=\linewidth]{Swagger_YAML_example}
             \caption{Popis koncového bodu ve Swaggeru}
@@ -452,14 +452,47 @@ npm set init.license "MIT"
         Dále budeme instalovat balíčky. Po příkazu
         \mint{bash}|npm i "název balíčku"|
         se nám balíček stáhne i s knihovnami, na kterých závisí, do složky node\_modules a taky se nám zapíše do package.json ve fomátu "název: verze". U příkazu \textit{npm i} můžeme přidat přepínač \textit{-D}, tímto označíme balíček, který není potřeba pro běh samotné aplikace, takto označíme balíčky potřebné pro vývoj a testování např. tslint (nástroj pro statickou analýzu kódu), jest (nástroj pro testování).
-        Budeme používat TypeScript a Express, ty si nainstalujeme následujícím příkazem:
-        \mint{bash}|npm i express typescript|
-        Dále si nainstalujeme balíčky pro statické typování viz  \url{https://github.com/DefinitelyTyped/DefinitelyTyped}
+        Nainstalujeme si balíčky potřebné pro naší aplikaci.
+        \mint{bash}|npm i express typescript dotenv-safe|
+        Dále si nainstalujeme balíčky pro statické typování viz \url{https://github.com/DefinitelyTyped/DefinitelyTyped}.
         \mint{bash}|npm i -D @types/node @types/express|
     
         Vytvoříme si tsconfig.json pro konfiguraci TypeScript. Inspirovat se můžete v elektronické příloze TBD. Dokumetaci najdete na stránce \url{https://www.typescriptlang.org/docs/handbook/tsconfig-json.html}.
 
-        V
+        V package.json přidáme:
+        \begin{minted}{json}
+"scripts": {
+    "start": "ts-node src/app.ts",
+}
+        \end{minted}
+        Vytvoříme soubor v našem adresáři src/app.ts, který bude vypadat následovně:
+        \begin{minted}{TypeScript}
+import *as express from 'express';
+import * as path from 'path';
+
+require('dotenv-safe').config({
+    path: path.resolve(__dirname, '../.env'),
+    sample: path.resolve(__dirname, '../.example.env'),
+  });
+
+const app = express();
+
+app.get('/', (req, res) => res.send('Hello World!'));
+app.listen(process.env.LISTEN_ON);
+        \end{minted}
+        Zbýva ještě specifikovat náš port.
+        \begin{minted}{bash}
+echo "LISTEN_ON=4000" > .env
+        \end{minted}
+        Teď máme vše připraveno, abychom zapnuli naší jednoduché API s jedním koncovým bodem. Nastartujeme aplikaci, která bude poslouchat na portu 4000.  
+        \begin{minted}{bash}
+npm start
+        \end{minted}
+        Můžeme otestovat fukčnost v Postmanu\footnote{\url{https://www.getpostman.com}}, tak že zavoláme koncový bod, který nám vrátí Hello World! Příklad na obrázku\hyperref[fig:Postman]{ 4.3}.
+        \begin{figure}[h!]
+            \includegraphics[scale=0.45]{PostmanHelloWorld}
+            \caption{Postman}
+        \end{figure}
     \section{Implementace}
         TBD
 \chapter{Testování}
