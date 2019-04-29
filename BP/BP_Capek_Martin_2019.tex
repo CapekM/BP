@@ -56,10 +56,15 @@
 \acknowledgements{Děkuji především své rodině za podporu, svému vedoucímu za časté konzultace a za směrování mě k práci.}
 \abstractCS{Tato práce popisuje návrh a vývoj API v technologii Node.js.
 
-První část je věnována analýze funkčním a nefunkčním požadavkům editoru Virtuálního historického průvodce, analýze a výběru nástrojů pro návrh API.
+První část je věnována analýze funkčním a nefunkčním požadavkům Editoru virtuálního historického průvodce, analýze a výběru nástrojů pro návrh API.
 V další části provedu návrh API s použitím nástrojů z analýzy a s ohledem na současný stav databáze projektu Věnná města českých královen.
 Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který podrobím testování.}
-\abstractEN{abstractEN}
+\abstractEN{This bachelor thesis describes design and development of API in technology node.js.
+
+First part is focused on analysis of functional and non-functional requirements of the Virtual historical guide editor, analysis and selection of API design tools.
+In the next part, I will design the API using tools from the analysis and with regard to the current state of the database of the project Dowry Towns of the Queens of Bohemia.
+Finally, I will describe the development of the API, which will result in a functional prototype that will be tested.
+}
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
 \keywordsCS{vývoj API, funkční prototyp, virtuální realita, historické modely budov, Node.js, Swagger}
@@ -379,6 +384,11 @@ Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který p
 \chapter{Vývoj}
     V této kapitole se budu věnovat technologiím, které použiji při implementaci, přípravě vývojářského prostědí a vlastní implementaci.
     \section{Použité technologie}
+        \subsection{Rest API}
+        REST, neboli Representional State Transfer, je architektonický styl, který umožňuje přistupovat k datům a využívá již existující HTTP. REST implementuje čtyři základní metody, známé pod akronymem CRUD, jsou to
+        Create (vytvoření dat), Retrieve (získání požadovaných dat), Update (změnu) a Delete (smazání). Dokáže vracet XML, JSON, YAML nebo jiné formáty podle klientových požadavků. \cite{rest}
+        
+        V naší implementaci budeme používat JSON, rozhodnuto bylo na základě autorových zkušeností a článku \cite{whyJSON}.
         \subsection{Node.js}
             Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
             
@@ -394,7 +404,7 @@ Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který p
         \subsection{JWT} \label{jwt}
             JWT (JSON Web Token) je standart, který zajišťuje bezpečný přesun informací zapsaných v JSON.
             \begin{figure}[h!]
-                \includegraphics[scale=0.4]{legacy-app-auth-5} 
+                \includegraphics[width=\linewidth]{legacy-app-auth-5} 
                 \caption{JWT \cite{jwtImage}}
             \end{figure}
             
@@ -410,26 +420,28 @@ Nakonec popíši vývoj API, jehož výsledkem bude funkční prototyp, který p
                     
                     obsahuje zakódované předešlé části a secret -- náš tajný klíč.
             \end{itemize}
-             V naší aplikaci využijeme tuto technologii pro ověřování totožnosti uživatelů. Naše aplikace vytvoří JWT po přihlášení a uživatel se jím bude nadále identifikovat \cite{jwt}
+             V naší aplikaci využijeme tuto technologii pro ověřování totožnosti uživatelů. Naše aplikace vytvoří JWT po přihlášení a uživatel se jím bude nadále identifikovat. \cite{jwt}
             \begin{figure}[h!]
-                \includegraphics[scale=0.45]{Process_of_authentication}
+                \includegraphics[width=\linewidth]{Process_of_authentication}
                 \caption{Proces autorizace}
             \end{figure}
         \subsection{TSLint}
-            TSLint je nástroj pro statickou analýzu kódu TypeScriptu.
-        \subsection{Dotenv}
-            \url{https://github.com/motdotla/dotenv}
-            Tato knihovna umožňuje pracovat s proměnými prostředí.
+            TSLint je nástroj pro statickou analýzu kódu TypeScriptu. Detekuje potencionální chyby a udržuje jednotné fomátování kódu.\cite{tslint}
+        \subsection{dotenv-safe}
+            Tato knihovna umožňuje pracovat s proměnnými prostředí. Proměnné prostředí budeme zapisovat do souboru ".env" v kořenovém adresáři a tento soubor přidáme do gitignore souboru, protože zde budou citlivé informace. Zároveň bude existovat soubor ".env.example", který bude vypadat stejně jako soubor ".env", jenom nebude obsahovat hodnoty proměnných. Soubor ".env.example" slouží jako vzor k vytvoření ".env". \cite{dotenv}
         \subsection{Implementační jazyk}
             Pro vývoj byl vybrán jazyk TypeScript, který je kompilovatelný do JavaScriptu. Tento jazyk je vyvýjen firmou Microsoft a jeho hlavní myšlenkou je být nadstavbou JavaScriptu, která přidává statické typování a další funkcionalitu.
         \subsection{PostgreSQL}
             Realizátory datové vrstvy v projektu Věnná města českých královen byla vybrána databáze PostgreSQL.
             
             PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki\footnote{\url{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools}} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
+            \cite{postgres}
             %todo odkaz na BP Víta Černého?
         \subsection{TypeORM}
             Jak již název napovídá jedná se o objektově relační mapování, což nám umožní jednodušeji pracovat s databází. TypeORM podporuje PostgreSQL a má npm balíček, který budeme moci využít při implementaci v Node.js.
             \cite{typeorm}
+        \subsection{GitLab}
+            todo
     \section{Vývojářské prostředí pro OS~Linux}
         V této sekci se budu věnovat přípravě výojářského prostředí v Node.js.
         Prvně si musíme nainstalovat Node.js a správce balíčk npm.
@@ -465,7 +477,7 @@ npm set init.license "MIT"
     "start": "ts-node src/app.ts",
 }
         \end{minted}
-        Vytvoříme soubor v našem adresáři src/app.ts, který bude vypadat následovně:
+        Vytvoříme soubor v našem adresáři src/app.ts, který bude vypadat následovně.
         \begin{minted}{TypeScript}
 import *as express from 'express';
 import * as path from 'path';
@@ -480,11 +492,11 @@ const app = express();
 app.get('/', (req, res) => res.send('Hello World!'));
 app.listen(process.env.LISTEN_ON);
         \end{minted}
-        Zbýva ještě specifikovat náš port.
+        Zbýva ještě specifikovat náš port. V souboru .example.env stačí mít pouze "LISTEN\_ON".
         \begin{minted}{bash}
-echo "LISTEN_ON=4000" > .env
+echo "LISTEN_ON=4000" > .example.env && cp .example.env .env
         \end{minted}
-        Teď máme vše připraveno, abychom zapnuli naší jednoduché API s jedním koncovým bodem. Nastartujeme aplikaci, která bude poslouchat na portu 4000.  
+        Teď máme vše připraveno, abychom zapnuli naše jednoduché API s jedním koncovým bodem. Nastartujeme aplikaci, která bude poslouchat na portu 4000.  
         \begin{minted}{bash}
 npm start
         \end{minted}
@@ -494,16 +506,32 @@ npm start
             \caption{Postman}
         \end{figure}
     \section{Implementace}
-        TBD
+        Jak jsou definovány koncové body
+        
+        Zabezpečení s JWT?
+        
+        Databáze
+        
+        Jak se spouští - příručka / md + odkaz na el. přílohu
+        
+        Nastavení linteru?
+        
 \chapter{Testování}
+    Pro ověření funkčnosti našeho prototypu provedeme jednotkové testování. Jednotka v našem případě znamená koncový bod. Pro testování našho API použijeme Jest.
 
-TDB
+    \section{Jest}
+    Jest je Framework pro testování JavaScriptových apilkací. Hodí se pro testování Node.js a typescriptu.
+
+
+    \section{GitLab}
+    Pro verzování teoretické i praktické části jsem používal GitHub. GitHub nabízí nástroj pro průběžnou integraci, který dovoluje při každém commitu spustit skript který je zapsaný v souboru pojmenovaném ".gitlab.yml" uloženém v kořenovém adresáři projektu. My budeme chtít, aby se nám po commitu aplikace sestavila a spustili se na ní naše testy.
+    
 
 \begin{conclusion}
     V práci byla provedena analýza funkčních požadavků editoru virtuální reality, nefukčních požadavků na API, technologií použitých při implementaci, nástrojů pro návrh API, z těchto nástrojů byl vybrán nejvhodnější kandidát na základě hodnotících metrik a tím je Swagger. S tímto nástrojem byl proveden návrh API a tím i jeho dokumentace. Tato dokumentace může sloužit jako vzor komukoli, kdo chce dokumentovat API.
     V návrhu jsem se setkal s problémem, že současná databáze Věnných měst českých královen nepostačuje požadavkům editoru virtuální reality, byly tedy provedeny změny ve schématu databáze.
     Dále tato práce obsahuje popstup vývoje API v Node.js, který může být inspirací budoucím řešitelům implementace API v Node.js.
-    Nakonec byla provedena implementace funkčního prototypu API z předešlého návrhu a jeho otestování. \cite{kobltypo}
+    Nakonec byla provedena implementace funkčního prototypu API z předešlého návrhu a jeho otestování.
 
     % Zaobirat se cilem prakticke casti, dale lze napsat: aplikace by mohla....
 \end{conclusion}
