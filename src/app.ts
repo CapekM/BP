@@ -15,7 +15,6 @@ require('dotenv-safe').config({
 
 
 createConnection().then(async connection => {
-
     const app = express();
     app.use(bodyParser.json());
 
