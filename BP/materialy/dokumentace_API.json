@@ -326,7 +326,7 @@
         }
       },
       "body" : {
-        "required" : [ "password", "username" ],
+        "required" : [ "username", "password" ],
         "type" : "object",
         "properties" : {
           "username" : {
