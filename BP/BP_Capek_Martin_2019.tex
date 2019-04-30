@@ -100,14 +100,13 @@ Finally, I will describe the development of the API, which will result in a func
         \subsection{Funkční} \label{sec:analFP}
 % todo upravit
             Následující sekce popisuje funkční požadavky editoru virtuální reality. Tedy požadavky, které se vztahují k funkcionalitě na cílovou aplikaci. Tyto požadavky jsem vytvořil s pomocí Patrika Křepinského.
-            \begin{enumerate}
-                \item Přihlášení
-                
-                V aplikaci musí být možnost přihlášení. Pokud se nepřihlásíte, můžete pokračovat jako host, který nemá žádná práva na grafické modely, tedy si je můžete pouze prohlížet.
-                \item Odhlášení
+            
+            \begin{itemize}
+                \item F1 Přihlášení - V aplikaci musí být možnost přihlášení. Pokud se nepřihlásíte, můžete pokračovat jako host, který nemá žádná práva na grafické modely, tedy si je můžete pouze prohlížet.
+                \item F2 Odhlášení
                 
                 Stejně jako přihlášení je nutná možnost odhlášení. Dále je potřeba mít možnost zůstat trvale přihlášen na tomto počítači, jinak funguje automatické odhlášení po ukončení aplikace.
-               \item Práva k modelu
+               \item F3 Práva k modelu
                
                 Model má svého autora a dále skupinu uživatelů, kteří mají některá z následujících práv:
                 \begin{itemize}
@@ -119,7 +118,7 @@ Finally, I will describe the development of the API, which will result in a func
                     \item plná práva
                 \end{itemize}
                 Tuto skupinu uživatelů může autor libovolně editovat. Pokud uživatel není ve skupině znamená to, že nemá žádná práva k tomuto modelu.
-               \item Práva k projektu
+               \item F4 Práva k projektu
                
                 Projekt je skupina modelů zasazená do lokace. Takovým projektem může být historický model města. Projekt má skupinu uživatelů, kteří mají některá z následujících práv:
                 \begin{itemize}
@@ -130,19 +129,19 @@ Finally, I will describe the development of the API, which will result in a func
                     \item Seskupení
                 \end{itemize}
                 Uživatel bude moct zařadit model do skupiny. Tato funkce poslouží k lepší organizaci pracovního prostředí.
-                \item Žádosti o práva
+                \item F5 Žádosti o práva
                 
                 Dále mohou uživatelé žádat o určitá práva k modelu nebo skupině modelů a k projektu. Tuto žádost mohou autoři potvrdit.
-                \item Zobrazení miniatur po přihlášení
+                \item F6 Zobrazení miniatur po přihlášení
                 
                 Je třeba, aby po přihlášení měl uživatel přístup ke svým modelům. To umožní naše aplikace v podobě miniatur grafických modelů, které se po přihlášení načtou.
-                \item Třídění miniatur
+                \item F7 Třídění miniatur
                 
                 Tyto miniatury si bude moct uživatel třídit podle stavu modelů, přístupových práv, skupin uživatelů, atd.
-                \item Zobrazení modelů projektu v určitém čase a počasí
+                \item F8 Zobrazení modelů projektu v určitém čase a počasí
                 
                 Uživatel si bude moct zobrazit celý projekt v nějakém čase a procházet si ho. Bude si moct nastavovat počasí a denní dobu. Bude si ho moci procházet i napříč historií.
-                \item Ulož všechny změny v projektu
+                \item F9 Ulož všechny změny v projektu
                 
                 Uživatel potvrdí a uloží provedené změny na server. Po tomto uložení uvidí změny všichni kdo mají k modelu přístup.
                 U modelu máme dva základní typy změn:
@@ -150,16 +149,16 @@ Finally, I will describe the development of the API, which will result in a func
                     \item transformace (rotace, translace, scale)
                     \item informace o modelu (poznámka, autorství)
                 \end{itemize}
-                \item Vytvoř kopii modelu
+                \item F10 Vytvoř kopii modelu
                 
                 Uživatel bude moct vytvořit model na základě nějakého jiného modelu (pokud k tomu bude mít právo), aby nemusel začínat od začátku.
-                \item Přidání modelu do projektu
+                \item F11 Přidání modelu do projektu
                 
                 Pokud bude moct uživatel editovat nějaký projekt, může přidávat i nové modely.
-               \item Vytvoř kopii projektu
+               \item F12 Vytvoř kopii projektu
                
                 Uživatel vytvoří kopii projektu, pokud k tomu má právo, aby mohl provádět nějaké experimentální úpravy.
-               \item Editace modelu
+               \item F13 Editace modelu
                
                \begin{itemize}
                     \item smazání
@@ -169,32 +168,32 @@ Finally, I will describe the development of the API, which will result in a func
                     
                     Uživateli se zobrazí prázdná pracovní plocha, kde bude moct vymodelovat nový model.
                 \end{itemize}
-                \item Vytvoř nový projekt
+                \item F14 Vytvoř nový projekt
                 
                 Uživatel vytvoří prázdnou pracovní plochu, kam bude moct zasazovat modely.
                 Nahrání modelu z lokálního zařízení
                 Uživatel nahraje model z disku a může ho uložit na server.
-            \end{enumerate}
+            \end{itemize}
         \subsection{Nefunkční}
 % todo upravit
             Tato sekce se zabývá nefunkčními požadavky na REST API. Tedy požadavky, které se zaměřují na nároky cílové aplikace na software a to například z hlediska bezpečnosti, spolehlivosti, či výkonu.
-            \begin{enumerate}
-                \item Rychlost odezvy
+            \begin{itemize}
+                \item N1 Rychlost odezvy
 
                     Uživatel nesmí na obdržení nebo aktualizování grafického modelu čekat. Je třeba, aby server reagoval rychle.
-                \item Datová nenáročnost při komunikaci
+                \item N2 Datová nenáročnost při komunikaci
 
                     Je třeba minimalizovat množství dat posílané přes API, abychom docílili rychlosti a zbytečně nepřetěžovali spojení s koncovým uživatelem.
-                \item Bezpečnost
+                \item N3 Bezpečnost
                     
                     Určité koncové body vyžadují oprávnění, jelikož jejich zavoláním se předávají nebo přepisují citlivá data. To se vyřeší tím, že při přihlášení dostane uživatel token, kterým se bude autorizovat u volání citlivých koncových bodů.
-                \item Rozšiřitelnost
+                \item N4 Rozšiřitelnost
 
                     API musí umožňovat případné rozšíření o další funkcionality. Také musí být řádně zdokumentováno, aby umožnilo hladší průběh rozšiřování.
-                \item Použité technologie
+                \item N5 Použité technologie
 
                     Bylo zadáno, že se bude vyvýjet v technologii Node.js za využití modulu Express.
-            \end{enumerate}
+            \end{itemize}
     \section{Nástroje pro návrh REST API}
         V této sekci provedeme výběr nejvhodnějšího nástroje, který budeme používat v další kapitole Návrh.
         Návrh API nám bude rovněž sloužit jako dokumentace, jelikož v návrhu je popsáno co API dělá a jak. Tato dokumentace slouží rozšiřitelnosti API viz nefunkční požadavek.
@@ -338,9 +337,9 @@ Finally, I will describe the development of the API, which will result in a func
         		\tabularnewline \hline \hline
                 Přihlášení & GET /login
             	\tabularnewline \hline
-                Vytvoř nový model &	PUT /model
-            	\tabularnewline \hline
                 Smaž model &	DELETE /model/\{modelId\}
+            	\tabularnewline \hline
+                Vytvoř nový model &	PUT /model
             	\tabularnewline \hline
                 Editovat práva k modelu &	POST /model/\{modelId\}
             	\tabularnewline \hline
