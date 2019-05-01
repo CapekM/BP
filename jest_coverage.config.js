@@ -5,7 +5,7 @@ module.exports = {
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
-  //   globalSetup: './src/test/globalSetupTest.ts',
+  globalSetup: './src/test/globalSetupTest.ts',
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts'],
 };

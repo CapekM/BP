@@ -40,10 +40,28 @@ afterAll ( async () => {
 });
 
 describe('Model', () => {
+    let id: number;
+    it('PUT should response 200', async () => {
+        await axios({
+            method:'put',
+            url:'http://localhost:4000/model',
+            data: {
+                key: 'SomeKey',
+            }
+        })
+        .then( response => {
+            expect(response.data).toHaveProperty('id');
+            id = response.data.id;
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
+        });
+    });
     it('POST should response 200', async () => {
         await axios({
             method:'post',
-            url:'http://localhost:4000/model/5',
+            url:`http://localhost:4000/model/${id}`,
         })
         .then( response => {
             expect(response.status).toBe(200);
@@ -57,29 +75,17 @@ describe('Model', () => {
             method:'post',
             url:'http://localhost:4000/model/',
         })
-        .then( response => {
+        .then( () => {
             throw new Error('Axios should return Error');
         })
         .catch( error => {
             expect(error.response.status).toBe(404);
         });
     });
-    it('PUT should response 200', async () => {
-        await axios({
-            method:'put',
-            url:'http://localhost:4000/model',
-        })
-        .then( response => {
-            expect(response.status).toBe(200);
-        })
-        .catch( error => {
-            throw error;
-        });
-    });
     it('DELETE should response 200', async () => {
         await axios({
             method:'delete',
-            url:'http://localhost:4000/model/5',
+            url:`http://localhost:4000/model/${id}`,
         })
         .then( response => {
             expect(response.status).toBe(200);
