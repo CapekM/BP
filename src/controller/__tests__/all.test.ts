@@ -4,12 +4,13 @@ import { createConnection, Connection } from 'typeorm';
 import * as express from "express";
 import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
+import { Server } from "http";
 
 import { AppRoutes } from '../../routes';
 import { createBasicUsers } from "../user";
 
 let connection: Connection;
-let server;
+let server: Server;
 beforeAll ( async () => {
     const result = await createConnection().catch(error => console.log("TypeORM connection error: ", error));
 
