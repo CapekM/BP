@@ -35,10 +35,10 @@ beforeAll ( async () => {
     server = app.listen((process.env.LISTEN_ON && +process.env.LISTEN_ON) || 8080);
 });
 
-afterAll ( async () => {
-    // server.close();
-    await connection.close();
-});
+// afterAll ( async () => {
+//     server.close();
+//     await connection.close();
+// });
 
 describe('Model', () => {
     let id: number;
