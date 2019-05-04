@@ -1,4 +1,4 @@
-import {postGetAllUsers} from "./controller/postGetAllUsers";
+import { getAllUsers } from "./controller/user";
 import { login } from "./controller/login";
 import { postModel, deleteModel, putModel } from "./controller/model";
 
@@ -9,7 +9,7 @@ export const AppRoutes = [
     {
         path: "/users",
         method: "get",
-        action: postGetAllUsers
+        action: getAllUsers
     },
     {
         path: "/login",

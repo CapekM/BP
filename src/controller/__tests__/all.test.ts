@@ -5,8 +5,8 @@ import * as express from "express";
 import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
 
-import { createBasicUsers } from "../../entity/User";
 import { AppRoutes } from '../../routes';
+import { createBasicUsers } from "../user";
 
 let connection: Connection;
 let server;

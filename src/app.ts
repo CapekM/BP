@@ -6,7 +6,7 @@ import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
 
 import {AppRoutes} from "./routes";
-import { createBasicUsers } from "./entity/User";
+import { createBasicUsers } from "./controller/user";
 
 require('dotenv-safe').config({
     path: path.resolve(__dirname, '../.env'),
@@ -14,7 +14,7 @@ require('dotenv-safe').config({
   });
 
 
-createConnection().then(async connection => {
+createConnection().then(async () => {
     const app = express();
     app.use(bodyParser.json());
 
