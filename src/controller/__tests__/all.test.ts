@@ -41,12 +41,13 @@ afterAll ( async () => {
 
 describe('Model', () => {
     let id: number;
+    const testKey = 'SomeKey';
     it('PUT should response 200', async () => {
         await axios({
             method:'put',
             url:'http://localhost:4000/model',
             data: {
-                key: 'SomeKey',
+                key: testKey,
             }
         })
         .then( response => {
@@ -70,7 +71,7 @@ describe('Model', () => {
             throw error;
         });
     });
-    it('POST should response 400', async () => {
+    it('POST should response 404', async () => {
         await axios({
             method:'post',
             url:'http://localhost:4000/model/',
@@ -80,6 +81,20 @@ describe('Model', () => {
         })
         .catch( error => {
             expect(error.response.status).toBe(404);
+        });
+    });
+    it('GET should response 200', async () => {
+        await axios({
+            method:'get',
+            url:`http://localhost:4000/model/${id}`,
+        })
+        .then( response => {
+            expect(response.data.key).toBe(testKey);
+            expect(response.data.id).toBe(id);
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
         });
     });
     it('DELETE should response 200', async () => {

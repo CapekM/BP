@@ -34,3 +34,14 @@ export async function deleteModel(request: Request, response: Response) {
     await getRepository(Model).remove(entity);
     response.send('OK');
 }
+
+export async function getModel(request: Request, response: Response) {
+    if (!('modelID' in request.params)) {
+        response.status(400);
+    }
+    const entity = await getRepository(Model).findOne(request.params.modelID);
+    if (! entity) {
+        response.status(404);
+    }
+    response.send(entity);
+}

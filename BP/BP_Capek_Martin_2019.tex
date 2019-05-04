@@ -441,9 +441,10 @@ Finally, I will describe the development of the API, which will result in a func
             \cite{typeorm}
         \subsection{GitLab}
             todo
-    \section{Vývojářské prostředí pro OS~Linux}
-        V této sekci se budu věnovat přípravě výojářského prostředí v Node.js.
-        Prvně si musíme nainstalovat Node.js a správce balíčk npm.
+    \section{Vývojářské prostředí pro OS~Linux}  \label{vyvProstredi}
+        V této sekci se budu věnovat přípravě výojářského prostředí v Node.js a popíši zde jak zprovoznit API. Stejným postupem byla provedena i \hyperref[impl]{Implementace}.
+        
+        Nejprve si musíme nainstalovat Node.js a správce balíčk npm.
         \begin{minted}{bash}
 sudo apt install nodejs -y
 sudo apt install npm -y
@@ -495,18 +496,127 @@ app.listen(process.env.LISTEN_ON);
         \begin{minted}{bash}
 echo "LISTEN_ON=4000" > .example.env && cp .example.env .env
         \end{minted}
-        Teď máme vše připraveno, abychom zapnuli naše jednoduché API s jedním koncovým bodem. Nastartujeme aplikaci, která bude poslouchat na portu 4000.  
+        Teď máme vše připraveno, abychom spustili naše jednoduché API s jedním koncovým bodem. Nastartujeme aplikaci, která bude poslouchat na portu 4000 příkazem:  
         \begin{minted}{bash}
 npm start
         \end{minted}
         Můžeme otestovat fukčnost v Postmanu\footnote{\url{https://www.getpostman.com}}, tak že zavoláme koncový bod, který nám vrátí Hello World! Příklad na obrázku\hyperref[fig:Postman]{ 4.3}.
         \begin{figure}[h!]
-            \includegraphics[scale=0.45]{PostmanHelloWorld}
+            \includegraphics[width=\linewidth]{PostmanHelloWorld}
             \caption{Postman}
         \end{figure}
-    \section{Implementace}
-        Jak jsou definovány koncové body
+        \subsection{Databázové připojení s TypeORM}
+            Začneme s vytvořením souboru ormconfig.json v našem kořenovém adresáři, kde bude uložena konfigurace databázového připojení. Můžete se inspirovat souborem "ormconfig.json" v el. příloze, zde je použita PostgreSQL databáze. V této konfiguraci budeme definovat naše schéma. To zadefinujeme pomocí popsání entit. V ormconfig.json bude zapsáno, kde se naše entity nachází.
+            \begin{minted}{json}
+"entities": ["src/entity/**/*.ts"]
+            \end{minted}
+            Vytvoříme si soubor src/entity/User.ts.
+            \begin{minted}{TypeScript}
+import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+
+@Entity()
+export class User {
+
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @Column({
+        unique: true,
+    })
+    username: string;
+
+    @Column({
+        unique: true,
+    })
+    email: string;
+
+    @Column()
+    password: string;
+
+}
+            \end{minted}
+            Připíšeme do souboru src/app.ts vytvoření databázového připojení.
+            \begin{minted}{TypeScript}
+createConnection().then(async () => {
+    const app = express();
+    app.use(bodyParser.json());
+    app.listen((process.env.LISTEN_ON && +process.env.LISTEN_ON) || 8080);
+    console.log(`> Ready on http://${process.env.LISTEN_ON}`);
+}).catch(error => console.log("TypeORM connection error: ", error));
+
+            \end{minted}
+            Naší databázi můžeme nechat prázdnou a TypeORM nám vytvoří schéma podle našich entit.
+            Pokud máte funkční databází a správně připojení, mělo by se vám v konzoli po spuštění aplikace zobrazit:
+            \begin{minted}{bash}
+> Ready on http://4000
+            \end{minted}
+        \subsection{Volání endpointu}
+            V této sekci si vytvoříme koncový bod, který nám vrátí všechny uživatele.
+            
+            Nejprve si vytvoříme adresář src/controller, zde se budou nacházet koncové body. Vytvoříme si zde soubor user.t, kde zadefinujeme koncový bod getAllUsers a funkci createBasicUsers, která nám vytvoří uživatele v databázi.
+            \begin{minted}{TypeScript}
+import {Request, Response} from "express";
+import {getManager, getRepository} from "typeorm";
+import { User } from '../entity/User';
+
+export async function getAllUsers(request: Request, response: Response) {
+
+    const postRepository = getManager().getRepository(User);
+
+    const users = await postRepository.find();
+
+    response.send(users);
+}
+
+function createUser(username: string, email: string, password: string): User {
+    const user = new User();
+    user.username = username;
+    user.email = email;
+    user.password = password;
+    return user;
+}
+
+export async function createBasicUsers(): Promise<void> {
+    await getRepository(User).save(createUser("Aman", "a@man.cz", "1234"));
+    await getRepository(User).save(createUser("Batman", "batman@example.com", "1234"));
+}
+            \end{minted}
+            Vytvoříme soubor src/routes.ts, kde se budou nacházet všechny cesty pro koncové body.
+            \begin{minted}{TypeScript}
+import { getAllUsers } from "./controller/user";
+
+export const AppRoutes = [
+    {
+        path: "/users",
+        method: "get",
+        action: getAllUsers
+    },
+];
+            \end{minted}
+            Nakonec přidáme do src/app.ts následující kód, který zavolá funkci pro přidání uživatelů a přidá koncové body z src/routes.ts.
+            \begin{minted}{TypeScript}
+import {Request, Response} from "express";
+import {AppRoutes} from "./routes";
+import { createBasicUsers } from "./controller/user";
+
+    await createBasicUsers();
+    AppRoutes.forEach(route => {
+        app[route.method](route.path, (request: Request, response: Response, next: Function) => {
+            route.action(request, response)
+                .then(() => next)
+                .catch(err => next(err));
+        });
+    });
+            \end{minted}
+            Nastartujeme naší aplikaci a funkčnost můžeme otestovat v Postmanu\footnote{\url{https://www.getpostman.com}}. Zaolání koncového bodu by mělo vypadat tak, jak je zachyceno na obrázku\hyperref[fig:PostmanUsers]{ 4.4}.
+        \begin{figure}[h!]
+            \includegraphics[width=\linewidth]{postmanUsers}
+            \caption{PostmanUsers}
+        \end{figure}
+    \section{Implementace} \label{impl}
+        Zde popíši jak vypadá prototyp Rest API pro Editor virtuální reality. Naše implementace navazuje na předchozí sekci \hyperref[vyvProstredi]{Vývojářské prostředí pro OS Linux}. Jelikož se na databázi v projektu Věnná města českých královen ještě pracuje, bylo rozhodnuto, že v prototypu budou pouze entity User a Model a koncové body k těmto entitám.
         
+
         Zabezpečení s JWT?
         
         Databáze
@@ -523,7 +633,7 @@ npm start
 
 
     \section{GitLab}
-    Pro verzování teoretické i praktické části jsem používal GitHub. GitHub nabízí nástroj pro průběžnou integraci, který dovoluje při každém commitu spustit skript který je zapsaný v souboru pojmenovaném ".gitlab.yml" uloženém v kořenovém adresáři projektu. My budeme chtít, aby se nám po commitu aplikace sestavila a spustili se na ní naše testy.
+    Pro verzování teoretické i praktické části jsem používal GitLab. GitLab nabízí nástroj pro průběžnou integraci, který dovoluje při každém commitu spustit skript který je zapsaný v souboru pojmenovaném ".gitlab.yml" uloženém v kořenovém adresáři projektu. My budeme chtít, aby se nám po commitu aplikace sestavila a spustili se na ní naše testy.
     
 
 \begin{conclusion}

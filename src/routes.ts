@@ -1,6 +1,6 @@
 import { getAllUsers } from "./controller/user";
 import { login } from "./controller/login";
-import { postModel, deleteModel, putModel } from "./controller/model";
+import { postModel, deleteModel, putModel, getModel } from "./controller/model";
 
 /**
  * All application routes.
@@ -30,5 +30,10 @@ export const AppRoutes = [
         path: "/model/:modelID",
         method: "post",
         action: postModel
+    },
+    {
+        path: "/model/:modelID",
+        method: "get",
+        action: getModel
     },
 ];

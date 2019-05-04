@@ -1,8 +1,17 @@
+services:
+  - postgres:latest
+
+variables:
+  POSTGRES_DB: vmtest
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "vennamesta"
+
     image: node:latest
 
     stages:
       - install
       - build
+      - test
 
     cache:
       paths:
@@ -20,3 +29,11 @@
     build:
       stage: build
       script: npm run build
+
+    test:
+      stage: test
+      script:
+        - npm test
+      artifacts:
+        paths:
+          - node_modules/
