@@ -36,7 +36,7 @@ beforeAll ( async () => {
 });
 
 afterAll ( async () => {
-    server.close();
+    // server.close();
     await connection.close();
 });
 
