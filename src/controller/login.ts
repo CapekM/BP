@@ -19,5 +19,5 @@ export async function login(request: Request, response: Response) {
         response.status(401).send('Login failed wrong password')
     }
 
-    response.send(jwt.sign({username: user[0].username}, process.env.JWT_SECRET, { expiresIn: '1h' }));
+    response.send(jwt.sign({username: user[0].username}, process.env.JWT_SECRET, { expiresIn: '4h' }));
 }

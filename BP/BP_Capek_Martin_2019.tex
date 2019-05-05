@@ -613,32 +613,81 @@ import { createBasicUsers } from "./controller/user";
             \includegraphics[width=\linewidth]{postmanUsers}
             \caption{PostmanUsers}
         \end{figure}
+    \newpage
     \section{Implementace} \label{impl}
-        Zde popíši jak vypadá prototyp Rest API pro Editor virtuální reality. Naše implementace navazuje na předchozí sekci \hyperref[vyvProstredi]{Vývojářské prostředí pro OS Linux}. Jelikož se na databázi v projektu Věnná města českých královen ještě pracuje, bylo rozhodnuto, že v prototypu budou pouze entity User a Model a koncové body k těmto entitám.
+        Zde popíši jak vypadá prototyp Rest API pro Editor virtuální reality. Naše implementace navazuje na předchozí sekci \hyperref[vyvProstredi]{Vývojářské prostředí pro OS Linux}.
         
+        Jelikož se na databázi v projektu Věnná města českých královen ještě pracuje, bylo rozhodnuto, že v prototypu budou pouze entity User a Model.
 
-        Zabezpečení s JWT?
+        Implementovány jsou koncové body:
+        \begin{itemize}
+            \item POST /login
+                
+                Vyžaduje jméno a heslo uživatele. Vrací \hyperref[jwt]{JWT}, pomocí kterého se uživatel autorizuje. JWT expiruje po 4 hodinách od vytvoření.
+            \item DELETE /model/:modelID
+            
+                Vyžaduje autorizaci. Vymaže danou entitu z databáze.
+            \item PUT /model
+            
+                Vyžaduje autorizaci. Vytvoří entitu v databázi.
+            \item POST /model/:modelID
+            
+                Vyžaduje autorizaci. Změní danou entitu v databázi.
+            \item GET /model/:modelID
+            
+                Vyžaduje autorizaci. Vrátí danou entitu.
+        \end{itemize}
         
-        Databáze
+        Autorizace probíhá pomocí JWT (viz \hyperref[jwt]{sekce JWT}), který se pošle v hlavičce požadavku.
+
+        Struktura adresáře je zachycena na \hyperref[fig:adresar]{obrázku 4.5}.
+
+        \begin{figure}[h!]
+        	\dirtree{%
+        		.1 src.
+        		.2 controller\DTcomment{akce koncových bodů}.
+        		.2 entity\DTcomment{databázové schéma}.
+        		.2 app.ts\DTcomment{hlavní spustitelný soubor}.
+        		.2 routes.ts\DTcomment{specifikace URI koncových bodů}.
+        		.1 .example.env\DTcomment{názvy proměnných prostředí}.
+        		.1 .gitignore\DTcomment{ignorované soubory pro verzování}.
+        		.1 .gitlab-ci.yml\DTcomment{skript pro GitLab CI}.
+        		.1 ormconfig.json\DTcomment{připojení na databázi}.
+        		.1 package.json\DTcomment{definování projektu a jeho závislostí}.
+        		.1 tsconfig.json\DTcomment{konfigurace TypeScriptu}.
+        		.1 tslint.json\DTcomment{nastavení linteru}.
+        	}
+            \label{fig:adresar}
+            \caption{Adresář implementace}
+        \end{figure}
         
-        Jak se spouští - příručka / md + odkaz na el. přílohu
-        
-        Nastavení linteru?
-        
+        Prototyp pokrývá pouze část návrhu v el. příloze - Swagger. Prototyp ovšem může sloužit jako základní struktura, na kterou se dodělá zbytek schématu a koncových bodů.
+
+        Hesla uživatelů se momentálně ukládají v plaintaxtu, což není ideální.  
 \chapter{Testování}
-    Pro ověření funkčnosti našeho prototypu provedeme jednotkové testování. Jednotka v našem případě znamená koncový bod. Pro testování našho API použijeme Jest.
+    Pro ověření funkčnosti našeho prototypu provedeme jednotkové testování. Jednotka v našem případě znamená koncový bod. Pro testování našeho API použijeme framework Jest.
 
     \section{Jest}
-    Jest je Framework pro testování JavaScriptových apilkací. Hodí se pro testování Node.js a typescriptu.
-
-
+        Jest je framework pro testování JavaScriptových apilkací. Hodí se pro testování Node.js a typescriptu.
+        Pro náš prototyp jsem vytvořil dva konfigurační soubory pro testování, které se liší pouze tím, že v jednom se analyzuje pokrytí kódu testy. Testy bez pokrytí se pouští příkazem:
+            \begin{minted}{bash}
+npm test
+            \end{minted}
+        A testy s pokrytím:
+            \begin{minted}{bash}
+npm run test-with-coverage
+            \end{minted}
+        Pokrytí kódu testy se nám uloží do složky coverage. Můžeme si v internetovém prohlížeči otevřít soubor coverage/lcov-report/index.html viz el. příloha, ve kterém vidíme statistiku pokrytí kódu testy a můžeme si interaktivně procházet adresář a dívat se na pokrytí konkrétních souborů.
+        
+        
+        Axios?
     \section{GitLab}
-    Pro verzování teoretické i praktické části jsem používal GitLab. GitLab nabízí nástroj pro průběžnou integraci, který dovoluje při každém commitu spustit skript který je zapsaný v souboru pojmenovaném ".gitlab.yml" uloženém v kořenovém adresáři projektu. My budeme chtít, aby se nám po commitu aplikace sestavila a spustili se na ní naše testy.
+        Pro verzování teoretické i praktické části jsem používal GitLab. GitLab nabízí nástroj pro průběžnou integraci, který dovoluje při každém commitu spustit skript který je zapsaný v souboru pojmenovaném ".gitlab.yml" uloženém v kořenovém adresáři projektu. My budeme chtít, aby se nám po commitu aplikace sestavila a spustili se na ní naše testy.
     
 
 \begin{conclusion}
     V práci byla provedena analýza funkčních požadavků editoru virtuální reality, nefukčních požadavků na API, technologií použitých při implementaci, nástrojů pro návrh API, z těchto nástrojů byl vybrán nejvhodnější kandidát na základě hodnotících metrik a tím je Swagger. S tímto nástrojem byl proveden návrh API a tím i jeho dokumentace. Tato dokumentace může sloužit jako vzor komukoli, kdo chce dokumentovat API.
-    V návrhu jsem se setkal s problémem, že současná databáze Věnných měst českých královen nepostačuje požadavkům editoru virtuální reality, byly tedy provedeny změny ve schématu databáze.
+    V návrhu se vyskytl problém, že současná databáze Věnných měst českých královen nepostačuje požadavkům editoru virtuální reality, byl proveden návrh bez ohledu na současný stav databáze avšak implementace prototypu pokryla jen část návrhu. Tento prototyp je připraven na další rozšíření.
     Dále tato práce obsahuje popstup vývoje API v Node.js, který může být inspirací budoucím řešitelům implementace API v Node.js.
     Nakonec byla provedena implementace funkčního prototypu API z předešlého návrhu a jeho otestování.
 
@@ -654,12 +703,12 @@ import { createBasicUsers } from "./controller/user";
 % \printglossaries
 \begin{description}
 	\item[API] Application Programming Interface
-	\item[I/O] Input/Output
-	\item[npm] Node.js package manager
-	\item[IDE] Integrated Development Environment
-	\item[JSON] JavaScript Object Notation
-	\item[OAS] OpenAPI Specification
 	\item[CI] Continuous Integration
+	\item[IDE] Integrated Development Environment
+	\item[I/O] Input/Output
+	\item[JSON] JavaScript Object Notation
+	\item[npm] Node.js package manager
+	\item[OAS] OpenAPI Specification
 \end{description}
 
 
@@ -778,7 +827,7 @@ import { createBasicUsers } from "./controller/user";
 		.1 readme.txt\DTcomment{stručný popis obsahu CD}.
 		.1 exe\DTcomment{adresář se spustitelnou formou implementace}.
 		.1 src.
-		.2 impl\DTcomment{zdrojové kódy implementace}.
+		.2 impl\DTcomment{zdrojové kódy implementace}.  
 		.2 thesis\DTcomment{zdrojová forma práce ve formátu \LaTeX{}}.
 		.1 text\DTcomment{text práce}.
 		.2 thesis.pdf\DTcomment{text práce ve formátu PDF}.

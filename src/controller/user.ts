@@ -17,12 +17,7 @@ function createUser(username: string, email: string, password: string): User {
 }
 
 export async function createBasicUsers(): Promise<void> {
-    const users = await getRepository(User).find();
-    users.forEach((user) => {
-        if (user.username === "Aman" || "Batman") {
-            getRepository(User).delete(user.id);
-        }
-    });
+    await getRepository(User).clear();
     await getRepository(User).save(createUser("Aman", "a@man.cz", "1234"));
     await getRepository(User).save(createUser("Batman", "batman@example.com", "1234"));
 }
