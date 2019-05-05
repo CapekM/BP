@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Server } from "http";
 import * as express from "express";
 import * as jwt from 'jsonwebtoken';
+import * as ejwt from 'express-jwt';
 import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
 import { createConnection, Connection } from 'typeorm';
@@ -12,6 +13,8 @@ import { createBasicUsers } from "../user";
 
 let connection: Connection;
 let server: Server;
+let token: string;
+
 beforeAll ( async () => {
     const result = await createConnection().catch(error => console.log("TypeORM connection error: ", error));
 
@@ -22,6 +25,7 @@ beforeAll ( async () => {
 
     const app = express();
     app.use(bodyParser.json());
+    app.use(ejwt({ secret: process.env.JWT_SECRET }).unless({ path: ["/login"] }));
 
     await createBasicUsers();
 
@@ -41,93 +45,6 @@ afterAll ( async () => {
     await connection.close();
 });
 
-describe('Model', () => {
-    let id: number;
-    const testKey = 'SomeKey';
-    it('PUT should response 200', async () => {
-        await axios({
-            method:'put',
-            url:'http://localhost:4000/model',
-            data: {
-                key: testKey,
-            }
-        })
-        .then( response => {
-            expect(response.data).toHaveProperty('id');
-            id = response.data.id;
-            expect(response.status).toBe(200);
-        })
-        .catch( error => {
-            throw error;
-        });
-    });
-    it('POST should response 200', async () => {
-        await axios({
-            method:'post',
-            url:`http://localhost:4000/model/${id}`,
-        })
-        .then( response => {
-            expect(response.status).toBe(200);
-        })
-        .catch( error => {
-            throw error;
-        });
-    });
-    it('POST should response 404', async () => {
-        await axios({
-            method:'post',
-            url:'http://localhost:4000/model/',
-        })
-        .then( () => {
-            throw new Error('Axios should return Error');
-        })
-        .catch( error => {
-            expect(error.response.status).toBe(404);
-        });
-    });
-    it('GET should response 200', async () => {
-        await axios({
-            method:'get',
-            url:`http://localhost:4000/model/${id}`,
-        })
-        .then( response => {
-            expect(response.data.key).toBe(testKey);
-            expect(response.data.id).toBe(id);
-            expect(response.status).toBe(200);
-        })
-        .catch( error => {
-            throw error;
-        });
-    });
-    it('DELETE should response 200', async () => {
-        await axios({
-            method:'delete',
-            url:`http://localhost:4000/model/${id}`,
-        })
-        .then( response => {
-            expect(response.status).toBe(200);
-        })
-        .catch( error => {
-            throw error;
-        });
-    });
-});
-
-describe('Users', () => {
-    it('should response 200', async () => {
-        await axios({
-            method:'get',
-            url:'http://localhost:4000/users',
-        })
-        .then( response => {
-            expect(response.status).toBe(200);
-        })
-        .catch( error => {
-            throw error;
-        });
-    });
-});
-
 describe('Login', () => {
     it('should response 200', async () => {
         await axios({
@@ -139,8 +56,8 @@ describe('Login', () => {
             }
         })
         .then( response => {
-            const decoded = jwt.verify(response.data, process.env.JWT_SECRET);
-            expect(typeof decoded).toBe('object');
+            token = response.data;
+            expect(typeof jwt.verify(token, process.env.JWT_SECRET)).toBe('object');
             expect(response.status).toBe(200);
         })
         .catch( error => {
@@ -175,6 +92,100 @@ describe('Login', () => {
         })
         .catch( error => {
             expect(error.response.status).toBe(401);
+        });
+    });
+});
+
+describe('Model', () => {
+    let id: number;
+    const testKey = 'SomeKey';
+
+    it('PUT should response 200', async () => {
+        await axios({
+            method:'put',
+            url:'http://localhost:4000/model',
+            headers: { 'Authorization': `Bearer ${token}` },
+            data: {
+                key: testKey,
+            },
+        })
+        .then( response => {
+            expect(response.data).toHaveProperty('id');
+            id = response.data.id;
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
+        });
+    });
+    it('POST should response 200', async () => {
+        await axios({
+            method:'post',
+            url:`http://localhost:4000/model/${id}`,
+            headers: { 'Authorization': `Bearer ${token}` },
+        })
+        .then( response => {
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
+        });
+    });
+    it('POST should response 404', async () => {
+        await axios({
+            method:'post',
+            url:'http://localhost:4000/model/',
+            headers: { 'Authorization': `Bearer ${token}` },
+        })
+        .then( () => {
+            throw new Error('Axios should return Error');
+        })
+        .catch( error => {
+            expect(error.response.status).toBe(404);
+        });
+    });
+    it('GET should response 200', async () => {
+        await axios({
+            method:'get',
+            url:`http://localhost:4000/model/${id}`,
+            headers: { 'Authorization': `Bearer ${token}` },
+        })
+        .then( response => {
+            expect(response.data.key).toBe(testKey);
+            expect(response.data.id).toBe(id);
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
+        });
+    });
+    it('DELETE should response 200', async () => {
+        await axios({
+            method:'delete',
+            url:`http://localhost:4000/model/${id}`,
+            headers: { 'Authorization': `Bearer ${token}` },
+        })
+        .then( response => {
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
+        });
+    });
+});
+
+describe('Users', () => {
+    it('should response 200', async () => {
+        await axios({
+            method:'get',
+            url:'http://localhost:4000/users',
+            headers: { 'Authorization': `Bearer ${token}` },
+        })
+        .then( response => {
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
         });
     });
 });

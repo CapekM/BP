@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import * as path from 'path';
+import * as ejwt from 'express-jwt';
 import * as express from "express";
 import {createConnection} from "typeorm";
 import {Request, Response} from "express";
@@ -17,6 +18,7 @@ require('dotenv-safe').config({
 createConnection().then(async () => {
     const app = express();
     app.use(bodyParser.json());
+    app.use(ejwt({ secret: process.env.JWT_SECRET }).unless({ path: ["/login"] }));
 
     await createBasicUsers();
 

@@ -7,14 +7,14 @@ import { postModel, deleteModel, putModel, getModel } from "./controller/model";
  */
 export const AppRoutes = [
     {
-        path: "/users",
-        method: "get",
-        action: getAllUsers
-    },
-    {
         path: "/login",
         method: "post",
         action: login
+    },
+    {
+        path: "/users",
+        method: "get",
+        action: getAllUsers
     },
     {
         path: "/model/:modelID",
