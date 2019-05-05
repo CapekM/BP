@@ -1,10 +1,11 @@
 import "reflect-metadata";
 import axios from 'axios';
-import { createConnection, Connection } from 'typeorm';
+import { Server } from "http";
 import * as express from "express";
+import * as jwt from 'jsonwebtoken';
 import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
-import { Server } from "http";
+import { createConnection, Connection } from 'typeorm';
 
 import { AppRoutes } from '../../routes';
 import { createBasicUsers } from "../user";
@@ -35,10 +36,10 @@ beforeAll ( async () => {
     server = app.listen((process.env.LISTEN_ON && +process.env.LISTEN_ON) || 8080);
 });
 
-// afterAll ( async () => {
-//     server.close();
-//     await connection.close();
-// });
+afterAll ( async () => {
+    server.close();
+    await connection.close();
+});
 
 describe('Model', () => {
     let id: number;
@@ -133,15 +134,34 @@ describe('Login', () => {
             method:'post',
             url:'http://localhost:4000/login',
             data: {
-                username: 'Fred',
-                password: 'kamen'
+                username: 'Batman',
+                password: '1234'
             }
         })
         .then( response => {
+            const decoded = jwt.verify(response.data, process.env.JWT_SECRET);
+            expect(typeof decoded).toBe('object');
             expect(response.status).toBe(200);
         })
         .catch( error => {
             throw error;
+        });
+    });
+
+    it('should response 401', async () => {
+        await axios({
+            method:'post',
+            url:'http://localhost:4000/login',
+            data: {
+                username: 'Batman',
+                password: ''
+            }
+        })
+        .then( () => {
+            throw new Error('Axios should return Error');
+        })
+        .catch( error => {
+            expect(error.response.status).toBe(401);
         });
     });
 

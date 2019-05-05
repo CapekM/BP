@@ -3,10 +3,7 @@ import {getManager, getRepository} from "typeorm";
 import { User } from '../entity/User';
 
 export async function getAllUsers(request: Request, response: Response) {
-
-    const postRepository = getManager().getRepository(User);
-
-    const users = await postRepository.find();
+    const users = await getRepository(User).find();
 
     response.send(users);
 }
