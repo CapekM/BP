@@ -25,13 +25,14 @@
     test:
       stage: test
       services:
-        - postgres:latest
+        - postgres
 
       variables:
         POSTGRES_DB: vmtest
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: "vennamesta"
       script:
+        - docker-compose up -d 
         - npm test
       artifacts:
         paths:

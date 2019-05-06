@@ -1,0 +1,12 @@
+services:
+
+  # postgres
+  postgres:
+    image: "postgres:9.6.1"
+    container_name: "typeorm-postgres"
+    ports:
+      - "5432:5432"
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: "vennamesta"
+        POSTGRES_DB: vmtest
