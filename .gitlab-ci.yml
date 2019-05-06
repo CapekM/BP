@@ -1,6 +1,5 @@
-    image: 
-      - node:latest
-      - docker:latest
+    image: node:latest
+    image: docker:latest
 
     stages:
       - install
