@@ -1,5 +1,4 @@
     image: node:latest
-    image: docker:latest
 
     stages:
       - install
@@ -24,14 +23,8 @@
       script: npm run build
 
     test:
+      image: docker:latest
       stage: test
-      services:
-        - postgres
-
-      variables:
-        POSTGRES_DB: vmtest
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: "vennamesta"
       script:
         - docker-compose up -d 
         - npm test
