@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir smth
 wget http://nodejs.org/dist/v0.6.0/node-v0.6.0.tar.gz
 tar -zxf node-v0.6.0.tar.gz
 cd node-v0.6.0
