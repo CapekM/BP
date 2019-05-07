@@ -43,8 +43,6 @@
 
     deploy:
       stage: deploy
-      tags:
-        - docker
       image: bigcloudcz/fpm
       script: |
           ./makedeb.sh
