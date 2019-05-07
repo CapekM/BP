@@ -7,6 +7,7 @@
       - install
       - build
       - test
+      - deploy
 
     cache:
       paths:
@@ -26,11 +27,31 @@
       script: npm run build
 
     test:
-      image: docker:latest
       stage: test
+      services:
+        - postgres:latest
       script:
-        - docker-compose up -d 
         - npm test
       artifacts:
         paths:
           - node_modules/
+
+    deploy:
+      stage: deploy
+      tags:
+        - docker
+      image: bigcloudcz/fpm
+      script: |
+          ./makedeb.sh
+          mkdir debs
+          mv *.deb debs
+          mkdir ~/.ssh
+          echo "$DEPLOY_SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          echo "$DEPLOY_SSH_ID" >> ~/.ssh/known_hosts
+
+          # one line because gitlab freaks on multiline case statements
+          case $CI_BUILD_REF_NAME in "master") distro="development" ;; "staging"|"testing") distro="staging" ;; "production") distro="production" ;; *) echo "Unknown branch $CI_BUILD_REF_NAME. Skipping deploy." exit 0 ;; esac
+
+          for deb in debs/*.deb; do
+            cat "$deb" | ssh $DEPLOY_SSH_HOST $distro
+          done
