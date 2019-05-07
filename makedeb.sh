@@ -1,5 +1,4 @@
 #!/bin/bash
-apk add --update wget && rm -rf /var/cache/apk/*
 wget http://nodejs.org/dist/v0.6.0/node-v0.6.0.tar.gz
 tar -zxf node-v0.6.0.tar.gz
 cd node-v0.6.0

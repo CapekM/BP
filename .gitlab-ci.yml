@@ -26,20 +26,21 @@
       stage: build
       script: npm run build
 
-    # test:
-    #   stage: test
-    #   # services:
-    #   #   - postgres:latest
-    #   # variables:
-    #   #   POSTGRES_USER: postgres
-    #   #   POSTGRES_PASSWORD: vennamesta
-    #   #   POSTGRES_DB: vmtest
-    #   script:
-    #     - docker-compose up
-    #     - npm test
-    #   artifacts:
-    #     paths:
-    #       - node_modules/
+    test:
+      stage: test
+      # services:
+      #   - postgres:latest
+      # variables:
+      #   POSTGRES_USER: postgres
+      #   POSTGRES_PASSWORD: vennamesta
+      #   POSTGRES_DB: vmtest
+      script:
+        - docker info
+        - docker-compose up
+        - npm test
+      artifacts:
+        paths:
+          - node_modules/
 
     deploy:
       stage: deploy
