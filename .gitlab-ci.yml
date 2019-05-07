@@ -35,6 +35,7 @@
       #   POSTGRES_PASSWORD: vennamesta
       #   POSTGRES_DB: vmtest
       script:
+        - sudo apt-get install docker.io
         - docker info
         - docker-compose up
         - npm test
