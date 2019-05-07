@@ -30,6 +30,10 @@
       stage: test
       services:
         - postgres:latest
+      variables:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: vennamesta
+        POSTGRES_DB: vmtest
       script:
         - npm test
       artifacts:
