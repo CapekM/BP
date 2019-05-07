@@ -1,7 +1,7 @@
     image: node:latest
 
     services:
-      - docker:dind
+      - docker
 
     stages:
       - install
