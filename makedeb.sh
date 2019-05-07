@@ -1,26 +1,22 @@
 #!/bin/bash
-mkdir -p dist/opt/bigcloud-statemanager
-mkdir -p dist/usr/lib/systemd/system/
-mv *.js lib config node_modules dist/opt/bigcloud-statemanager
-chmod 644 debian/*.service
-mv debian/*.service dist/usr/lib/systemd/system/
+wget http://nodejs.org/dist/v0.6.0/node-v0.6.0.tar.gz
+tar -zxf node-v0.6.0.tar.gz
+cd node-v0.6.0
+./configure --prefix=/usr
+make
+# Install to a separate directory for capture.
+mkdir /tmp/installdir
+make install DESTDIR=/tmp/installdir
+# Create a nodejs deb with only bin and lib directories:
+# The 'VERSION' and 'ARCH' strings are automatically filled in for you
+# based on the other arguments given.
+fpm -s dir -t deb -n nodejs -v 0.6.0 -C /tmp/installdir \
+  -p nodejs_VERSION_ARCH.deb \
+  -d "libssl0.9.8 > 0" \
+  -d "libstdc++6 >= 4.4.3" \
+  usr/bin usr/lib
+# 'fpm' just produced us a nodejs deb:
+file nodejs_0.6.0-1_amd64.deb nodejs_0.6.0-1_amd64.deb: Debian binary package (format 2.0)
+sudo dpkg -i nodejs_0.6.0-1_amd64.deb
 
-versiondir=dist/opt/bigcloud-statemanager/version.txt
-
-version=$(cat package.json | grep -P -o '(?<="version": ")[0-9.]+')
-
-printf "%s" "$version" > "$versiondir"
-
-iteration=$(date +%s)
-
-fpm -s dir -t deb -C dist -n bigcloud-statemanager \
-   -m "<jchludil@sic.cz>" \
-   --config-files opt/bigcloud-statemanager/config \
-   --after-install debian/postinst \
-   -v "$version" \
-   --iteration "$iteration" \
-   -d "mongodb-org >= 3.4.0" \
-   -d "systemd" \
-   -d "nodejs >= 4.2.2" \
-   -d "bigcloud-saltmaster >= 0.0.8"\
-   opt usr
+/usr/bin/node --version v0.6.0
