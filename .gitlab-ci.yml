@@ -1,7 +1,7 @@
-    image: node:latest
+image: docker
 
-    services:
-      - docker
+services:
+  - docker:dind
 
     stages:
       - install
@@ -34,8 +34,6 @@
       #   POSTGRES_USER: postgres
       #   POSTGRES_PASSWORD: vennamesta
       #   POSTGRES_DB: vmtest
-      tags:
-        - docker
       script:
         - docker info
         - docker-compose up -d
