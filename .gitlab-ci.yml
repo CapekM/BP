@@ -1,7 +1,7 @@
-image: docker
+image: node
 
 services:
-  - docker:dind
+  - docker:stable
 
     stages:
       - install

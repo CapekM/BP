@@ -9,7 +9,7 @@ export const AppRoutes = [
     {
         path: "/login",
         method: "post",
-        action: login
+        action: login,
     },
     {
         path: "/users",

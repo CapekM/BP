@@ -6,14 +6,16 @@ import * as jwt from 'jsonwebtoken';
 import * as ejwt from 'express-jwt';
 import {Request, Response} from "express";
 import * as bodyParser from "body-parser";
-import { createConnection, Connection } from 'typeorm';
+import { createConnection, Connection, getRepository } from 'typeorm';
 
 import { AppRoutes } from '../../routes';
 import { createBasicUsers } from "../user";
+import { ModelPermission } from "../../entity/ModelPermission";
 
 let connection: Connection;
 let server: Server;
-let token: string;
+let tokenA: string;
+let tokenB: string;
 
 beforeAll ( async () => {
     const result = await createConnection().catch(error => console.log("TypeORM connection error: ", error));
@@ -40,10 +42,11 @@ beforeAll ( async () => {
     server = app.listen((process.env.LISTEN_ON && +process.env.LISTEN_ON) || 8080);
 });
 
-// afterAll ( async () => {
-//     server.close();
-//     await connection.close();
-// });
+afterAll ( async () => {
+    await getRepository(ModelPermission).clear();
+    server.close();
+    await connection.close();
+});
 
 describe('Login', () => {
     it('should response 200', async () => {
@@ -56,8 +59,27 @@ describe('Login', () => {
             }
         })
         .then( response => {
-            token = response.data;
-            expect(typeof jwt.verify(token, process.env.JWT_SECRET)).toBe('object');
+            tokenB = response.data;
+            expect(typeof jwt.verify(tokenB, process.env.JWT_SECRET)).toBe('object');
+            expect(response.status).toBe(200);
+        })
+        .catch( error => {
+            throw error;
+        });
+    });
+
+    it('should response 200', async () => {
+        await axios({
+            method:'post',
+            url:'http://localhost:4000/login',
+            data: {
+                username: 'Aman',
+                password: '1234'
+            }
+        })
+        .then( response => {
+            tokenA = response.data;
+            expect(typeof jwt.verify(tokenA, process.env.JWT_SECRET)).toBe('object');
             expect(response.status).toBe(200);
         })
         .catch( error => {
@@ -104,7 +126,7 @@ describe('Model', () => {
         await axios({
             method:'put',
             url:'http://localhost:4000/model',
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${tokenB}` },
             data: {
                 key: testKey,
             },
@@ -122,7 +144,7 @@ describe('Model', () => {
         await axios({
             method:'post',
             url:`http://localhost:4000/model/${id}`,
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${tokenB}` },
         })
         .then( response => {
             expect(response.status).toBe(200);
@@ -131,11 +153,24 @@ describe('Model', () => {
             throw error;
         });
     });
+    it('POST should response 403', async () => {
+        await axios({
+            method:'post',
+            url:`http://localhost:4000/model/${id}`,
+            headers: { 'Authorization': `Bearer ${tokenA}` },
+        })
+        .then( () => {
+            throw new Error('Axios should return Error');
+        })
+        .catch( error => {
+            expect(error.response.status).toBe(403);
+        });
+    });
     it('POST should response 404', async () => {
         await axios({
             method:'post',
             url:'http://localhost:4000/model/',
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${tokenB}` },
         })
         .then( () => {
             throw new Error('Axios should return Error');
@@ -148,7 +183,7 @@ describe('Model', () => {
         await axios({
             method:'get',
             url:`http://localhost:4000/model/${id}`,
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${tokenB}` },
         })
         .then( response => {
             expect(response.data.key).toBe(testKey);
@@ -163,7 +198,7 @@ describe('Model', () => {
         await axios({
             method:'delete',
             url:`http://localhost:4000/model/${id}`,
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${tokenB}` },
         })
         .then( response => {
             expect(response.status).toBe(200);
@@ -179,7 +214,7 @@ describe('Users', () => {
         await axios({
             method:'get',
             url:'http://localhost:4000/users',
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${tokenB}` },
         })
         .then( response => {
             expect(response.status).toBe(200);

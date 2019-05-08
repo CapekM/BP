@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
-import {getManager, getRepository} from "typeorm";
-import { User } from '../entity/User';
+import {getRepository} from "typeorm";
+import {User} from '../entity/User';
 
 export async function getAllUsers(request: Request, response: Response) {
     const users = await getRepository(User).find();
@@ -17,7 +17,13 @@ function createUser(username: string, email: string, password: string): User {
 }
 
 export async function createBasicUsers(): Promise<void> {
-    await getRepository(User).clear();
-    await getRepository(User).save(createUser("Aman", "a@man.cz", "1234"));
-    await getRepository(User).save(createUser("Batman", "batman@example.com", "1234"));
+    const res = await getRepository(User).find({
+        where: {
+            username: 'Aman',
+        }
+    });
+    if (!res.length) {
+        await getRepository(User).save(createUser("Aman", "a@man.cz", "1234"));
+        await getRepository(User).save(createUser("Batman", "batman@example.com", "1234"));
+    }
 }
