@@ -327,9 +327,34 @@ Finally, API development and functional prototype implementation are described. 
             \includegraphics[width=\linewidth]{Domain_model}
             \caption{Doménový model}
         \end{figure}
+        \newline
+        Vysvětlení jednotlivých tabulek:
+        \begin{itemize}
+            \item Model
+            
+            Model je grafický model.
+            \item Field
+            
+            Field reprezentuje umístění objektu. Snadno si ho lze představit jako půdorys.
+            \item Project
+            
+            Projekt reprezentuje kolekci Fieldů, tedy zasazení grafických modelů. Může se jednat například o město v určitém historickém období.
+            \item User
+            
+            User, nebo--li uživatel, je někdo, kdo vytváří či upravuje grafické modely nebo zasazuje a upravuje pozici modelů v projektu.
+            \item Permission
+            
+            Aby uživatel mohl pracovat s modely a projekty musí k nim mít příslušná práva.
+            \item Mesh
+            
+            Polygon mesh (doslovně přeloženo jako \uv{polygonální síť}) se používá v počítačové grafice a reprezentuje tvar objektu. Je to soubor vrcholů, hran a povrchů, které dohromady vytváří mnohostěn.
+            \item Texture
+            
+            Textura jednotlivého domu. Předpokládáme textury pro různá počasí, různé roční období, různé denní doby apod.
+        \end{itemize}
         Tento doménový model bude inspirací pro můj návrh API a jeho implementaci.
     \section{Pokrytí funkčních požadavků}
-        Pokrytí funkčních požadavků jsem zachytil v \hyperref[tab:tabulkaPokryti]{tabulce 3.1}, kde ke každému požadavku je uveden koncový bod API. Funkční požadavky Odhlášení a Třídění miniatur nebudeme řešit v tomto návrhu, protože se o ně postará Editor.
+        Pokrytí funkčních požadavků jsem zachytil v \hyperref[tab:tabulkaPokryti]{tabulce 3.1}, kde ke každému požadavku je uveden koncový bod API, zapsaný syntaxí používanou ve Swaggeru. Funkční požadavky Odhlášení a Třídění miniatur nebudeme řešit v tomto návrhu, protože se o ně postará Editor.
         Odhlášení se provede v aplikaci odstraněním \hyperref[sec:jwt]{JWT}.
         Třídění miniatur následuje po Zobrazení miniatur po přihlášení, miniatury tedy budou uloženy v aplikaci a o jejich třídení se postará aplikace.
     
@@ -667,11 +692,11 @@ import { createBasicUsers } from "./controller/user";
 
         Hesla uživatelů se momentálně ukládají v plaintextu, což není ideální.
 \chapter{Testování}
-    Pro ověření funkčnosti našeho prototypu provedeme jednotkové testování. Jednotka v našem případě znamená koncový bod. Pro testování našeho API použijeme framework Jest.
+    Pro ověření funkčnosti našeho prototypu provedeme integrační testování. Integrační testování provedeme jako sled volání koncových bodů. Pro testování našeho API použijeme Jest.
 
     \section{Jest}
         Jest je framework pro testování JavaScriptových apilkací. Hodí se pro testování Node.js a typescriptu.
-        Pro náš prototyp jsem vytvořil dva konfigurační soubory pro testování, které se liší pouze tím, že v jednom se analyzuje pokrytí kódu testy. Testy bez pokrytí se pouští příkazem:
+        Pro náš prototyp jsem vytvořil dva konfigurační soubory pro testování, které se liší pouze tím, že v jednom je navíc pokrytí kódu testy. Testy bez pokrytí se pouští příkazem:
             \begin{minted}{bash}
 npm test
             \end{minted}
@@ -680,7 +705,6 @@ npm test
 npm run test-with-coverage
             \end{minted}
         Pokrytí kódu testy se nám uloží do složky coverage. Můžeme si v internetovém prohlížeči otevřít soubor coverage/lcov-report/index.html viz el. příloha, ve kterém vidíme statistiku pokrytí kódu testy a můžeme si interaktivně procházet adresář a dívat se na pokrytí konkrétních souborů.
-        
     \section{GitLab}
         Pro verzování teoretické i praktické části jsem používal GitLab. GitLab nabízí nástroj pro průběžnou integraci, který dovoluje při každém commitu spustit skript který je zapsaný v souboru pojmenovaném ".gitlab.yml" uloženém v kořenovém adresáři projektu. My budeme chtít, aby se nám po commitu aplikace sestavila a spustili se na ní naše testy.
     
@@ -708,7 +732,6 @@ npm run test-with-coverage
 	\item[I/O] Input/Output
 	\item[JSON] JavaScript Object Notation
 	\item[npm] Node.js package manager
-	\item[OAS] OpenAPI Specification
 \end{description}
 
 
