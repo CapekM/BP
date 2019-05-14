@@ -8,7 +8,6 @@ stages:
   - install
   - build
   - test
-  - deploy
 
 cache:
   paths:
