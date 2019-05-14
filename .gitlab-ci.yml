@@ -1,32 +1,34 @@
-before_script:
-  - docker info
+before_script: docker info
 
-build_image:
+image: node
+
+stages:
+  - install
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+    - build/
+
+install_dependencies:
+  stage: install
   script:
-    - docker-compose up -d
-#   paths:
-#     - node_modules/
-#     - build/
-# image: node
-# install_dependencies:
-#   artifacts:
-#     paths:
-#       - node_modules/
-#   script:
-#     - 'npm install'
-#   stage: install
-# services:
-#   - 'docker:stable'
-# stages:
-#   - install
-#   - build
-#   - test
-# test:
-#   artifacts:
-#     paths:
-#       - node_modules/
-#   script:
-#     - 'docker info'
-#     - 'docker-compose up'
-#     - 'npm test'
-#   stage: test
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+build:
+  stage: build
+  script: npm run build
+
+test:
+  artifacts:
+    paths:
+      - node_modules/
+  script: docker-compose up -d
+    npm test
+  stage: test
