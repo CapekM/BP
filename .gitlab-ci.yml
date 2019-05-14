@@ -1,61 +1,27 @@
+cache:
+  paths:
+    - node_modules/
+    - build/
 image: node
-
+install_dependencies:
+  artifacts:
+    paths:
+      - node_modules/
+  script:
+    - 'npm install'
+  stage: install
 services:
-  - docker:stable
-
-    stages:
-      - install
-      - build
-      - test
-      - deploy
-
-    cache:
-      paths:
-        - node_modules/
-        - build/
-
-    install_dependencies:
-      stage: install
-      script:
-        - npm install
-      artifacts:
-        paths:
-          - node_modules/
-
-    build:
-      stage: build
-      script: npm run build
-
-    test:
-      stage: test
-      # services:
-      #   - postgres:latest
-      # variables:
-      #   POSTGRES_USER: postgres
-      #   POSTGRES_PASSWORD: vennamesta
-      #   POSTGRES_DB: vmtest
-      script:
-        - docker info
-        - docker-compose up -d
-        - npm test
-      artifacts:
-        paths:
-          - node_modules/
-
-    deploy:
-      stage: deploy
-      image: bigcloudcz/fpm
-      script: |
-          ./makedeb.sh
-          # mkdir debs
-          # mv *.deb debs
-          # mkdir ~/.ssh
-          # echo "$DEPLOY_SSH_KEY" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-          # echo "$DEPLOY_SSH_ID" >> ~/.ssh/known_hosts
-
-          # # one line because gitlab freaks on multiline case statements
-          # case $CI_BUILD_REF_NAME in "master") distro="development" ;; "staging"|"testing") distro="staging" ;; "production") distro="production" ;; *) echo "Unknown branch $CI_BUILD_REF_NAME. Skipping deploy." exit 0 ;; esac
-
-          # for deb in debs/*.deb; do
-          #   cat "$deb" | ssh $DEPLOY_SSH_HOST $distro
-          # done
+  - 'docker:stable'
+stages:
+  - install
+  - build
+  - test
+test:
+  artifacts:
+    paths:
+      - node_modules/
+  script:
+    - 'docker info'
+    - 'docker-compose up -d'
+    - 'npm test'
+  stage: test

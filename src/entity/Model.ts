@@ -11,6 +11,9 @@ export class Model {
   @Column()
   key: string;
 
+  @Column()
+  description: string;
+
   @OneToMany(type => Field, field => field.model)
   fields: Field[];
 

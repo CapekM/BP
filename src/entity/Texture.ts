@@ -18,6 +18,9 @@ export class Texture {
   })
   weather: string;
 
+  @Column()
+  data: string;
+
   @ManyToOne(type => Mesh, mesh => mesh.textures, {
     eager: true,
   })

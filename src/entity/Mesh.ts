@@ -18,4 +18,7 @@ export class Mesh {
 
   @OneToMany(type => Texture, texture => texture.mesh)
   textures: Texture[];
+
+  // @Column()
+  // defaultTexture: number;
 }
