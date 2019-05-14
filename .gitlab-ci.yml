@@ -3,7 +3,7 @@ before_script:
 
 build_image:
   script:
-    - docker compose up -d
+    - docker compose up
 #   paths:
 #     - node_modules/
 #     - build/
@@ -27,6 +27,6 @@ build_image:
 #       - node_modules/
 #   script:
 #     - 'docker info'
-#     - 'docker-compose up -d'
+#     - 'docker-compose up'
 #     - 'npm test'
 #   stage: test
