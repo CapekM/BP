@@ -1,5 +1,9 @@
-# before_script:
-#   - docker info
+before_script:
+  - docker info
+
+build_image:
+  script:
+    - docker compose up
 
 image: node
 
@@ -26,9 +30,10 @@ build:
   script: npm run build
 
 test:
+  stage: test
+  script:
+    - docker-compose up -d
+    - npm test
   artifacts:
     paths:
       - node_modules/
-  script: docker-compose up -d
-    npm test
-  stage: test
