@@ -10,7 +10,7 @@ import { createConnection, Connection, getRepository } from 'typeorm';
 
 import { AppRoutes } from '../../routes';
 import { createBasicUsers } from '../user';
-import { ModelPermission } from '../../entity/ModelPermission';
+import { Field } from '../../entity/Field';
 
 let connection: Connection;
 let server: Server;
@@ -47,7 +47,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await getRepository(ModelPermission).clear();
+  await getRepository(Field).clear();
   server.close();
   await connection.close();
 });

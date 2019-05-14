@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
-import { ModelPermission } from './ModelPermission';
+import { Field } from './Field';
+import { Mesh } from './Mesh';
 
 @Entity()
 export class Model {
@@ -10,6 +11,9 @@ export class Model {
   @Column()
   key: string;
 
-  @OneToMany(type => ModelPermission, modelPermission => modelPermission.model)
-  modelPermissions: ModelPermission[];
+  @OneToMany(type => Field, field => field.model)
+  fields: Field[];
+
+  @OneToMany(type => Mesh, mesh => mesh.model)
+  meshes: Mesh[];
 }

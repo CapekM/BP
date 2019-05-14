@@ -1,6 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-
-import { ModelPermission } from './ModelPermission';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class User {
@@ -19,7 +17,4 @@ export class User {
 
   @Column()
   password: string;
-
-  @OneToMany(type => ModelPermission, modelPermission => modelPermission.user)
-  modelPermissions: ModelPermission[];
 }
