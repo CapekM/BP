@@ -52,18 +52,28 @@
 \authorFN{Čapek} %příjmení autora
 \authorWithDegrees{Martin Čapek} %jméno autora včetně současných akademických titulů
 \author{Martin Čapek} %jméno autora bez akademických titulů
-\supervisor{Jiří Chludil}
+\supervisor{Ing. Jiří Chludil}
 \acknowledgements{Děkuji především své rodině za podporu, svému vedoucímu za časté konzultace a za směrování mě k práci.}
-\abstractCS{Tato práce popisuje návrh a vývoj API v technologii Node.js.
+\abstractCS{Tato práce popisuje návrh a vývoj REST API pro editor virtuální reality.
 
-První část je věnována analýze funkčním a nefunkčním požadavkům Editoru virtuálního historického průvodce, analýze a výběru nástrojů pro návrh API.
-V další části provedu návrh API s použitím nástroje Swagger, který byl vybrán v analýze, a s ohledem na současný stav databáze projektu Věnná města českých královen.
-Nakonec je popsán vývoj API a implementace funkčního prototypu. Tento prototyp je podroben testování.}
-\abstractEN{This bachelor thesis describes design and development of API in technology node.js.
+První část je věnována analýze funkčním požadavkům editoru virtuální reality a nefunkčním požadavkům na API, analýze nástrojů pro návrh API a stanovení výběrové metodiky pro tyto nástroje. Z této metriky nám vyjde nejlépe ohodnocený nástroj Swagger.
 
-First part is focused on analysis of functional and non-functional requirements of the Virtual historical guide editor, analysis and selection of API design tools.
-In the next part, I will design the API using Swagger tool from the analysis and with regard to the current state of the database of the project Dowry Towns of the Queens of Bohemia.
-Finally, API development and functional prototype implementation are described. This prototype is being tested.}
+V návrhové části je vytvořen doménový model databáze, který vychází ze současného stavu databáze projektu Věnná města českých královen. Funkční požadavky editoru virtuální reality jsou pokryty koncové body. Provede se návrh API s použitím nástroje Swagger a popíší se technologie potřebné pro vývoj.
+
+Dále je popsán vývoj API, tutoriál pro vytvoření jednoduchého REST API a implementace funkčního prototypu.
+
+Nakonec je funkční prototyp podroben automatizovaným a integračním testům.}
+\abstractEN{This work describes the design and development of the REST API for the virtual reality editor.
+
+The first part is devoted to the analysis of the functional requirements of the virtual reality editor and the non-functional requirements of the API, the analysis of API design tools and the determination of the selection methodology for these tools. This selection gives us the best rated tool Swagger.
+
+In the design part I will create a domain model of the database, which is based on the contemporary state of the database of the project . I create endpoints that cover the functional requirements of the virtual reality editor. I will design an API using Swagger and describe the technologies needed for development.
+
+In the design part, a domain model of the database is created, which is based on the contemporary state of the database of the project Dowry Towns of the Queens of Bohemia. The virtual reality editor's functional requirements are covered by endpoints. An API design is performed using Swagger and the technologies needed for development are described.
+
+Next is described API development, tutorial for creating simple REST API and implementation of functional prototype.
+
+Finally, the functional prototype is subjected to automated and integration tests.}
 \placeForDeclarationOfAuthenticity{V~Praze}
 \declarationOfAuthenticityOption{4} %volba Prohlášení (číslo 1-6)
 \keywordsCS{vývoj API, funkční prototyp, virtuální realita, historické modely budov, Node.js, Swagger}
@@ -97,17 +107,17 @@ Finally, API development and functional prototype implementation are described. 
 	Spoučástí vývoje je popis technologií, které se využijí ve vývoji, postup pro přípravu vývojového prostředí a implementace funkčního prototypu.
 
 \chapter{Analýza}
+    %V této kapitole si připravím podklady pro návrh REST API. Nejdříve stanovím požadavky na API a dále vyberu nástroj pro návrh REST API.
     \section{Požadavky editoru virtuální reality}
         \subsection{Funkční} \label{sec:analFP}
-% todo upravit
-            Následující sekce popisuje funkční požadavky editoru virtuální reality. To jsou požadavky, které se vztahují k funkcionalitě pro cílovou aplikaci. Tyto požadavky jsem vytvořil s pomocí Patrika Křepinského.
+            Následující sekce popisuje funkční požadavky editoru virtuální reality. To jsou požadavky, které se vztahují k funkcionalitě pro cílovou aplikaci. Tyto požadavky jsem vytvořil ve spolupráci s Patrikem Křepinským.
             
             \begin{itemize}
-                \item F1 Přihlášení - V aplikaci musí být možnost přihlášení. Pokud se nepřihlásíte, můžete pokračovat jako host, který nemá žádná práva na grafické modely, tedy si je můžete pouze prohlížet.
-                \item F2 Odhlášení
+                \item \textbf{F1 Přihlášení} - V aplikaci musí být možnost přihlášení. Pokud se nepřihlásíte, můžete pokračovat jako host, který nemá žádná práva na grafické modely, tedy si je můžete pouze prohlížet.
+                \item \textbf{F2 Odhlášení}
                 
                 Stejně jako přihlášení je nutná možnost odhlášení. Dále je potřeba mít možnost zůstat trvale přihlášen na tomto počítači, jinak funguje automatické odhlášení po ukončení aplikace.
-               \item F3 Práva k modelu
+               \item \textbf{F3 Práva k modelu}
                
                 Model má svého autora a dále skupinu uživatelů, kteří mají některá z následujících práv:
                 \begin{itemize}
@@ -119,7 +129,7 @@ Finally, API development and functional prototype implementation are described. 
                     \item plná práva
                 \end{itemize}
                 Tuto skupinu uživatelů může autor libovolně editovat. Pokud uživatel není ve skupině znamená to, že nemá žádná práva k tomuto modelu.
-               \item F4 Práva k projektu
+               \item \textbf{F4 Práva k projektu}
                
                 Projekt je skupina modelů zasazená do lokace. Takovým projektem může být historický model města. Projekt má skupinu uživatelů, kteří mají některá z následujících práv:
                 \begin{itemize}
@@ -130,33 +140,33 @@ Finally, API development and functional prototype implementation are described. 
                     \item Seskupení
                 \end{itemize}
                 Uživatel bude moct zařadit model do skupiny. Tato funkce poslouží k lepší organizaci pracovního prostředí.
-                \item F5 Žádosti o práva
+                \item \textbf{F5 Žádosti o práva}
                 
                 Dále mohou uživatelé žádat o určitá práva k modelu nebo skupině modelů a k projektu. Tuto žádost mohou autoři potvrdit.
-                \item F6 Zobrazení miniatur po přihlášení
+                \item \textbf{F6 Zobrazení miniatur po přihlášení}
                 
                 Je třeba, aby po přihlášení měl uživatel přístup ke svým modelům. To umožní naše aplikace v podobě miniatur grafických modelů, které se po přihlášení načtou.
-                \item F7 Třídění miniatur
+                \item \textbf{F7 Třídění miniatur}
                 
                 Tyto miniatury si bude moct uživatel třídit podle stavu modelů, přístupových práv, skupin uživatelů, atd.
-                \item F8 Zobrazení modelů projektu v určitém čase a počasí
+                \item \textbf{F8 Zobrazení modelů projektu v určitém čase a počasí}
                 
                 Uživatel si bude moct zobrazit celý projekt v nějakém čase a procházet si ho. Bude si moct nastavovat počasí a denní dobu. Bude si ho moci procházet i napříč historií.
-                \item F9 Vytvoř kopii modelu
+                \item \textbf{F9 Vytvoř kopii modelu}
                 
                 Uživatel bude moct vytvořit model na základě nějakého jiného modelu (pokud k tomu bude mít právo), aby nemusel začínat od začátku.
-                \item F10 Vytvoř nový projekt
+                \item \textbf{F10 Vytvoř nový projekt}
                 
                 Uživatel vytvoří prázdnou pracovní plochu, kam bude moct zasazovat modely.
                 Nahrání modelu z lokálního zařízení
                 Uživatel nahraje model z disku a může ho uložit na server.
-               \item F11 Vytvoř kopii projektu
+               \item \textbf{F11 Vytvoř kopii projektu}
                
                 Uživatel vytvoří kopii projektu, pokud k tomu má právo, aby mohl provádět nějaké experimentální úpravy.
-                \item F12 Přidání modelu do projektu
+                \item \textbf{F12 Přidání modelu do projektu}
                 
                 Pokud bude moct uživatel editovat nějaký projekt, může přidávat i nové modely.
-               \item F13 Editace modelu
+               \item \textbf{F13 Editace modelu}
                
                \begin{itemize}
                     \item smazání
@@ -166,7 +176,7 @@ Finally, API development and functional prototype implementation are described. 
                     
                     Uživateli se zobrazí prázdná pracovní plocha, kde bude moct vymodelovat nový model.
                 \end{itemize}
-                \item F14 Ulož všechny změny v projektu
+                \item \textbf{F14 Ulož všechny změny v projektu}
                 
                 Uživatel potvrdí a uloží provedené změny na server. Po tomto uložení uvidí změny všichni kdo mají k modelu přístup.
                 U modelu máme dva základní typy změn:
@@ -176,30 +186,29 @@ Finally, API development and functional prototype implementation are described. 
                 \end{itemize}
             \end{itemize}
         \subsection{Nefunkční}
-% todo upravit
             Tato sekce se zabývá nefunkčními požadavky na REST API. Tedy požadavky, které se zaměřují na nároky cílové aplikace na software a to například z hlediska bezpečnosti, spolehlivosti, či výkonu.
             \begin{itemize}
-                \item N1 Rychlost odezvy
+                \item \textbf{N1 Rychlost odezvy}
 
                     Uživatel nesmí na obdržení nebo aktualizování grafického modelu čekat. Je třeba, aby server reagoval rychle.
-                \item N2 Datová nenáročnost při komunikaci
+                \item \textbf{N2 Datová nenáročnost při komunikaci}
 
                     Je třeba minimalizovat množství dat posílané přes API, abychom docílili rychlosti a zbytečně nepřetěžovali spojení s koncovým uživatelem.
-                \item N3 Bezpečnost
+                \item \textbf{N3 Bezpečnost}
                     
                     Určité koncové body vyžadují oprávnění, jelikož jejich zavoláním se předávají nebo přepisují citlivá data. To se vyřeší tím, že při přihlášení dostane uživatel token, kterým se bude autorizovat u volání citlivých koncových bodů.
-                \item N4 Rozšiřitelnost
+                \item \textbf{N4 Rozšiřitelnost}
 
                     API musí umožňovat případné rozšíření o další funkcionality. Také musí být řádně zdokumentováno, aby umožnilo hladší průběh rozšiřování.
-                \item N5 Použité technologie
+                \item \textbf{N5 Použité technologie}
 
                     Bylo zadáno, že se bude vyvýjet v technologii Node.js za využití modulu Express.
             \end{itemize}
-    \section{Nástroje pro návrh REST API}
+        \section{Nástroje pro návrh REST API}
         V této sekci provedeme výběr nejvhodnějšího nástroje, který budeme používat v další kapitole Návrh.
         Návrh API nám bude rovněž sloužit jako dokumentace, jelikož v návrhu je popsáno co API dělá a jak. Tato dokumentace slouží rozšiřitelnosti API viz nefunkční požadavek N4.
         
-        Bylo vybráno pět nejrozšířenějších kandidátu, které nabízí své služby zdarma. Tyto kandidáty ohodnotím výběrovou metodou, ze které nám vyjde nejvhodnější nástroj pro naše potřeby.
+        Byly vybráni čtyři nejrozšířenější kandidáti, které nabízí své služby zdarma. Tyto kandidáty ohodnotím výběrovou metodou, ze které nám vyjde nejvhodnější nástroj pro naše potřeby.
 		Výběrová metoda se bude skládat z ohodnocení nástroje z hlediska následujících metrik:
         \begin{itemize}
             \item Dokumentace nástroje
@@ -223,7 +232,7 @@ Finally, API development and functional prototype implementation are described. 
         \end{itemize}
         Popíši každý z vybraných nástrojů a ohodnotím je z pohledu vybraných metrik a na konec dám samostatně metriku GitHub repozitáře.
         \subsection{Swagger}
-            Swagger je sada nástrojů postavená na OpenAPI Specifikaci. OpenAPI Specifikace, dřívěji Swagger Specifikace, je sada pravidel, které sémanticky popisují API. Nástroje:
+            Swagger \cite{swagger} je sada nástrojů postavená na OpenAPI Specifikaci. OpenAPI Specifikace, dřívěji Swagger Specifikace, je sada pravidel, které sémanticky popisují API. Nástroje:
             \begin{itemize}
                 \item Swagger editor - editor umožňující psát OpenAPI Specifikaci
                 \item Swagger UI - vizualizuje API dokumentaci
@@ -241,9 +250,8 @@ Finally, API development and functional prototype implementation are described. 
                 
                     Fórum\footnote{\url{https://community.smartbear.com/t5/Swagger-Open-Source-Tools/bd-p/SwaggerOSTools}} je aktivní a má i GitHub Issues.
             \end{itemize}
-            \cite{swagger}
         \subsection{Apicurio Studio}
-            Apicurio Studio je open-source editor pro OpenAPI specifikaci. Musíte se přihlásit a vaše návrhy REST API se ukládají do vašeho repozitáře na GitHubu, GitLabu nebo Bitbucketu, což se hodí v případě, když na návrhu pracujete spolčně v týmu. V editoru můžete přepínat mezi interaktivní vizualizací návrhu a jeho JSON/YAML definicí.
+            Apicurio Studio \cite{apicur} je open-source editor pro OpenAPI specifikaci. Musíte se přihlásit a vaše návrhy REST API se ukládají do vašeho repozitáře na GitHubu, GitLabu nebo Bitbucketu, což se hodí v případě, když na návrhu pracujete spolčně v týmu. V editoru můžete přepínat mezi interaktivní vizualizací návrhu a jeho JSON/YAML definicí.
             \begin{itemize}
                 \item Dokumentace
                 
@@ -255,9 +263,8 @@ Finally, API development and functional prototype implementation are described. 
                 
                     Fórum pouze v podobě GitHub Issues.
             \end{itemize}
-            \cite{apicur}
         \subsection{API Workbench}
-            \href{http://apiworkbench.com}{API Workbench}, narozdíl od výše zmíněných nástrojů, pracuje s RAML. RAML je akronym RESTful API Modeling Language a je to typ souboru podobný YAML, který specifikuje návrh API. API Workbench je v beta verzi a funguje jako balíček pro Atom, což je textový editor.
+            \href{http://apiworkbench.com}{API Workbench} \cite{apiworkbench}, narozdíl od výše zmíněných nástrojů, pracuje s RAML. RAML je akronym RESTful API Modeling Language a je to typ souboru podobný YAML, který specifikuje návrh API. API Workbench je v beta verzi a funguje jako balíček pro Atom, což je textový editor.
             
             \begin{itemize}
                 \item Dokumentace
@@ -270,9 +277,8 @@ Finally, API development and functional prototype implementation are described. 
                 
                     Fórum\footnote{\url{https://community.smartbear.com/t5/Swagger-Open-Source-Tools/bd-p/SwaggerOSTools}} je aktivní a má i GitHub Issues.       
             \end{itemize}
-            \cite{apiworkbench}
         \subsection{Apiary}
-            Api editor je založeno na API Blueprint, což je podobně jako OpenAPI Specifikace sada pravidel popisující API. API Blueprint specifikace má vlastní formát APIB, který má syntaxi podobnou Markdownu a využívá MSON\footnote{\url{https://github.com/apiaryio/mson}}.
+            Apiary \cite{apiary} editor je založeno na API Blueprint, což je podobně jako OpenAPI Specifikace sada pravidel popisující API. API Blueprint specifikace má vlastní formát APIB, který má syntaxi podobnou Markdownu a využívá MSON\footnote{\url{https://github.com/apiaryio/mson}}.
             Apiary disponuje interaktivní dokumentací, webový editor má možnost přepnutí do tmavého režimu. Dále zajišťuje propojení s GitHub repozitářem.
             \begin{itemize}
                 \item Dokumentace
@@ -285,7 +291,6 @@ Finally, API development and functional prototype implementation are described. 
                 
                     Nic jako fórum jsem nenašel, pouze FAQ.
             \end{itemize}
-            \cite{apiary}
         \subsection{GitHub repozitář}
             Metriku GitHub repozitář jsem zapsal do \hyperref[tab:tabulkaPokryti]{tabulky Metrika GitHub repozitáře}.
             Nástroj Apiary nemá GitHub repozitář, tudíž ho nemůžu hodnotit. U Swaggeru jsem hodnotil jak repozitář pro editor tak pro UI a to tím způsobem, že hvězdičky jsem zprůměroval, poslední commit je nejposlednejší commit obou repozitářů a Issues jsem sečetl. Data jsou ze dne 14.4.2019.
@@ -399,7 +404,7 @@ Finally, API development and functional prototype implementation are described. 
         \end{table}
     \newpage
     \section{Návrh ve Swaggeru}
-        Na základě \hyperref[tab:tabulkaPokryti]{této tabulky} jsem vytvořil návrh ve Swaggeru. Uvedu zde příklad zapsání jednoho koncového bodu, zbytek najdete v elektronické příloze TBD. Na \hyperref[fig:SwaggerYAML]{obrázku 3.4} je zapsaný koncový bod v OpenAPI Specifikaci a na \hyperref[fig:SwaggerGenerated]{obrázku 3.5} je vidět jeho vizualizace.
+        Na základě \hyperref[tab:tabulkaPokryti]{této tabulky} jsem vytvořil návrh ve Swaggeru. Uvedu zde příklad zapsání jednoho koncového bodu, zbytek najdete v elektronické příloze docs. Na \hyperref[fig:SwaggerYAML]{obrázku 3.4} je zapsaný koncový bod v OpenAPI Specifikaci a na \hyperref[fig:SwaggerGenerated]{obrázku 3.5} je vidět jeho vizualizace.
         \begin{figure}[h!] \label{SwaggerYAML}
             \includegraphics[width=\linewidth]{Swagger_YAML_example}
             \caption{Popis koncového bodu ve Swaggeru}
@@ -407,18 +412,17 @@ Finally, API development and functional prototype implementation are described. 
         \begin{figure}[h!] \label{SwaggerGenerated}
             \includegraphics[width=\linewidth]{Swagger_generated_example}
             \caption{Vygenerovaný koncový bod ve Swaggeru}
-        \end{figure}        
+        \end{figure} 
 
-\chapter{Vývoj}
-    V této kapitole se budu věnovat technologiím, které použiji při implementaci, přípravě vývojového prostědí a vlastní implementaci.
     \section{Použité technologie}
+     Zde se budu věnovat technologiím, které použiji při vývoji API.
         \subsection{Rest API}
         REST, neboli Representional State Transfer, je architektonický styl, který umožňuje přistupovat k datům a využívá již existující HTTP. REST implementuje čtyři základní metody, známé pod akronymem CRUD, jsou to
         Create (vytvoření dat), Retrieve (získání požadovaných dat), Update (změnu) a Delete (smazání). Dokáže vracet XML, JSON, YAML nebo jiné formáty podle klientových požadavků. \cite{rest}
         
-        V naší implementaci budeme používat JSON, rozhodnuto bylo na základě autorových zkušeností a článku \cite{whyJSON}.
+        V naší implementaci budeme používat JSON, jelikož se používá ve Věnných městech českých královen.
         \subsection{Node.js}
-            Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu "JavaScript everywhere".
+            Node.js je open-source multiplatformní JavaScriptové prostředí postaveno na Chrome V8 JavaScript enginu. Primární účel Node.js je tvorba serverové části webových aplikací, které vychází z paradigmatu \uv{JavaScript everywhere}.
             
             Node.js využívá událostmi řízenou architekturu a neblokující I/O operace. Tento návrh optimalizuje výkon a škálovatelnost programů s častými požadavky na I/O operace.
             
@@ -431,7 +435,6 @@ Finally, API development and functional prototype implementation are described. 
             
             PostgreSQL je objektově-relační databázový systém pod MIT licencí. Je pověstný svou spolehlivostí a vysokou bezpečností. Na PostgreSQL wiki\footnote{\url{https://wiki.postgresql.org/wiki/Community_Guide_to_PostgreSQL_GUI_Tools}} lze nalézt rozsáhlý seznam dostupného open-source software, sloužícího k administraci a monitoringu PostgreSQL databází. Nejrozšířenější a velmi přehledný je pgAdmin.
             \cite{postgres}
-            %todo odkaz na BP Víta Černého?
         \subsection{npm}
             Node.js využívá správce balíčků npm, jehož pomocí můžeme obecně instalovat i spravovat závislosti a spouštět skripty. Npm se chlubí tím, že je největším balíčkovacím správcem a aktuálně obsahuje skoro 800 000 balíčků.
             \cite{modulecounts}
@@ -464,10 +467,16 @@ Finally, API development and functional prototype implementation are described. 
         \subsection{TSLint}
             TSLint je nástroj pro statickou analýzu kódu TypeScriptu. Detekuje potencionální chyby a udržuje jednotné fomátování kódu.\cite{tslint}
         \subsection{dotenv-safe}
-            Tato knihovna umožňuje pracovat s proměnnými prostředí. Proměnné prostředí budeme zapisovat do souboru ".env" v kořenovém adresáři a tento soubor přidáme do gitignore souboru, protože zde budou citlivé informace. Zároveň bude existovat soubor ".env.example", který bude vypadat stejně jako soubor ".env", jenom nebude obsahovat hodnoty proměnných. Soubor ".env.example" slouží jako vzor k vytvoření ".env". \cite{dotenv}
+            Tato knihovna umožňuje pracovat s proměnnými prostředí. Proměnné prostředí budeme zapisovat do souboru .env v kořenovém adresáři a tento soubor přidáme do gitignore souboru, protože zde budou citlivé informace. Zároveň bude existovat soubor .env.example, který bude vypadat stejně jako soubor .env, jenom nebude obsahovat hodnoty proměnných. Soubor .env.example slouží jako vzor k vytvoření .env. \cite{dotenv}
         \subsection{TypeORM}
             Jak již název napovídá jedná se o objektově relační mapování, což nám umožní jednodušeji pracovat s databází. TypeORM podporuje PostgreSQL a má npm balíček, který budeme moci využít při implementaci v Node.js.
             \cite{typeorm}
+        \subsection{Docker}
+            Docker je nástroj, který umožnuje vytvářet a spuštět aplikace v kontejnerech. Kontejner obsahuje aplikaci i se všemi jejími závislostmi, takže zajišťuje, že aplikace v kontejneru bude fungovat na jekékoliv platformě. Naše databáze pro vývoj a testování API poběží v Dockeru.
+            \cite{docker}
+\chapter{Vývoj}
+% todo
+    V této kapitole se budu věnovat přípravě vývojového prostědí, tutoriálu jak zpovoznit REST API a implementaci funkčního prototypu.
     \section{Vývojové prostředí pro OS~Linux}  \label{vyvProstredi}
         V této sekci se budu věnovat přípravě výojářského prostředí v Node.js a popíši zde jak zprovoznit API. Stejným postupem byla provedena i \hyperref[impl]{Implementace}.
         
@@ -487,7 +496,7 @@ npm set init.author.email "example-user@example.com"
 npm set init.author.name "example_user"
 npm set init.license "MIT"
         \end{minted}
-        Příklad souboru package.json najdeme v el. příloze.
+        Příklad souboru package.json najdeme v elektronické příloze src/impl/package.json.
         Dále budeme instalovat balíčky. Následujícím příkazem se nám balíček stáhne i s knihovnami, na kterých závisí, do složky node\_modules a taky se nám zapíše do package.json ve fomátu \uv{název: verze}. 
         \begin{minted}{bash}
 npm i "název balíčku"
@@ -498,7 +507,7 @@ npm i "název balíčku"
         Dále si nainstalujeme balíčky pro statické typování viz \url{https://github.com/DefinitelyTyped/DefinitelyTyped}.
         \mint{bash}|npm i -D @types/node @types/express|
     
-        Vytvoříme si tsconfig.json pro konfiguraci TypeScript. Inspirovat se můžete v elektronické příloze TBD. Dokumetaci najdete na stránce \url{https://www.typescriptlang.org/docs/handbook/tsconfig-json.html}.
+        Vytvoříme si tsconfig.json pro konfiguraci TypeScript. Inspirovat se můžete v elektronické příloze src/impl/tsconfig.json. Dokumetaci najdete na stránce \url{https://www.typescriptlang.org/docs/handbook/tsconfig-json.html}.
 
         V package.json přidáme:
         \begin{minted}{json}
@@ -535,7 +544,7 @@ npm start
             \caption{Postman}
         \end{figure}
         \subsection{Databázové připojení s TypeORM}
-            Začneme s vytvořením souboru ormconfig.json v našem kořenovém adresáři, kde bude uložena konfigurace databázového připojení. Můžete se inspirovat souborem ormconfig.json v el. příloze, zde je použita PostgreSQL databáze. V této konfiguraci budeme definovat naše schéma. To zadefinujeme pomocí popsání entit. V ormconfig.json bude zapsáno, kde se naše entity nachází.
+            Začneme s vytvořením souboru ormconfig.json v našem kořenovém adresáři, kde bude uložena konfigurace databázového připojení. Můžete se inspirovat souborem src/impl/ormconfig.json v elektronické příloze, zde je použita PostgreSQL databáze. V této konfiguraci budeme definovat naše schéma. To zadefinujeme pomocí popsání entit. V ormconfig.json bude zapsáno, kde se naše entity nachází.
             \begin{minted}{json}
 "entities": ["src/entity/**/*.ts"]
             \end{minted}
@@ -644,11 +653,12 @@ import { createBasicUsers } from "./controller/user";
         \end{figure}
     \newpage
     \section{Implementace} \label{impl}
-        Zde popíši jak vypadá prototyp Rest API pro Editor virtuální reality. Naše implementace navazuje na předchozí sekci \hyperref[vyvProstredi]{Vývojové prostředí pro OS Linux}.
+        Zde popíši jak vypadá prototyp Rest API pro Editor virtuální reality. Jeho instalační příručku najdete v elektronické příloze README.md. Naše implementace navazuje na předchozí sekci \hyperref[vyvProstredi]{Vývojové prostředí pro OS Linux}.
         
-        Struktura adresáře je zachycena na \hyperref[fig:adresar]{obrázku 4.5}.
+        Struktura adresáře implementace je zachycena na \hyperref[fig:adresar]{obrázku 4.5}.
         \begin{figure}[h!]
         	\dirtree{%
+        		.1 docker-compose.yml\DTcomment{soubor pro spuštění databáze v Dockeru}.
         		.1 src.
         		.2 controller\DTcomment{akce koncových bodů}.
         		.2 entity\DTcomment{databázové schéma}.
@@ -659,6 +669,8 @@ import { createBasicUsers } from "./controller/user";
         		.1 .gitlab-ci.yml\DTcomment{skript pro GitLab CI}.
         		.1 ormconfig.json\DTcomment{připojení na databázi}.
         		.1 package.json\DTcomment{definování projektu a jeho závislostí}.
+        		.1 .prettierrc\DTcomment{nastavení formátování}.
+        		.1 README.md\DTcomment{instalační příručka}.
         		.1 tsconfig.json\DTcomment{konfigurace TypeScriptu}.
         		.1 tslint.json\DTcomment{nastavení linteru}.
         	}
@@ -679,7 +691,29 @@ import { createBasicUsers } from "./controller/user";
 		Spávu práv a uživatelských účtů pro REST API si dokáži představit, jako samostatnou bakalářskou práci.
 		Dalším nedostatkem prototypu je, že ukládá uživatelská hesla v plaintextu.
 \chapter{Testování}
-    Pro ověření funkčnosti našeho prototypu provedeme integrační testování. Integrační testování v našem případě vypadá jako sled volání koncových bodů. Pro testování našeho API použijeme Jest. Všechny testy můžeme najít v el. příloze.
+    Pro ověření funkčnosti našeho prototypu provedeme integrační testování. Integrační testování v našem případě vypadá jako sled volání koncových bodů (např. přihlaš se, vytvoř model, změň model, vymaž model). Pro testování našeho API použijeme testovací framework Jest\footnote{https://jestjs.io} a npm modul Axios\footnote{https://github.com/axios/axios} pro vytváření HTTP požadavků. Zavolání jednoho koncového bodu v testování vypadá následovně:
+    \begin{minted}{typescript}
+const secret = process.env.JWT_SECRET || '';
+it('should response with 200', async () => {
+  await axios({
+    method: 'post',
+    url: 'http://localhost:4000/login',
+    data: {
+      username: 'Batman',
+      password: '1234',
+    },
+  })
+    .then(response => {
+      expect(typeof jwt.verify(response.data, secret)).toBe('object');
+      expect(response.status).toBe(200);
+    })
+    .catch(error => {
+      throw error;
+    });
+});
+    \end{minted}
+
+    Všechny testy můžeme najít v elektronické příloze src/impl/src/controller/\_\_tests\_\_.
 
     \section{Jest}
         Jest je framework pro testování JavaScriptových apilkací. Hodí se pro testování Node.js a typescriptu.
@@ -691,13 +725,19 @@ npm test
             \begin{minted}{bash}
 npm run test-with-coverage
             \end{minted}
-        Pokrytí kódu testy se nám uloží do složky coverage. Můžeme si v internetovém prohlížeči otevřít soubor coverage/lcov-report/index.html viz el. příloha, ve kterém vidíme statistiku pokrytí kódu testy a můžeme si interaktivně procházet adresář a dívat se na pokrytí konkrétních souborů.
+        Pokrytí kódu testy se nám uloží do složky coverage. V internetovém prohlížeči si můžeme otevřít soubor
+        src/impl/coverage/lcov-report/index.html, který najdete v elektronické příloze, jeho podoba je zachycena na obrázku \hyperref[coverage]{5.1}.
+        \begin{figure}[h!] \label{coverage}
+            \includegraphics[width=\linewidth]{coverage}
+            \caption{Pokrytí kódu testy}
+        \end{figure}
+        Uvidíme v něm statistiku pokrytí kódu testy a můžeme si interaktivně procházet adresář a dívat se na pokrytí konkrétních souborů.
     \section{GitLab}
-        Pro verzování teoretické i praktické části jsem používal GitLab. GitLab nabízí nástroj pro průběžnou integraci, který při každém commitu nahraném na GitLab spustí skript, který je zapsaný v souboru pojmenovaném .gitlab.yml uloženém v kořenovém adresáři projektu. My budeme chtít, aby se nám po commitu aplikace sestavila a spustili se na ní naše testy.
+        Pro verzování teoretické i praktické části jsem používal GitLab. GitLab nabízí nástroj pro průběžnou integraci, který při každém commitu nahraném na GitLab spustí skript, který je zapsaný v souboru pojmenovaném .gitlab.yml uloženém v kořenovém adresáři projektu. Naše aplikace se po nahrání na GitLab nainstaluje a sestaví.
 
 \begin{conclusion}
     V první části teoretické práce (analýze) proběhla analýza funkční a nefunkční požadavků editoru virtuální reality. Funkční požadavky byly vytvořeny ve spolupráci s Patrikem Křepinským, který momentálně pracuje na editoru virtuální reality.
-	Dále byl vybrán nástroj Swagger jakožto nástroj pro návrh a dokumentaci REST API. V tomto výběru byla provedena analýza 5--ti nástrojů pro návrh API a zavedení výběrové metodiky, kterou byly nástroje ohodnoceny.
+	Dále byl vybrán nástroj Swagger jakožto nástroj pro návrh a dokumentaci REST API. V tomto výběru byla provedena analýza čtyř nástrojů pro návrh API a zavedení výběrové metodiky, kterou byly nástroje ohodnoceny.
 	
 	
 	V druhé části teoretické práce (návrhu) byl proveden návrh REST API. V návrhu se vyskytl problém, že současná databáze Věnných měst českých královen nepostačuje požadavkům editoru virtuální reality, byl tedy proveden nový návrh databáze.
@@ -841,13 +881,12 @@ npm run test-with-coverage
 \begin{figure}
 	\dirtree{%
 		.1 readme.txt\DTcomment{stručný popis obsahu CD}.
-		.1 exe\DTcomment{adresář se spustitelnou formou implementace}.
+		.1 docs\DTcomment{adresář se Swaggger dokumentací}.
 		.1 src.
 		.2 impl\DTcomment{zdrojové kódy implementace}.  
 		.2 thesis\DTcomment{zdrojová forma práce ve formátu \LaTeX{}}.
 		.1 text\DTcomment{text práce}.
 		.2 thesis.pdf\DTcomment{text práce ve formátu PDF}.
-		.2 thesis.ps\DTcomment{text práce ve formátu PS}.
 	}
 \end{figure}
 
