@@ -3,18 +3,19 @@ import { getRepository } from 'typeorm';
 import { Model } from '../entity/Model';
 
 export async function postModel(request: Request, response: Response) {
-  if (!('modelID' in request.params)) {
-    response.status(400);
-    throw new Error();
-  }
   const model = await getRepository(Model).findOne(request.params.modelID);
   if (!model) {
     response.status(404);
     throw new Error();
   }
-  // todo
-  console.log('updating model');
 
+  if (request.body.key) {
+    model.key = request.body.key;
+  }
+  if (request.body.description) {
+    model.description = request.body.description;
+  }
+  await getRepository(Model).save(model);
   response.send(model);
 }
 
@@ -25,17 +26,13 @@ export async function putModel(request: Request, response: Response) {
   }
   const model = new Model();
   model.key = request.body.key;
-
+  model.description = request.body.description ? request.body.description : '';
   const result = await getRepository(Model).save(model);
 
   response.send(result);
 }
 
 export async function deleteModel(request: Request, response: Response) {
-  if (!('modelID' in request.params)) {
-    response.status(400);
-    throw new Error();
-  }
   const entity = await getRepository(Model).findOne(request.params.modelID);
   if (!entity) {
     response.status(404);
@@ -47,10 +44,6 @@ export async function deleteModel(request: Request, response: Response) {
 }
 
 export async function getModel(request: Request, response: Response) {
-  if (!('modelID' in request.params)) {
-    response.status(400);
-    throw new Error();
-  }
   const entity = await getRepository(Model).findOne(request.params.modelID);
   if (!entity) {
     response.status(404);

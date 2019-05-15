@@ -7,7 +7,7 @@ import { Request, Response } from 'express';
 import * as bodyParser from 'body-parser';
 
 import { AppRoutes } from './routes';
-import { createBasicUsers } from './controller/user';
+import { createBasicUsers } from './utils';
 
 require('dotenv-safe').config({
   path: path.resolve(__dirname, '../.env'),
