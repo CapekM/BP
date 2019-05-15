@@ -3,7 +3,6 @@ image: node
 stages:
   - install
   - build
-  # - test
 
 cache:
   paths:
@@ -21,11 +20,3 @@ install_dependencies:
 build:
   stage: build
   script: npm run build
-# test:
-#   stage: test
-#   script:
-#     - docker-compose up -d
-#     - npm test
-#   artifacts:
-#     paths:
-#       - node_modules/
