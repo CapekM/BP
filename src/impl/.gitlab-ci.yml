@@ -1,0 +1,31 @@
+image: node
+
+stages:
+  - install
+  - build
+  # - test
+
+cache:
+  paths:
+    - node_modules/
+    - build/
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+build:
+  stage: build
+  script: npm run build
+# test:
+#   stage: test
+#   script:
+#     - docker-compose up -d
+#     - npm test
+#   artifacts:
+#     paths:
+#       - node_modules/

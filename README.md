@@ -8,6 +8,12 @@ instalace závislostí
 npm i
 ```
 
+nakopírování proměnných prostředí
+
+```sh
+cp .example.env .env
+```
+
 spuštění aplikace
 
 ```sh

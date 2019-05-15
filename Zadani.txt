@@ -1,9 +1,0 @@
-﻿Věnná města českých královen - API pro předávání grafických modelů
-//TBD název anglicky
-
-Tento týmový projekt má za cíl uživatelům přívětivě vizualizovat historii architektury českých měst prostřednictvím VR a AR.
-
-1. Analyzujte funkční a nefunkční požadavky editoru virtuální reality. Zaměřte se především na datové úložiště a způsob propagace modelů.
-2. Dle předchozích požadavků navrhněte prototyp API, které umožní komunikaci mezi datovým úložištěm a editorem virtuální reality.
-3. Implementujte prototyp REST API rozhraní za použití technologie Node.js, využijte technologie continuous integration.
-4. Prototyp podrobte automatizovaným a integračním testování.
