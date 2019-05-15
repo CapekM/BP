@@ -2,6 +2,7 @@ import { getAllUsers } from './controller/user';
 import { login } from './controller/login';
 import { postModel, deleteModel, putModel, getModel } from './controller/model';
 import { putProject, postProject, getProject, deleteProject } from './controller/project';
+import { putField, getField, postField, deleteField } from './controller/filed';
 
 /**
  * All application routes.
@@ -56,5 +57,25 @@ export const AppRoutes = [
     path: '/project/:ProjectID',
     method: 'delete',
     action: deleteProject,
+  },
+  {
+    path: '/field',
+    method: 'put',
+    action: putField,
+  },
+  {
+    path: '/field/:FieldID',
+    method: 'post',
+    action: postField,
+  },
+  {
+    path: '/field/:FieldID',
+    method: 'get',
+    action: getField,
+  },
+  {
+    path: '/field/:FieldID',
+    method: 'delete',
+    action: deleteField,
   },
 ];

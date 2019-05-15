@@ -9,19 +9,7 @@ export class Field {
   id: number;
 
   @Column()
-  locatin: string;
-
-  // @Column({ type: 'text', array: true, nullable: true })
-  // optionalArrayOfStrings: string[];
-
-  // @Column()
-  // scale: number[]; // 3 cisla
-
-  // @Column()
-  // rotation: number[]; // 3 cisla
-
-  // @Column()
-  // lastTexture: number;
+  location: string;
 
   @ManyToOne(type => Project, project => project.fields, {
     eager: true,

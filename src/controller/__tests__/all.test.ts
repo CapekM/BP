@@ -51,7 +51,7 @@ afterAll(async () => {
 });
 
 describe('Login', () => {
-  it('should response 200', async () => {
+  it('should response with 200', async () => {
     await axios({
       method: 'post',
       url: 'http://localhost:4000/login',
@@ -70,7 +70,7 @@ describe('Login', () => {
       });
   });
 
-  it('should response 401', async () => {
+  it('should response with 401', async () => {
     await axios({
       method: 'post',
       url: 'http://localhost:4000/login',
@@ -87,7 +87,7 @@ describe('Login', () => {
       });
   });
 
-  it('should response 401', async () => {
+  it('should response with 401', async () => {
     await axios({
       method: 'post',
       url: 'http://localhost:4000/login',
@@ -105,7 +105,7 @@ describe('Model', () => {
   let id: number;
   const testKey = 'SomeKey';
 
-  it('PUT should response 400', async () => {
+  it('PUT should response with 400', async () => {
     await axios({
       method: 'put',
       url: 'http://localhost:4000/model',
@@ -118,7 +118,7 @@ describe('Model', () => {
         expect(error.response.status).toBe(400);
       });
   });
-  it('PUT should response 200', async () => {
+  it('PUT should response with 200', async () => {
     await axios({
       method: 'put',
       url: 'http://localhost:4000/model',
@@ -136,7 +136,7 @@ describe('Model', () => {
         throw error;
       });
   });
-  it('PUT should response 200', async () => {
+  it('PUT should response with 200', async () => {
     await axios({
       method: 'put',
       url: 'http://localhost:4000/model',
@@ -154,7 +154,7 @@ describe('Model', () => {
         throw error;
       });
   });
-  it('POST should response 200', async () => {
+  it('POST should response with 200', async () => {
     await axios({
       method: 'post',
       url: `http://localhost:4000/model/${id}`,
@@ -171,7 +171,7 @@ describe('Model', () => {
         throw error;
       });
   });
-  it('POST should response 404', async () => {
+  it('POST should response with 404', async () => {
     await axios({
       method: 'post',
       url: `http://localhost:4000/model/${id + 1}`,
@@ -184,7 +184,7 @@ describe('Model', () => {
         expect(error.response.status).toBe(404);
       });
   });
-  it('GET should response 200', async () => {
+  it('GET should response with 200', async () => {
     await axios({
       method: 'get',
       url: `http://localhost:4000/model/${id}`,
@@ -200,7 +200,7 @@ describe('Model', () => {
         throw error;
       });
   });
-  it('DELETE should response 200', async () => {
+  it('DELETE should response with 200', async () => {
     await axios({
       method: 'delete',
       url: `http://localhost:4000/model/${id}`,
@@ -213,7 +213,7 @@ describe('Model', () => {
         throw error;
       });
   });
-  it('GET should response 404', async () => {
+  it('GET should response with 404', async () => {
     await axios({
       method: 'get',
       url: `http://localhost:4000/model/${id}`,
@@ -226,7 +226,7 @@ describe('Model', () => {
         expect(error.response.status).toBe(404);
       });
   });
-  it('DELETE should response 404', async () => {
+  it('DELETE should response with 404', async () => {
     await axios({
       method: 'delete',
       url: `http://localhost:4000/model/${id}`,
@@ -245,7 +245,7 @@ describe('Project', () => {
   let id: number;
   const testName = 'TestName';
 
-  it('PUT should response 400', async () => {
+  it('PUT should response with 400', async () => {
     await axios({
       method: 'put',
       url: 'http://localhost:4000/project',
@@ -258,7 +258,7 @@ describe('Project', () => {
         expect(error.response.status).toBe(400);
       });
   });
-  it('PUT should response 200', async () => {
+  it('PUT should response with 200', async () => {
     await axios({
       method: 'put',
       url: 'http://localhost:4000/project',
@@ -276,7 +276,7 @@ describe('Project', () => {
         throw error;
       });
   });
-  it('POST should response 200', async () => {
+  it('POST should response with 200', async () => {
     await axios({
       method: 'post',
       url: `http://localhost:4000/project/${id}`,
@@ -292,7 +292,7 @@ describe('Project', () => {
         throw error;
       });
   });
-  it('POST should response 404', async () => {
+  it('POST should response with 404', async () => {
     await axios({
       method: 'post',
       url: `http://localhost:4000/project/${id + 1}`,
@@ -305,7 +305,7 @@ describe('Project', () => {
         expect(error.response.status).toBe(404);
       });
   });
-  it('GET should response 200', async () => {
+  it('GET should response with 200', async () => {
     await axios({
       method: 'get',
       url: `http://localhost:4000/project/${id}`,
@@ -320,7 +320,7 @@ describe('Project', () => {
         throw error;
       });
   });
-  it('DELETE should response 200', async () => {
+  it('DELETE should response with 200', async () => {
     await axios({
       method: 'delete',
       url: `http://localhost:4000/project/${id}`,
@@ -333,7 +333,7 @@ describe('Project', () => {
         throw error;
       });
   });
-  it('GET should response 404', async () => {
+  it('GET should response with 404', async () => {
     await axios({
       method: 'get',
       url: `http://localhost:4000/project/${id}`,
@@ -346,7 +346,7 @@ describe('Project', () => {
         expect(error.response.status).toBe(404);
       });
   });
-  it('DELETE should response 404', async () => {
+  it('DELETE should response with 404', async () => {
     await axios({
       method: 'delete',
       url: `http://localhost:4000/project/${id}`,
@@ -361,8 +361,164 @@ describe('Project', () => {
   });
 });
 
+describe('Field', () => {
+  let project: number;
+  let model: number;
+  let id: number;
+  const testLocation = 'TestLocation';
+  beforeAll(async () => {
+    await axios({
+      method: 'put',
+      url: 'http://localhost:4000/project',
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        name: 'testField',
+      },
+    })
+      .then(response => {
+        project = response.data.id;
+      })
+      .catch(error => {
+        throw error;
+      });
+    await axios({
+      method: 'put',
+      url: 'http://localhost:4000/model',
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        key: 'testField',
+      },
+    })
+      .then(response => {
+        model = response.data.id;
+      })
+      .catch(error => {
+        throw error;
+      });
+  });
+
+  it('PUT should response with 400', async () => {
+    await axios({
+      method: 'put',
+      url: 'http://localhost:4000/field',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(response => {
+        throw new Error('Axios should return Error');
+      })
+      .catch(error => {
+        expect(error.response.status).toBe(400);
+      });
+  });
+  it('PUT should response with 200', async () => {
+    await axios({
+      method: 'put',
+      url: 'http://localhost:4000/field',
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        location: 'to rewrite',
+        model,
+        project,
+      },
+    })
+      .then(response => {
+        expect(response.data).toHaveProperty('id');
+        id = response.data.id;
+        expect(response.status).toBe(200);
+      })
+      .catch(error => {
+        throw error;
+      });
+  });
+  it('POST should response with 200', async () => {
+    await axios({
+      method: 'post',
+      url: `http://localhost:4000/field/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        location: testLocation,
+      },
+    })
+      .then(response => {
+        expect(response.status).toBe(200);
+      })
+      .catch(error => {
+        throw error;
+      });
+  });
+  it('POST should response with 404', async () => {
+    await axios({
+      method: 'post',
+      url: `http://localhost:4000/field/${id + 1}`,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(() => {
+        throw new Error('Axios should return Error');
+      })
+      .catch(error => {
+        expect(error.response.status).toBe(404);
+      });
+  });
+  it('GET should response with 200', async () => {
+    await axios({
+      method: 'get',
+      url: `http://localhost:4000/field/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(response => {
+        expect(response.data.id).toBe(id);
+        expect(response.data.location).toBe(testLocation);
+        expect(response.data.project.id).toBe(project);
+        expect(response.data.model.id).toBe(model);
+        expect(response.status).toBe(200);
+      })
+      .catch(error => {
+        throw error;
+      });
+  });
+  it('DELETE should response with 200', async () => {
+    await axios({
+      method: 'delete',
+      url: `http://localhost:4000/field/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(response => {
+        expect(response.status).toBe(200);
+      })
+      .catch(error => {
+        throw error;
+      });
+  });
+  it('GET should response with 404', async () => {
+    await axios({
+      method: 'get',
+      url: `http://localhost:4000/field/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(response => {
+        throw new Error('Axios should return Error');
+      })
+      .catch(error => {
+        expect(error.response.status).toBe(404);
+      });
+  });
+  it('DELETE should response with 404', async () => {
+    await axios({
+      method: 'delete',
+      url: `http://localhost:4000/field/${id}`,
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(response => {
+        throw new Error('Axios should return Error');
+      })
+      .catch(error => {
+        expect(error.response.status).toBe(404);
+      });
+  });
+});
+
 describe('Users', () => {
-  it('should response 200', async () => {
+  it('should response with 200', async () => {
     await axios({
       method: 'get',
       url: 'http://localhost:4000/users',
