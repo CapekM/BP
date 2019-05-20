@@ -17,6 +17,8 @@ export class Model {
   @OneToMany(type => Field, field => field.model)
   fields: Field[];
 
-  @OneToMany(type => Mesh, mesh => mesh.model)
+  @OneToMany(type => Mesh, mesh => mesh.model, {
+    eager: true,
+  })
   meshes: Mesh[];
 }

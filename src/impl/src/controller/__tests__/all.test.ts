@@ -382,7 +382,7 @@ describe('Field', () => {
   let project: number;
   let model: number;
   let id: number;
-  const testLocation = 'TestLocation';
+  const testArray: number[] = [1.1, 1.5, 2.35];
   beforeAll(async () => {
     await axios({
       method: 'put',
@@ -433,7 +433,9 @@ describe('Field', () => {
       url: 'http://localhost:4000/field',
       headers: { Authorization: `Bearer ${token}` },
       data: {
-        location: 'to rewrite',
+        location: [1, 1, 1.1],
+        size: [1, 1, 1.1],
+        rotation: [1, 1, 1.1],
         model,
         project,
       },
@@ -453,7 +455,9 @@ describe('Field', () => {
       url: `http://localhost:4000/field/${id}`,
       headers: { Authorization: `Bearer ${token}` },
       data: {
-        location: testLocation,
+        size: testArray,
+        location: testArray,
+        rotation: testArray,
       },
     })
       .then(response => {
@@ -484,8 +488,10 @@ describe('Field', () => {
     })
       .then(response => {
         expect(response.data.id).toBe(id);
-        expect(response.data.location).toBe(testLocation);
-        expect(response.data.project.id).toBe(project);
+        expect(response.data.size).toEqual(testArray);
+        expect(response.data.location).toEqual(testArray);
+        expect(response.data.rotation).toEqual(testArray);
+        expect(response.data.project).toBe(project);
         expect(response.data.model.id).toBe(model);
         expect(response.status).toBe(200);
       })

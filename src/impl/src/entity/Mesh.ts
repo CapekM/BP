@@ -11,14 +11,14 @@ export class Mesh {
   @Column()
   triangles: number;
 
-  @ManyToOne(type => Model, model => model.fields, {
-    eager: true,
-  })
+  @Column()
+  key: string;
+
+  @ManyToOne(type => Model, model => model.fields)
   model: Model;
 
-  @OneToMany(type => Texture, texture => texture.mesh)
+  @OneToMany(type => Texture, texture => texture.mesh, {
+    eager: true,
+  })
   textures: Texture[];
-
-  // @Column()
-  // defaultTexture: number;
 }

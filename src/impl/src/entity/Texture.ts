@@ -13,16 +13,14 @@ export class Texture {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  key: string;
+
   @Column({
     default: weatherType.sunny,
   })
   weather: string;
 
-  @Column()
-  data: string;
-
-  @ManyToOne(type => Mesh, mesh => mesh.textures, {
-    eager: true,
-  })
+  @ManyToOne(type => Mesh, mesh => mesh.textures)
   mesh: Mesh;
 }
