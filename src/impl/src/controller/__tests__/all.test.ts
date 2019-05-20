@@ -382,7 +382,11 @@ describe('Field', () => {
   let project: number;
   let model: number;
   let id: number;
-  const testArray: number[] = [1.1, 1.5, 2.35];
+  const testArray = {
+    x: 1.1,
+    y: 1.5,
+    z: 2.35,
+  };
   beforeAll(async () => {
     await axios({
       method: 'put',
@@ -433,9 +437,21 @@ describe('Field', () => {
       url: 'http://localhost:4000/field',
       headers: { Authorization: `Bearer ${token}` },
       data: {
-        location: [1, 1, 1.1],
-        size: [1, 1, 1.1],
-        rotation: [1, 1, 1.1],
+        location: {
+          x: 1.1,
+          y: 1,
+          z: 1.2,
+        },
+        size: {
+          x: 1.1,
+          y: 1,
+          z: 1.2,
+        },
+        rotation: {
+          x: 1.1,
+          y: 1,
+          z: 1.2,
+        },
         model,
         project,
       },

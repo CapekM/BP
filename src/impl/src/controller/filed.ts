@@ -11,19 +11,19 @@ export async function putField(request: Request, response: Response) {
   }
   const field = new Field();
   if (request.body.location) {
-    field.location1 = request.body.location[0];
-    field.location2 = request.body.location[1];
-    field.location3 = request.body.location[2];
+    field.location1 = request.body.location.x;
+    field.location2 = request.body.location.y;
+    field.location3 = request.body.location.z;
   }
   if (request.body.size) {
-    field.size1 = request.body.size[0];
-    field.size2 = request.body.size[1];
-    field.size3 = request.body.size[2];
+    field.size1 = request.body.size.x;
+    field.size2 = request.body.size.y;
+    field.size3 = request.body.size.z;
   }
   if (request.body.rotation) {
-    field.rotation1 = request.body.rotation[0];
-    field.rotation2 = request.body.rotation[1];
-    field.rotation3 = request.body.rotation[2];
+    field.rotation1 = request.body.rotation.x;
+    field.rotation2 = request.body.rotation.y;
+    field.rotation3 = request.body.rotation.z;
   }
   field.project = await getRepository(Project).findOneOrFail(request.body.project);
   field.model = await getRepository(Model).findOneOrFail(request.body.model);
@@ -39,19 +39,19 @@ export async function postField(request: Request, response: Response) {
   }
 
   if (request.body.location) {
-    field.location1 = request.body.location[0];
-    field.location2 = request.body.location[1];
-    field.location3 = request.body.location[2];
+    field.location1 = request.body.location.x;
+    field.location2 = request.body.location.y;
+    field.location3 = request.body.location.z;
   }
   if (request.body.size) {
-    field.size1 = request.body.size[0];
-    field.size2 = request.body.size[1];
-    field.size3 = request.body.size[2];
+    field.size1 = request.body.size.x;
+    field.size2 = request.body.size.y;
+    field.size3 = request.body.size.z;
   }
   if (request.body.rotation) {
-    field.rotation1 = request.body.rotation[0];
-    field.rotation2 = request.body.rotation[1];
-    field.rotation3 = request.body.rotation[2];
+    field.rotation1 = request.body.rotation.x;
+    field.rotation2 = request.body.rotation.y;
+    field.rotation3 = request.body.rotation.z;
   }
 
   await getRepository(Field).save(field);
@@ -66,9 +66,21 @@ export async function getField(request: Request, response: Response) {
   }
   response.send({
     id: entity.id,
-    location: [entity.location1, entity.location2, entity.location3],
-    size: [entity.size1, entity.size2, entity.size3],
-    rotation: [entity.rotation1, entity.rotation2, entity.rotation3],
+    location: {
+      x: entity.location1,
+      y: entity.location2,
+      z: entity.location3,
+    },
+    size: {
+      x: entity.size1,
+      y: entity.size2,
+      z: entity.size3,
+    },
+    rotation: {
+      x: entity.rotation1,
+      y: entity.rotation2,
+      z: entity.rotation3,
+    },
     model: entity.model,
     project: entity.project.id,
   });
